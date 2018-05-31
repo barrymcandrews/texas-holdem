@@ -1,3 +1,6 @@
+import controllers.Controller;
+import controllers.GameController;
+
 import javax.swing.*;
 
 public class Application {
