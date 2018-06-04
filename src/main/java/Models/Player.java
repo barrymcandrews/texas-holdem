@@ -1,3 +1,5 @@
+package Models;
+
 public class Player {
 
     private String name;
