@@ -1,8 +1,12 @@
+package Models;
+
 public class Player {
 
     private String name;
     private Role role;
     private int wallet;
+
+    public Player(){this.wallet = 1000;}
 
     public Player(String name, Role role){
         this.name = name;
@@ -10,11 +14,11 @@ public class Player {
         this.wallet = 1000;
     }
 
-    protected static int createPlayer(int numberOfPlayers){
-        return 1;
-        /*this function should be passed a number from the game to determine
-        * how many AI's to create*/
+    public String[] getAiNames() {
+        return AiNames;
     }
+
+    protected String[] AiNames = new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"};
 
     public enum Role {
         PLAYER, DEALER
@@ -43,4 +47,7 @@ public class Player {
     public void setWallet(int wallet) {
         this.wallet = wallet;
     }
+
+
+
 }

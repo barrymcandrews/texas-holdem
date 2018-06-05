@@ -1,3 +1,7 @@
+package Controllers;
+
+import Views.GamePanel;
+
 import javax.swing.*;
 
 public class GameController implements Controller {
