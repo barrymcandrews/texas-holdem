@@ -6,15 +6,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import models.*;
+import models.Player.Role;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     private static Game gameInstance = new Game();
-    // TODO: map of all players in game. Need AI players/names first
     private String userName;
     private int numberOfOpponents;
-
+    private Map<String, Player> players = new HashMap<>(); //map player name to object for quick retrieval
+    private ArrayList<String> aiNames = new ArrayList<>();
+    
     private Game() {
         // Create option fields
         JTextField nameField = new JTextField(5);
@@ -35,14 +40,6 @@ public class Game {
         if (result == JOptionPane.OK_OPTION) {
             numberOfOpponents = (int) playersField.getSelectedItem();
             userName = nameField.getText();
-            if (userName != null) {
-                Player user = createPlayer(userName);
-                //TODO add user to the player array
-            }
-            ArrayList<Player> AI = new ArrayList<>();
-            for (int i = 0; i < numberOfOpponents; i++) {
-                AI.add(createAI(new Player(), numberOfOpponents));
-            }
             // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
             while (userName == null || userName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "You did not enter your name. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
@@ -58,6 +55,7 @@ public class Game {
             System.out.println("Goodbye!");
             System.exit(0);
         }
+        initializePlayers();
     }
 
     public static Game getInstance() {
@@ -71,30 +69,38 @@ public class Game {
     public int getNumberOfOpponents() {
         return numberOfOpponents;
     }
-
-    private static Player createPlayer(String name) {
-        Player user = new Player(name, Player.Role.PLAYER);
-        String[] names = user.getAiNames();
-        for(String p : names){
-            if(p.equals(name)){
-                user.resetAiNames(p);
-            }
-        }
-        System.out.println(user.getName());
-        return user;
+    
+    public ArrayList<String> getAiNames() {
+        return aiNames;
+    }
+    
+    private void initializePlayers()
+    {
+        aiNames.addAll(Arrays.asList(new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"}));
+        createPlayer(userName);
+        createAI();
     }
 
-    private static Player createAI(Player ai, int numberOfOpponents) {
-        String[] names = ai.getAiNames();
+    private void createPlayer(String name) {
+        // if player name equals an AI name, delete that AI name and use the backup.
+        for(int i = 0; i < numberOfOpponents; i++){
+            if(aiNames.get(i).equals(name))
+                aiNames.remove(i);
+        }
+        players.put(name, new Player(userName, Role.PLAYER));
+    }
+
+    private void createAI() {
+        Player ai = new Player();
         for (int i = 0; i < numberOfOpponents; i++) {
             if (i == 0) {
-                ai.setName(names[i]);
+                ai.setName(aiNames.get(i));
                 ai.setRole(Player.Role.DEALER);
             } else {
-                ai.setName(names[i]);
+                ai.setName(aiNames.get(i));
                 ai.setRole(Player.Role.PLAYER);
             }
+            players.put(ai.getName(), ai);
         }
-        return ai;
     }
 }
