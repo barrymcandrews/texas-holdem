@@ -1,17 +1,14 @@
 package controllers;
 
-import javax.swing.*;
 import views.GamePanel;
 
-public class GameController implements Controller {
-    GamePanel gamePanel = new GamePanel();
+public class GameController extends Controller<GamePanel> {
+
 
     public GameController() {
+        setView(new GamePanel());
         //TODO: Initialize game elements here
     }
 
-    @Override
-    public JPanel getPanel() {
-        return gamePanel;
-    }
+
 }
