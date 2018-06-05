@@ -9,10 +9,10 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         super();
 
+        sidebar.setPreferredSize(new Dimension(300,900));
         sidebar.setBackground(Color.BLUE);
 
         setLayout(new BorderLayout());
         add(sidebar, BorderLayout.BEFORE_LINE_BEGINS);
     }
-
 }
