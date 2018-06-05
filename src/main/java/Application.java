@@ -1,5 +1,5 @@
-import Controllers.Controller;
-import Controllers.GameController;
+import controllers.Controller;
+import controllers.GameController;
 
 import javax.swing.*;
 
