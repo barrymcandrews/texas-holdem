@@ -1,5 +1,5 @@
-import Controllers.Controller;
-import Controllers.GameController;
+import controllers.Controller;
+import controllers.GameController;
 
 import javax.swing.*;
 
@@ -17,10 +17,10 @@ public class Application {
     private void start() {
         Game.getInstance();
         frame.setTitle("Texas Hold'em");
-        frame.setSize(500, 500);
+        frame.setSize(900, 500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(gameController.getPanel());
+        frame.setContentPane(gameController.getView());
         frame.setVisible(true);
     }
 }
