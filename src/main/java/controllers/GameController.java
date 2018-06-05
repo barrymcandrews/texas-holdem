@@ -1,6 +1,6 @@
-package Controllers;
+package controllers;
 
-import Views.GamePanel;
+import views.GamePanel;
 
 import javax.swing.*;
 
