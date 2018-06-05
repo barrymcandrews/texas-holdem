@@ -43,4 +43,10 @@ public class Player {
     public void setWallet(int wallet) {
         this.wallet = wallet;
     }
+    
+    public String toString() {
+        return "[name: " + name + 
+                " | wallet: " + wallet +
+                " | role: " + role + "]";
+    }
 }

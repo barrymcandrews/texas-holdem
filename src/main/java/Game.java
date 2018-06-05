@@ -91,8 +91,8 @@ public class Game {
     }
 
     private void createAI() {
-        Player ai = new Player();
         for (int i = 0; i < numberOfOpponents; i++) {
+            Player ai = new Player();
             if (i == 0) {
                 ai.setName(aiNames.get(i));
                 ai.setRole(Player.Role.DEALER);
@@ -100,7 +100,12 @@ public class Game {
                 ai.setName(aiNames.get(i));
                 ai.setRole(Player.Role.PLAYER);
             }
-            players.put(ai.getName(), ai);
+            players.put(aiNames.get(i), ai);
         }
+    }
+    
+    public String toString() {
+        return "Number of players: " + (numberOfOpponents + 1) +
+               " | Players: " + players.toString();
     }
 }
