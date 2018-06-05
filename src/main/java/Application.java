@@ -1,6 +1,5 @@
 import controllers.Controller;
 import controllers.GameController;
-import views.GamePanel;
 
 import javax.swing.*;
 
@@ -16,6 +15,7 @@ public class Application {
     }
 
     private void start() {
+        Game.getInstance();
         frame.setTitle("Texas Hold'em");
         frame.setSize(900, 500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
