@@ -1,3 +1,5 @@
+package holdem;
+
 import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -5,15 +7,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import models.*;
+import holdem.models.*;
 
 import java.util.ArrayList;
 
 public class Game {
     private static Game gameInstance = new Game();
-    // TODO: map of all players in game. Need AI players/names first
+
     private String userName;
     private int numberOfOpponents;
+    private ArrayList<Player> players = new ArrayList<>();
 
     private Game() {
         // Create option fields
@@ -39,9 +42,9 @@ public class Game {
                 Player user = createPlayer(userName);
                 //TODO add user to the player array
             }
-            ArrayList<Player> AI = new ArrayList<>();
+
             for (int i = 0; i < numberOfOpponents; i++) {
-                AI.add(createAI(new Player(), numberOfOpponents));
+                players.add(createAI(new Player(), numberOfOpponents));
             }
             // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
             while (userName == null || userName.isEmpty()) {
@@ -70,6 +73,14 @@ public class Game {
 
     public int getNumberOfOpponents() {
         return numberOfOpponents;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
     private static Player createPlayer(String name) {

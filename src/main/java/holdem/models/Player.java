@@ -1,4 +1,4 @@
-package models;
+package holdem.models;
 
 
 import java.util.ArrayList;
