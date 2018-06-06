@@ -17,6 +17,7 @@ public class Application {
     }
 
     private void start() {
+        System.out.println(Game.getInstance().toString());
         frame.setTitle("Texas Hold'em");
         frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

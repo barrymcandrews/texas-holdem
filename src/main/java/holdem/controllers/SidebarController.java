@@ -1,7 +1,6 @@
 package holdem.controllers;
 
 import holdem.Game;
-import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;

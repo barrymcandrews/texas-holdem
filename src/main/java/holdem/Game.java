@@ -10,6 +10,9 @@ import javax.swing.JTextField;
 import holdem.models.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     private static Game gameInstance = new Game();
@@ -18,6 +21,9 @@ public class Game {
     private int numberOfOpponents;
     private ArrayList<Player> players = new ArrayList<>();
 
+    private Map<String, Player> playersMap = new HashMap<>(); //map player name to object for quick retrieval
+    private ArrayList<String> aiNames = new ArrayList<>();
+    
     private Game() {
         // Create option fields
         JTextField nameField = new JTextField(5);
@@ -38,14 +44,6 @@ public class Game {
         if (result == JOptionPane.OK_OPTION) {
             numberOfOpponents = (int) playersField.getSelectedItem();
             userName = nameField.getText();
-            if (userName != null) {
-                Player user = createPlayer(userName);
-                //TODO add user to the player array
-            }
-
-            for (int i = 0; i < numberOfOpponents; i++) {
-                players.add(createAI(new Player(), numberOfOpponents));
-            }
             // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
             while (userName == null || userName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "You did not enter your name. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
@@ -61,6 +59,7 @@ public class Game {
             System.out.println("Goodbye!");
             System.exit(0);
         }
+        initializePlayers();
     }
 
     public static Game getInstance() {
@@ -74,6 +73,49 @@ public class Game {
     public int getNumberOfOpponents() {
         return numberOfOpponents;
     }
+    
+    public ArrayList<String> getAiNames() {
+        return aiNames;
+    }
+    
+    public Map<String, Player> getPlayersMap() {
+        return playersMap;
+    }
+    
+    private void initializePlayers()
+    {
+        aiNames.addAll(Arrays.asList(new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"}));
+        createPlayer(userName);
+        createAI();
+    }
+
+    private void createPlayer(String name) {
+        // if player name equals an AI name, delete that AI name and use the backup.
+        for(int i = 0; i < numberOfOpponents; i++){
+            if(aiNames.get(i).equals(name))
+                aiNames.remove(i);
+        }
+        playersMap.put(name, new Player(userName, Player.Role.PLAYER));
+    }
+
+    private void createAI() {
+        for (int i = 0; i < numberOfOpponents; i++) {
+            Player ai = new Player();
+            if (i == 0) {
+                ai.setName(aiNames.get(i));
+                ai.setRole(Player.Role.DEALER);
+            } else {
+                ai.setName(aiNames.get(i));
+                ai.setRole(Player.Role.PLAYER);
+            }
+            playersMap.put(aiNames.get(i), ai);
+        }
+    }
+    
+    public String toString() {
+        return "Number of playersMap: " + (numberOfOpponents + 1) +
+               " | Players: " + playersMap.toString();
+    }
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -81,31 +123,5 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
-    }
-
-    private static Player createPlayer(String name) {
-        Player user = new Player(name, Player.Role.PLAYER);
-        String[] names = user.getAiNames();
-        for(String p : names){
-            if(p.equals(name)){
-                user.resetAiNames(p);
-            }
-        }
-        System.out.println(user.getName());
-        return user;
-    }
-
-    private static Player createAI(Player ai, int numberOfOpponents) {
-        String[] names = ai.getAiNames();
-        for (int i = 0; i < numberOfOpponents; i++) {
-            if (i == 0) {
-                ai.setName(names[i]);
-                ai.setRole(Player.Role.DEALER);
-            } else {
-                ai.setName(names[i]);
-                ai.setRole(Player.Role.PLAYER);
-            }
-        }
-        return ai;
     }
 }
