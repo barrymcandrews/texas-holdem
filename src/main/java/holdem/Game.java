@@ -1,3 +1,5 @@
+package holdem;
+
 import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -5,8 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import models.*;
-import models.Player.Role;
+import holdem.models.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +16,12 @@ import java.util.Map;
 
 public class Game {
     private static Game gameInstance = new Game();
+
     private String userName;
     private int numberOfOpponents;
-    private Map<String, Player> players = new HashMap<>(); //map player name to object for quick retrieval
+    private ArrayList<Player> players = new ArrayList<>();
+
+    private Map<String, Player> playersMap = new HashMap<>(); //map player name to object for quick retrieval
     private ArrayList<String> aiNames = new ArrayList<>();
     
     private Game() {
@@ -74,8 +78,8 @@ public class Game {
         return aiNames;
     }
     
-    public Map<String, Player> getPlayers() {
-        return players;
+    public Map<String, Player> getPlayersMap() {
+        return playersMap;
     }
     
     private void initializePlayers()
@@ -91,7 +95,7 @@ public class Game {
             if(aiNames.get(i).equals(name))
                 aiNames.remove(i);
         }
-        players.put(name, new Player(userName, Role.PLAYER));
+        playersMap.put(name, new Player(userName, Player.Role.PLAYER));
     }
 
     private void createAI() {
@@ -104,12 +108,20 @@ public class Game {
                 ai.setName(aiNames.get(i));
                 ai.setRole(Player.Role.PLAYER);
             }
-            players.put(aiNames.get(i), ai);
+            playersMap.put(aiNames.get(i), ai);
         }
     }
     
     public String toString() {
-        return "Number of players: " + (numberOfOpponents + 1) +
-               " | Players: " + players.toString();
+        return "Number of playersMap: " + (numberOfOpponents + 1) +
+               " | Players: " + playersMap.toString();
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 }

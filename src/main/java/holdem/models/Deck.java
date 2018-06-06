@@ -1,3 +1,5 @@
+package holdem.models;
+
 import java.util.ArrayList;
 import java.util.Collections;
 

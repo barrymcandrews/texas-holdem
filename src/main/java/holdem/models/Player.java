@@ -1,4 +1,4 @@
-package models;
+package holdem.models;
 
 public class Player {
 

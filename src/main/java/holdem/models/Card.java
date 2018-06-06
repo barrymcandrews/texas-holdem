@@ -1,3 +1,5 @@
+package holdem.models;
+
 import javax.swing.*;
 
 public class Card {

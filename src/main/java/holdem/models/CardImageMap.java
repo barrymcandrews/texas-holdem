@@ -1,3 +1,7 @@
+package holdem.models;
+
+import holdem.models.Card;
+
 import java.util.HashMap;
 import java.util.Map;
 

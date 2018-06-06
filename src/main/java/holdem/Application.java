@@ -1,11 +1,13 @@
-import controllers.Controller;
-import controllers.GameController;
+package holdem;
+
+import holdem.controllers.Controller;
+import holdem.controllers.RootController;
 
 import javax.swing.*;
 
 public class Application {
     private JFrame frame = new JFrame();
-    private Controller gameController = new GameController();
+    private RootController gameController = new RootController();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -17,10 +19,10 @@ public class Application {
     private void start() {
         System.out.println(Game.getInstance().toString());
         frame.setTitle("Texas Hold'em");
-        frame.setSize(500, 500);
+        frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(gameController.getPanel());
+        frame.setContentPane(gameController.getView());
         frame.setVisible(true);
     }
 }

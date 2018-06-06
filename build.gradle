@@ -6,7 +6,7 @@ plugins {
 group 'com.bebopbrains'
 version '1.0-SNAPSHOT'
 
-mainClassName = 'Application'
+mainClassName = 'holdem.Application'
 sourceCompatibility = 1.8
 
 repositories {
