@@ -74,6 +74,10 @@ public class Game {
         return aiNames;
     }
     
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
+    
     private void initializePlayers()
     {
         aiNames.addAll(Arrays.asList(new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"}));
