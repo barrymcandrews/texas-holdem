@@ -22,7 +22,9 @@ public class Game {
 
     private String userName;
     private int numberOfOpponents;
+
     private ArrayList<Player> players = new ArrayList<>();
+    private Player user;
 
     private Map<String, Player> playersMap = new HashMap<>(); //map player name to object for quick retrieval
     private ArrayList<String> aiNames = new ArrayList<>();
@@ -65,26 +67,6 @@ public class Game {
         }
         initializePlayers();
     }
-
-    public static Game getInstance() {
-        return gameInstance;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public int getNumberOfOpponents() {
-        return numberOfOpponents;
-    }
-    
-    public ArrayList<String> getAiNames() {
-        return aiNames;
-    }
-    
-    public Map<String, Player> getPlayersMap() {
-        return playersMap;
-    }
     
     public Set<Card> deal(int numberOfCards) {
         Set<Card> hand = new HashSet<>();
@@ -93,8 +75,7 @@ public class Game {
         return hand;
     }
     
-    private void initializePlayers()
-    {
+    private void initializePlayers() {
         aiNames.addAll(Arrays.asList(new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"}));
         createPlayer(userName);
         createAI();
@@ -108,7 +89,7 @@ public class Game {
         }
         Player player = new Player(userName, Player.Role.PLAYER, deal(2));
         playersMap.put(player.getName(), player);
-        players.add(player);
+        user = player;
     }
 
     private void createAI() {
@@ -135,5 +116,33 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public Player getUser() {
+        return user;
+    }
+
+    public void setUser(Player user) {
+        this.user = user;
+    }
+
+    public static Game getInstance() {
+        return gameInstance;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public int getNumberOfOpponents() {
+        return numberOfOpponents;
+    }
+
+    public ArrayList<String> getAiNames() {
+        return aiNames;
+    }
+
+    public Map<String, Player> getPlayersMap() {
+        return playersMap;
     }
 }

@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SidebarController extends Controller {
-    static final Game GAME = Game.getInstance();
+    private final Game GAME = Game.getInstance();
 
     private ArrayList<SidebarRowController> rows = new ArrayList<>();
 
