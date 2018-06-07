@@ -8,11 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import holdem.models.*;
+import holdem.models.Player.Role;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Game {
     private static Game gameInstance = new Game();
@@ -23,6 +26,7 @@ public class Game {
 
     private Map<String, Player> playersMap = new HashMap<>(); //map player name to object for quick retrieval
     private ArrayList<String> aiNames = new ArrayList<>();
+    private Deck deck = new Deck();
     
     private Game() {
         // Create option fields
@@ -82,6 +86,13 @@ public class Game {
         return playersMap;
     }
     
+    public Set<Card> deal(int numberOfCards) {
+        Set<Card> hand = new HashSet<>();
+        for(int i = 0; i < numberOfCards; i++ )
+            hand.add(deck.dealCard());
+        return hand;
+    }
+    
     private void initializePlayers()
     {
         aiNames.addAll(Arrays.asList(new String[] {"Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie"}));
@@ -95,20 +106,21 @@ public class Game {
             if(aiNames.get(i).equals(name))
                 aiNames.remove(i);
         }
-        playersMap.put(name, new Player(userName, Player.Role.PLAYER));
+        Player player = new Player(userName, Player.Role.PLAYER, deal(2));
+        playersMap.put(player.getName(), player);
+        players.add(player);
     }
 
     private void createAI() {
         for (int i = 0; i < numberOfOpponents; i++) {
-            Player ai = new Player();
-            if (i == 0) {
-                ai.setName(aiNames.get(i));
-                ai.setRole(Player.Role.DEALER);
+            Player ai;;;
+            if (i == 0) {         
+                ai = new Player(aiNames.get(i), Role.DEALER, deal(2));
             } else {
-                ai.setName(aiNames.get(i));
-                ai.setRole(Player.Role.PLAYER);
+                ai = new Player(aiNames.get(i), Role.PLAYER, deal(2));        
             }
             playersMap.put(aiNames.get(i), ai);
+            players.add(ai);
         }
     }
     

@@ -59,4 +59,8 @@ public class Card {
         TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
         TEN, JACK, QUEEN, KING, ACE
     }
+    
+    public String toString() {
+        return "[Suit: " + suit + "Value: " + value + "]";
+    }
 }

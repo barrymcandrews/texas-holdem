@@ -16,4 +16,10 @@ public class Deck {
 
         Collections.shuffle(deck);
     }
+    
+    public Card dealCard() {
+        Card c = deck.get(0);
+        deck.remove(0);
+        return c;
+    }
 }
