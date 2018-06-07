@@ -6,7 +6,7 @@ import java.awt.*;
 public class RootController extends Controller {
     private SidebarController leftSidebarController = new SidebarController();
     private SidebarController rightSidebarController = new SidebarController();
-    private JPanel gamePanel = new JPanel();
+    private MainController mainController = new MainController();
 
     public RootController() {
         super();
@@ -19,7 +19,7 @@ public class RootController extends Controller {
         view.setBackground(Color.RED);
         view.setLayout(new BorderLayout());
         view.add(rightSidebarController.getView(), BorderLayout.BEFORE_LINE_BEGINS);
-        view.add(gamePanel, BorderLayout.CENTER);
-        view.add(leftSidebarController.getView(), BorderLayout.AFTER_LINE_ENDS);
+        view.add(mainController.getView(), BorderLayout.CENTER);
+        // view.add(leftSidebarController.getView(), BorderLayout.AFTER_LINE_ENDS);
     }
 }

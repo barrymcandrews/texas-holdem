@@ -8,73 +8,73 @@ import java.util.Map;
 public class CardImageMap {
     static Map<Card.Value, String> heartMap = new HashMap<Card.Value, String>() {
         {
-            put(Card.Value.TWO, "resources/png/2_of_hearts");
-            put(Card.Value.THREE, "resources/png/3_of_hearts");
-            put(Card.Value.FOUR, "resources/png/4_of_hearts");
-            put(Card.Value.FIVE, "resources/png/5_of_hearts");
-            put(Card.Value.SIX, "resources/png/6_of_hearts");
-            put(Card.Value.SEVEN, "resources/png/7_of_hearts");
-            put(Card.Value.EIGHT, "resources/png/8_of_hearts");
-            put(Card.Value.NINE, "resources/png/9_of_hearts");
-            put(Card.Value.TEN, "resources/png/10_of_hearts");
-            put(Card.Value.JACK, "resources/png/jack_of_hearts");
-            put(Card.Value.QUEEN, "resources/png/queen_of_hearts");
-            put(Card.Value.KING, "resources/png/king_of_hearts");
-            put(Card.Value.ACE, "resources/png/ace_of_hearts");
+            put(Card.Value.TWO, "src/main/resources/png/2_of_hearts.png");
+            put(Card.Value.THREE, "src/main/resources/png/3_of_hearts.png");
+            put(Card.Value.FOUR, "src/main/resources/png/4_of_hearts.png");
+            put(Card.Value.FIVE, "src/main/resources/png/5_of_hearts.png");
+            put(Card.Value.SIX, "src/main/resources/png/6_of_hearts.png");
+            put(Card.Value.SEVEN, "src/main/resources/png/7_of_hearts.png");
+            put(Card.Value.EIGHT, "src/main/resources/png/8_of_hearts.png");
+            put(Card.Value.NINE, "src/main/resources/png/9_of_hearts.png");
+            put(Card.Value.TEN, "src/main/resources/png/10_of_hearts.png");
+            put(Card.Value.JACK, "src/main/resources/png/jack_of_hearts.png");
+            put(Card.Value.QUEEN, "src/main/resources/png/queen_of_hearts.png");
+            put(Card.Value.KING, "src/main/resources/png/king_of_hearts.png");
+            put(Card.Value.ACE, "src/main/resources/png/ace_of_hearts.png");
         }
     };
 
     static Map<Card.Value, String> diamondMap = new HashMap<Card.Value, String>() {
         {
-            put(Card.Value.TWO, "resources/png/2_of_diamonds");
-            put(Card.Value.THREE, "resources/png/3_of_diamonds");
-            put(Card.Value.FOUR, "resources/png/4_of_diamonds");
-            put(Card.Value.FIVE, "resources/png/5_of_diamonds");
-            put(Card.Value.SIX, "resources/png/6_of_diamonds");
-            put(Card.Value.SEVEN, "resources/png/7_of_diamonds");
-            put(Card.Value.EIGHT, "resources/png/8_of_diamonds");
-            put(Card.Value.NINE, "resources/png/9_of_diamonds");
-            put(Card.Value.TEN, "resources/png/10_of_diamonds");
-            put(Card.Value.JACK, "resources/png/jack_of_diamonds");
-            put(Card.Value.QUEEN, "resources/png/queen_of_diamonds");
-            put(Card.Value.KING, "resources/png/king_of_diamonds");
-            put(Card.Value.ACE, "resources/png/ace_of_diamonds");
+            put(Card.Value.TWO, "src/main/resources/png/2_of_diamonds.png");
+            put(Card.Value.THREE, "src/main/resources/png/3_of_diamonds.png");
+            put(Card.Value.FOUR, "src/main/resources/png/4_of_diamonds.png");
+            put(Card.Value.FIVE, "src/main/resources/png/5_of_diamonds.png");
+            put(Card.Value.SIX, "src/main/resources/png/6_of_diamonds.png");
+            put(Card.Value.SEVEN, "src/main/resources/png/7_of_diamonds.png");
+            put(Card.Value.EIGHT, "src/main/resources/png/8_of_diamonds.png");
+            put(Card.Value.NINE, "src/main/resources/png/9_of_diamonds.png");
+            put(Card.Value.TEN, "src/main/resources/png/10_of_diamonds.png");
+            put(Card.Value.JACK, "src/main/resources/png/jack_of_diamonds.png");
+            put(Card.Value.QUEEN, "src/main/resources/png/queen_of_diamonds.png");
+            put(Card.Value.KING, "src/main/resources/png/king_of_diamonds.png");
+            put(Card.Value.ACE, "src/main/resources/png/ace_of_diamonds.png");
         }
     };
 
     static Map<Card.Value, String> clubMap = new HashMap<Card.Value, String>() {
         {
-            put(Card.Value.TWO, "resources/png/2_of_clubs");
-            put(Card.Value.THREE, "resources/png/3_of_clubs");
-            put(Card.Value.FOUR, "resources/png/4_of_clubs");
-            put(Card.Value.FIVE, "resources/png/5_of_clubs");
-            put(Card.Value.SIX, "resources/png/6_of_clubs");
-            put(Card.Value.SEVEN, "resources/png/7_of_clubs");
-            put(Card.Value.EIGHT, "resources/png/8_of_clubs");
-            put(Card.Value.NINE, "resources/png/9_of_clubs");
-            put(Card.Value.TEN, "resources/png/10_of_clubs");
-            put(Card.Value.JACK, "resources/png/jack_of_clubs");
-            put(Card.Value.QUEEN, "resources/png/queen_of_clubs");
-            put(Card.Value.KING, "resources/png/king_of_clubs");
-            put(Card.Value.ACE, "resources/png/ace_of_clubs");
+            put(Card.Value.TWO, "src/main/resources/png/2_of_clubs.png");
+            put(Card.Value.THREE, "src/main/resources/png/3_of_clubs.png");
+            put(Card.Value.FOUR, "src/main/resources/png/4_of_clubs.png");
+            put(Card.Value.FIVE, "src/main/resources/png/5_of_clubs.png");
+            put(Card.Value.SIX, "src/main/resources/png/6_of_clubs.png");
+            put(Card.Value.SEVEN, "src/main/resources/png/7_of_clubs.png");
+            put(Card.Value.EIGHT, "src/main/resources/png/8_of_clubs.png");
+            put(Card.Value.NINE, "src/main/resources/png/9_of_clubs.png");
+            put(Card.Value.TEN, "src/main/resources/png/10_of_clubs.png");
+            put(Card.Value.JACK, "src/main/resources/png/jack_of_clubs.png");
+            put(Card.Value.QUEEN, "src/main/resources/png/queen_of_clubs.png");
+            put(Card.Value.KING, "src/main/resources/png/king_of_clubs.png");
+            put(Card.Value.ACE, "src/main/resources/png/ace_of_clubs.png");
         }
     };
 
     static Map<Card.Value, String> spadeMap = new HashMap<Card.Value, String>() {
         {
-            put(Card.Value.TWO, "resources/png/2_of_spades");
-            put(Card.Value.THREE, "resources/png/3_of_spades");
-            put(Card.Value.FOUR, "resources/png/4_of_spades");
-            put(Card.Value.FIVE, "resources/png/5_of_spades");
-            put(Card.Value.SIX, "resources/png/6_of_spades");
-            put(Card.Value.SEVEN, "resources/png/7_of_spades");
-            put(Card.Value.EIGHT, "resources/png/8_of_spades");
-            put(Card.Value.NINE, "resources/png/9_of_spades");
-            put(Card.Value.TEN, "resources/png/10_of_spades");
-            put(Card.Value.JACK, "resources/png/jack_of_spades");
-            put(Card.Value.QUEEN, "resources/png/queen_of_spades");
-            put(Card.Value.KING, "resources/png/king_of_spades");
-            put(Card.Value.ACE, "resources/png/ace_of_spades");
+            put(Card.Value.TWO, "src/main/resources/png/2_of_spades.png");
+            put(Card.Value.THREE, "src/main/resources/png/3_of_spades.png");
+            put(Card.Value.FOUR, "src/main/resources/png/4_of_spades.png");
+            put(Card.Value.FIVE, "src/main/resources/png/5_of_spades.png");
+            put(Card.Value.SIX, "src/main/resources/png/6_of_spades.png");
+            put(Card.Value.SEVEN, "src/main/resources/png/7_of_spades.png");
+            put(Card.Value.EIGHT, "src/main/resources/png/8_of_spades.png");
+            put(Card.Value.NINE, "src/main/resources/png/9_of_spades.png");
+            put(Card.Value.TEN, "src/main/resources/png/10_of_spades.png");
+            put(Card.Value.JACK, "src/main/resources/png/jack_of_spades.png");
+            put(Card.Value.QUEEN, "src/main/resources/png/queen_of_spades.png");
+            put(Card.Value.KING, "src/main/resources/png/king_of_spades.png");
+            put(Card.Value.ACE, "src/main/resources/png/ace_of_spades.png");
         }
     };
 
