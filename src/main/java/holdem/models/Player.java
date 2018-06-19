@@ -2,7 +2,7 @@ package holdem.models;
 
 import java.util.Set;
 
-public class Player {
+public abstract class Player {
 
     private String name;
     private Role role;
@@ -23,6 +23,9 @@ public class Player {
     public enum Role {
         PLAYER, DEALER
     }
+
+
+    abstract public TurnResult getTurn();
 
     public String getName() {
         return name;

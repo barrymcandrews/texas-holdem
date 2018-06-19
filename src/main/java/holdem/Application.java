@@ -1,11 +1,17 @@
 package holdem;
 
-import holdem.controllers.Controller;
 import holdem.controllers.RootController;
 
 import javax.swing.*;
+import java.util.concurrent.Executor;
 
 public class Application {
+    static final Executor SWING = runnable -> {
+        if (SwingUtilities.isEventDispatchThread())
+            runnable.run();
+        else
+            SwingUtilities.invokeLater(runnable);
+    };
     private JFrame frame = new JFrame();
     private RootController gameController = new RootController();
 

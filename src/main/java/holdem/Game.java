@@ -1,11 +1,6 @@
 package holdem;
 
-import javax.swing.Box;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import holdem.models.*;
 import holdem.models.Player.Role;
@@ -16,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 public class Game {
     private static Game gameInstance = new Game();
@@ -108,6 +104,14 @@ public class Game {
     public String toString() {
         return "Number of playersMap: " + (numberOfOpponents + 1) +
                " | Players: " + playersMap.toString();
+    }
+
+    public void startGame() {
+        Player dealer = players.get(0);
+        Player activePlayer = players.get(1);
+
+
+
     }
 
     public ArrayList<Player> getPlayers() {
