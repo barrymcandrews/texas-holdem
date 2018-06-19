@@ -42,7 +42,7 @@ public class SidebarRowController extends Controller {
         nameLabel.setText(player.getName());
         firstCardLabel.setIcon(BOC_SCALED);
         secondCardLabel.setIcon(BOC_SCALED);
-        walletLabel.setText("$10000");
+        walletLabel.setText("$" + Integer.toString(player.getWallet()));
         betLabel.setText("$0");
     }
 }
