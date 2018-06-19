@@ -70,6 +70,16 @@ public class Card {
         }
     }
 
+    public static Suit intToSuit(int v) {
+        switch(v) {
+            case 0: return Suit.SPADES;
+            case 1: return Suit.CLUBS;
+            case 2: return Suit.HEARTS;
+            case 3: return Suit.DIAMONDS;
+            default : return null;
+        }
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -91,10 +101,20 @@ public class Card {
     }
 
     public enum Suit {
-        SPADES,
-        CLUBS,
-        HEARTS,
-        DIAMONDS
+        SPADES(0),
+        CLUBS(1),
+        HEARTS(2),
+        DIAMONDS(3);
+
+        private int suitVal;
+
+        public int getSuitVal() {
+            return suitVal;
+        }
+
+        Suit (int value) {
+            this.suitVal = value;
+        }
     }
 
     public enum Value {
