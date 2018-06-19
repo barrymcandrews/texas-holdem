@@ -52,6 +52,7 @@ public class Card {
 
     public static Value intToValue(int v) {
         switch(v) {
+            case 1: return ACE;
             case 2: return TWO;
             case 3: return THREE;
             case 4: return FOUR;
