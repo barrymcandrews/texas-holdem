@@ -6,18 +6,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- * Class that gets all init information needed for a game in a dialogue
- * 
- * @author Laura
- *
+ * Class that gets all show information needed for a game in a dialogue
  */
 public class StartDialogue {
     private int numberOfOpponents;
     private String userName;
     
-    public StartDialogue init() {
+    public StartDialogue show() {
         JTextField nameField = new JTextField(5);
         Integer[] selectionValues = {1, 2, 3, 4, 5, 6, 7};
         JComboBox<Integer> playersField = new JComboBox<>(selectionValues);
