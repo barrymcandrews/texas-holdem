@@ -17,12 +17,14 @@ public class MainController extends Controller {
 
     private CardController deltCards;
     private CardController playerCards;
+    private ActionButtonController actionButtons;
 
 
     public MainController() {
         super();
         deltCards = new CardController(GAME.deal(5));
         playerCards = new CardController(GAME.deal(2));
+        actionButtons = new ActionButtonController();
         setupLayout(getView());
         reloadData();
     }
@@ -36,13 +38,14 @@ public class MainController extends Controller {
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        view.setBackground(Color.lightGray);
 
         view.add(deltCards.getView());
         view.add(potLabel);
         view.add(playerCards.getView());
         view.add(playerMoney);
         view.add(playerName);
-        view.setBackground(Color.lightGray);
+        view.add(actionButtons.getView());
     }
 
     @Override
