@@ -52,4 +52,26 @@ public class HandScore {
             return 0;
         }
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HandScore handScore = (HandScore) o;
+
+        if (rank != handScore.rank) return false;
+        if (topCard != handScore.topCard) return false;
+        return secondCard == handScore.secondCard;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = rank;
+        result = 31 * result + topCard;
+        result = 31 * result + secondCard;
+        return result;
+    }
 }
