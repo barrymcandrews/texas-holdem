@@ -1,31 +1,26 @@
 package holdem.models;
 
+import holdem.Game;
+
 import java.util.Set;
 
 public abstract class Player {
 
     private String name;
-    private Role role;
     private int wallet;
     private Set<Card> hand;
 
-    public Player() {
-        this.wallet = 1000;
-    }
-
-    public Player(String name, Role role, Set<Card> hand){
+    public Player(String name){
         this.name = name;
-        this.role = role;
-        this.hand = hand;
         this.wallet = 1000;
+        getNewCards();
     }
-
-    public enum Role {
-        PLAYER, DEALER
-    }
-
 
     abstract public TurnResult getTurn();
+
+    public void getNewCards() {
+        this.hand = Game.getInstance().deal(2);
+    }
 
     public String getName() {
         return name;
@@ -33,14 +28,6 @@ public abstract class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public int getWallet() {
@@ -62,7 +49,6 @@ public abstract class Player {
     public String toString() {
         return "[name: " + name + 
                 " | wallet: " + wallet +
-                " | role: " + role + 
                 " | hand: " + hand + "]";
     }
 }
