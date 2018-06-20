@@ -11,11 +11,10 @@ public class Constants {
         "Gene",
         "Louise",
         "Jimmy Jr.",
-        "Teddy",
-        "AndyenOllie"
+        "Teddy"
     };
 
     public static final ArrayList<String> AI_NAMES_LIST = new ArrayList<>(Arrays.asList(AI_NAMES));
 
-    public static final String BACKUP_USERNAME = "Benedict Cumberbatch";
+    public static final String BACKUP_USERNAME = "Benadryl Cucumber";
 }
