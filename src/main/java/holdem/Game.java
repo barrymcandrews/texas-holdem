@@ -52,6 +52,7 @@ public class Game {
 
 
             incrementDealer();
+            Application.gameController.reloadData();
         }
     }
 

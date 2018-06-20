@@ -21,7 +21,6 @@ public class SidebarRowController extends Controller {
         super();
         this.player = player;
         setupLayout(getView());
-        reloadData();
     }
 
     @Override

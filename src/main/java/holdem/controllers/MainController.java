@@ -25,7 +25,6 @@ public class MainController extends Controller {
         playerCards = new CardController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
-        reloadData();
     }
 
     @Override
@@ -49,6 +48,10 @@ public class MainController extends Controller {
 
     @Override
     public void reloadData() {
+        deltCards.reloadData();
+        playerCards.reloadData();
+        actionButtons.reloadData();
+
         Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("$0");
 

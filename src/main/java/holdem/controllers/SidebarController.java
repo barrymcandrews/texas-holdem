@@ -1,6 +1,7 @@
 package holdem.controllers;
 
 import holdem.Game;
+import holdem.models.AiPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,17 +15,22 @@ public class SidebarController extends Controller {
     public SidebarController() {
         super();
         setupLayout(getView());
-        reloadData();
     }
 
     @Override
     public void setupLayout(JPanel view) {
         view.setBackground(Color.BLUE);
         view.setPreferredSize(new Dimension(300, 900));
-        GAME.getPlayers().forEach(p -> rows.add(new SidebarRowController(p)));
+        GAME.getPlayers().forEach(p -> {
+            if (p instanceof AiPlayer) rows.add(new SidebarRowController(p));
+        });
         rows.forEach(r -> view.add(r.getView()));
     }
 
     @Override
-    public void reloadData() {}
+    public void reloadData() {
+        for (SidebarRowController c : rows) {
+            c.reloadData();
+        }
+    }
 }

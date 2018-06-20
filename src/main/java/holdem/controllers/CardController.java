@@ -14,7 +14,6 @@ public class CardController extends Controller {
         super();
         this.cards = cards;
         setupLayout(getView());
-        reloadData();
     }
 
     @Override

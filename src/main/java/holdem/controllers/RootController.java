@@ -10,7 +10,6 @@ public class RootController extends Controller {
     public RootController() {
         super();
         setupLayout(getView());
-        reloadData();
     }
 
     @Override
@@ -23,6 +22,7 @@ public class RootController extends Controller {
 
     @Override
     public void reloadData() {
-
+        rightSidebarController.reloadData();
+        mainController.reloadData();
     }
 }

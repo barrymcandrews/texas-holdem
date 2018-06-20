@@ -18,7 +18,6 @@ public class ActionButtonController extends Controller {
         super();
         humanPlayer.setActionButtonController(this);
         setupLayout(getView());
-        reloadData();
     }
 
     @Override

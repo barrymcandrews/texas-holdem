@@ -12,7 +12,7 @@ public class Application {
     private static final Logger log = LogManager.getLogger(Application.class);
 
     private JFrame frame = new JFrame();
-    private RootController gameController = new RootController();
+    static RootController gameController = new RootController();
 
     public static void main(String[] args) {
         log.debug("Starting application...");
@@ -29,6 +29,7 @@ public class Application {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(gameController.getView());
+        gameController.reloadData();
         frame.setVisible(true);
     }
 }
