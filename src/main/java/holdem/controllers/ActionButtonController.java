@@ -8,15 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ActionButtonController extends Controller {
-    private final HumanPlayer humanPlayer = Game.getInstance().getHumanPlayer();
-
     public JButton foldButton = new JButton();
     private JButton callButton = new JButton();
     private JButton betButton = new JButton();
 
     public ActionButtonController() {
         super();
-        humanPlayer.setActionButtonController(this);
         setupLayout(getView());
     }
 
