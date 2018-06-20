@@ -1,23 +1,31 @@
 package holdem.models;
 
-import holdem.Game;
-
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-public abstract class Player {
+public class Player {
+
+    public PlayerType getType() {
+        return type;
+    }
+
+    public enum PlayerType { HUMAN, AI }
 
     private String name;
     private int wallet;
     private Set<Card> hand = new HashSet<>();
+    private PlayerType type = PlayerType.AI;
 
     public Player(String name){
         this.name = name;
         this.wallet = 1000;
     }
 
-    abstract public TurnResult getTurn(Map<Player, TurnResult> previousResults);
+    public Player(String name, PlayerType type){
+        this.name = name;
+        this.wallet = 1000;
+        this.type = type;
+    }
 
     public String getName() {
         return name;

@@ -14,19 +14,19 @@ public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private Deck deck = new Deck();
     private Set<Card> centerCards = new HashSet<>();
-    private HumanPlayer humanPlayer;
+    private Player humanPlayer;
     private Player dealer;
 
     private Game() {
         //get start up dialog and info
         StartDialogue dialog  = new StartDialogue().show();
-        humanPlayer = new HumanPlayer(dialog.getUserName());
+        humanPlayer = new Player(dialog.getUserName(), Player.PlayerType.HUMAN);
         Constants.AI_NAMES_LIST.forEach((name) -> {
             if (name.equals(humanPlayer.getName())) {
                 name = Constants.BACKUP_USERNAME;
             }
             if (players.size() < dialog.getNumberOfOpponents())
-            players.add(new AiPlayer(name));
+            players.add(new Player(name));
         });
         dealer = players.get(0);
         players.add(humanPlayer);
@@ -68,7 +68,7 @@ public class Game {
         return players;
     }
 
-    public HumanPlayer getHumanPlayer() {
+    public Player getHumanPlayer() {
         return humanPlayer;
     }
 
