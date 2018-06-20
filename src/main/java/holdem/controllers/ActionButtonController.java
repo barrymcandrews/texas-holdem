@@ -1,16 +1,22 @@
 package holdem.controllers;
 
+import holdem.Game;
+import holdem.models.HumanPlayer;
+import holdem.models.TurnResult;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class ActionButtonController extends Controller {
+    private final HumanPlayer humanPlayer = Game.getInstance().getHumanPlayer();
 
-    private JButton foldButton = new JButton();
+    public JButton foldButton = new JButton();
     private JButton callButton = new JButton();
     private JButton betButton = new JButton();
 
     public ActionButtonController() {
         super();
+        humanPlayer.setActionButtonController(this);
         setupLayout(getView());
         reloadData();
     }

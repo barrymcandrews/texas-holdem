@@ -2,25 +2,22 @@ package holdem.models;
 
 import holdem.Game;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class Player {
 
     private String name;
     private int wallet;
-    private Set<Card> hand;
+    private Set<Card> hand = new HashSet<>();
 
     public Player(String name){
         this.name = name;
         this.wallet = 1000;
-        getNewCards();
     }
 
-    abstract public TurnResult getTurn();
-
-    public void getNewCards() {
-        this.hand = Game.getInstance().deal(2);
-    }
+    abstract public TurnResult getTurn(Map<Player, TurnResult> previousResults);
 
     public String getName() {
         return name;
@@ -38,12 +35,13 @@ public abstract class Player {
         this.wallet = wallet;
     }
     
-    public Set<Card> getCard() {
+    public Set<Card> getHand() {
         return hand;
     }
     
     public void setHand(Set<Card> cards) {
-        hand = cards;
+        hand.clear();
+        hand.addAll(cards);
     }
     
     public String toString() {

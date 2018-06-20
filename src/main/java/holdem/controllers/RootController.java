@@ -20,4 +20,9 @@ public class RootController extends Controller {
         view.add(rightSidebarController.getView(), BorderLayout.BEFORE_LINE_BEGINS);
         view.add(mainController.getView(), BorderLayout.CENTER);
     }
+
+    @Override
+    public void reloadData() {
+
+    }
 }
