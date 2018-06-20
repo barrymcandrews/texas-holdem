@@ -24,5 +24,7 @@ public class RootController extends Controller {
     public void reloadData() {
         rightSidebarController.reloadData();
         mainController.reloadData();
+        getView().revalidate();
+        getView().repaint();
     }
 }

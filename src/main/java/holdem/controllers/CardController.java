@@ -19,6 +19,12 @@ public class CardController extends Controller {
     @Override
     void setupLayout(JPanel view) {
         view.setBackground(Color.lightGray);
+    }
+
+    @Override
+    public void reloadData() {
+        JPanel view = getView();
+        view.removeAll();
         for (Card c : cards) {
             JPanel surround = new JPanel();
             surround.setPreferredSize(new Dimension(60, 90));
@@ -30,10 +36,5 @@ public class CardController extends Controller {
             view.add(surround);
             surround.add(img);
         }
-    }
-
-    @Override
-    public void reloadData() {
-
     }
 }
