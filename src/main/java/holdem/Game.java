@@ -47,6 +47,10 @@ public class Game {
         }
     }
 
+    public void shuffleDeck(){
+        deck = new Deck();
+    }
+
     /**
      * Deals a number of cards into the center of the table
      *
