@@ -4,7 +4,6 @@ import holdem.models.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,45 +36,10 @@ public class Game {
         return gameInstance;
     }
 
-    public void startGame() {
-        while (true) {
-            log.debug("Dealer this round: " + dealer.getName());
-            dealToPlayers(dealer);
-            int[] dealAmounts = { 3, 1, 1 };
-
-            HashMap<Player, TurnResult> results = new HashMap<>();
-            results = getTurnMoves(results);
-            for (int dealAmount : dealAmounts) {
-                centerCards.addAll(deck.dealCards(dealAmount));
-                results = getTurnMoves(results);
-            }
-
-
-            incrementDealer();
-            Application.gameController.reloadData();
-        }
-    }
-
-    public HashMap<Player, TurnResult> getTurnMoves(HashMap<Player, TurnResult> previousMoves) {
-        for (int i = 1; i < players.size(); i++) {
-            int dealerIndex = players.indexOf(dealer);
-            int index = (dealerIndex + i) % players.size();
-            Player turnPlayer = players.get(index);
-            // log.debug(turnPlayer.getName() + "'s Turn");
-
-            TurnResult result = turnPlayer.getTurn(previousMoves);
-            previousMoves.put(turnPlayer, result);
-            log.debug(turnPlayer.getName() + ": " + result.toString());
-        }
-        return previousMoves;
-    }
-
     /**
      * Deals two cards to each player in the game excluding the dealer.
-     *
-     * @param dealer player that does not get two cards
      */
-    private void dealToPlayers(Player dealer) {
+    public void dealToPlayers() {
         for (Player p : players) {
             if (p != dealer) {
                 p.setHand(deck.dealCards(2));
@@ -84,9 +48,18 @@ public class Game {
     }
 
     /**
+     * Deals a number of cards into the center of the table
+     *
+     * @param numberOfCards number of cards to deal
+     */
+    public void dealToCenter(int numberOfCards) {
+        centerCards.addAll(deck.dealCards(numberOfCards));
+    }
+
+    /**
      * Shifts the dealer to the player one person to the right
      */
-    private void incrementDealer() {
+    public void incrementDealer() {
         int dealerIndex = players.indexOf(dealer);
         dealer = players.get((dealerIndex + 1) % players.size());
     }
@@ -101,5 +74,9 @@ public class Game {
 
     public Set<Card> getCenterCards() {
         return centerCards;
+    }
+
+    public Player getDealer() {
+        return dealer;
     }
 }

@@ -1,6 +1,5 @@
 package holdem;
 
-import com.ea.async.Async;
 import holdem.controllers.RootController;
 
 import org.apache.log4j.Logger;
@@ -12,14 +11,11 @@ public class Application {
     private static final Logger log = LogManager.getLogger(Application.class);
 
     private JFrame frame = new JFrame();
-    static RootController gameController = new RootController();
+    static RootController rootController = new RootController();
 
     public static void main(String[] args) {
         log.debug("Starting application...");
-        SwingUtilities.invokeLater(() -> {
-            Application app = new Application();
-            app.start();
-        });
+        SwingUtilities.invokeLater(() -> new Application().start());
     }
 
     private void start() {
@@ -28,8 +24,9 @@ public class Application {
         frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(gameController.getView());
-        gameController.reloadData();
+        frame.setContentPane(rootController.getView());
+        rootController.reloadData();
         frame.setVisible(true);
+        new GameWorker().execute();
     }
 }
