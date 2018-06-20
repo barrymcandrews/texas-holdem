@@ -41,9 +41,7 @@ public class Game {
      */
     public void dealToPlayers() {
         for (Player p : players) {
-            if (p != dealer) {
-                p.setHand(deck.dealCards(2));
-            }
+            p.setHand(deck.dealCards(2));
         }
     }
 

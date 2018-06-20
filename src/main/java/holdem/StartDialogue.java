@@ -6,9 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Class that gets all show information needed for a game in a dialogue
  */
