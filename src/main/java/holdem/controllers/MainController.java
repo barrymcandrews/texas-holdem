@@ -2,6 +2,7 @@ package holdem.controllers;
 
 import holdem.Game;
 import holdem.models.Card;
+import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,10 +51,10 @@ public class MainController extends Controller {
 
     @Override
     public void reloadData() {
-
+        Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("$0");
 
-        playerMoney.setText("$" + GAME.getUser().getWallet());
-        playerName.setText(GAME.getUserName());
+        playerMoney.setText("$" + humanPlayer.getWallet());
+        playerName.setText(humanPlayer.getName());
     }
 }

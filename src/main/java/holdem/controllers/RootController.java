@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RootController extends Controller {
-    private SidebarController leftSidebarController = new SidebarController();
     private SidebarController rightSidebarController = new SidebarController();
     private MainController mainController = new MainController();
 
@@ -20,6 +19,5 @@ public class RootController extends Controller {
         view.setLayout(new BorderLayout());
         view.add(rightSidebarController.getView(), BorderLayout.BEFORE_LINE_BEGINS);
         view.add(mainController.getView(), BorderLayout.CENTER);
-        // view.add(leftSidebarController.getView(), BorderLayout.AFTER_LINE_ENDS);
     }
 }

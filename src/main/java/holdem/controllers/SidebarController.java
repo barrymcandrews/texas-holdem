@@ -23,11 +23,8 @@ public class SidebarController extends Controller {
         view.setPreferredSize(new Dimension(300, 900));
         GAME.getPlayers().forEach(p -> rows.add(new SidebarRowController(p)));
         rows.forEach(r -> view.add(r.getView()));
-
     }
 
     @Override
-    public void reloadData() {
-
-    }
+    public void reloadData() {}
 }
