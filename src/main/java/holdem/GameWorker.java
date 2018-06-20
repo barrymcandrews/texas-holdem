@@ -2,15 +2,15 @@ package holdem;
 
 import holdem.controllers.RootController;
 import holdem.models.BestHand;
+import holdem.models.HandScore;
 import holdem.models.Player;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.omg.CORBA.INTERNAL;
 
+import javax.net.ssl.HandshakeCompletedEvent;
 import javax.swing.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class GameWorker extends SwingWorker<Void, Game> {
     private final Logger log = LogManager.getLogger(GameWorker.class);
@@ -68,6 +68,23 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void slowGame() throws Exception {
             Thread.sleep(1000);
+    }
+
+    private Player findWinner(){
+        HandScore bestScore = new HandScore(0, 0);
+        Player winner = null;
+
+        for(Player p: GAME.getPlayers()){
+            HandScore temp;
+            temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+            if (temp.compareTo(bestScore) > 0) {
+                bestScore = temp;
+                winner = p;
+            }
+            //TODO: Handle ties with 2 winners
+        }
+
+        return winner;
     }
 
 }
