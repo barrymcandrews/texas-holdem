@@ -51,7 +51,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             playerMove = gameQueue.take();
             handleBet(playerMove);
 
-//            BestHand.findBestHand()
+            findWinner();
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
@@ -87,7 +87,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             }
             //TODO: Handle ties with 2 winners
         }
-
+        JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
         return winner;
     }
     
