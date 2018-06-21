@@ -28,24 +28,26 @@ public class GameWorker extends SwingWorker<Void, Game> {
             Player dealer = GAME.getDealer();
             log.debug("Dealer this round: " + dealer.getName());
             GAME.dealToPlayers();
+            GAME.setEndOfRound(false);
             process(null);
             slowGame();
             
             gameQueue.clear();
             Move playerMove = gameQueue.take();
-            boolean cont = handleBet(playerMove);
+            boolean cont = handleMove(playerMove);
             
             cont = processMove(cont, 3);
             cont = processMove(cont, 1);
             cont = processMove(cont, 1);
             
-
-            handleWinner();
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
             GAME.shuffleDeck();
+            GAME.setEndOfRound(true);
+            reactivatePlayers();
             process(null);
+            handleWinner();
         }
     }
 
@@ -76,7 +78,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
             Move playerMove = gameQueue.take();
-            return handleBet(playerMove);
+            return handleMove(playerMove);
         }
         return false;
     }
@@ -98,6 +100,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         }
         winner.winMoney(GAME.getPot());
         JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
+      
     }
     
     /**
@@ -105,7 +108,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
      * @param playerMove
      * @returns false if move was a bet, used to stop turns
      */
-    private boolean handleBet(Move playerMove) {
+    private boolean handleMove(Move playerMove) {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
@@ -114,10 +117,19 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 if(player.getType() == PlayerType.AI) {
                     player.setActive(false);
                 }
-            }
+            } 
             return false;
         }
+        if(playerMove == Move.FOLD) {
+            GAME.getHumanPlayer().setActive(false);
+        }
         return true;
+    }
+    
+    private void reactivatePlayers() {
+        for(Player player : GAME.getPlayers()) {
+            player.setActive(true);
+        }
     }
     
     public enum Move {

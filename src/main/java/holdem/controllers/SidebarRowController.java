@@ -1,8 +1,11 @@
 package holdem.controllers;
 
+import holdem.Game;
+import holdem.models.Card;
 import holdem.models.Player;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SidebarRowController extends Controller {
     private final ImageIcon BACK_OF_CARD = new ImageIcon("src/main/resources/png/back.png");
@@ -27,7 +30,7 @@ public class SidebarRowController extends Controller {
     void setupLayout(JPanel view) {
         firstCardLabel.setPreferredSize(new Dimension(30, 45));
         secondCardLabel.setPreferredSize(new Dimension(30, 45));
-        view.add(nameLabel);
+        view.add(nameLabel); 
         view.add(firstCardLabel);
         view.add(secondCardLabel);
         view.add(walletLabel);
@@ -39,9 +42,20 @@ public class SidebarRowController extends Controller {
     @Override
     public void reloadData() {
         nameLabel.setText(player.getName());
-        firstCardLabel.setIcon(BOC_SCALED);
-        secondCardLabel.setIcon(BOC_SCALED);
+        if(!Game.getInstance().isEndOfRound()) {
+            firstCardLabel.setIcon(BOC_SCALED);
+            secondCardLabel.setIcon(BOC_SCALED);
+        } else {
+           ArrayList<Card> hand = new ArrayList<>();
+           hand.addAll(player.getHand());
+           firstCardLabel.setIcon(scale(hand.get(0).getFrontOfCard()));
+           secondCardLabel.setIcon(scale(hand.get(1).getFrontOfCard()));
+        }
         walletLabel.setText("$" + Integer.toString(player.getWallet()));
         betLabel.setText("$0");
+    }
+    
+    private ImageIcon scale(ImageIcon imageIcon) {
+        return new ImageIcon(imageIcon.getImage().getScaledInstance(30, 45, Image.SCALE_SMOOTH));
     }
 }

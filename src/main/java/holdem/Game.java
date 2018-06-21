@@ -17,6 +17,7 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private int pot = 0;
+    private boolean isEndOfRound = false;
 
     private Game() {
         //get start up dialog and info
@@ -101,5 +102,13 @@ public class Game {
     
     public void clearPot() {
         pot = 0;
+    }
+    
+    public void setEndOfRound(boolean eor) {
+        isEndOfRound = eor;
+    }
+    
+    public boolean isEndOfRound() {
+        return isEndOfRound;
     }
 }
