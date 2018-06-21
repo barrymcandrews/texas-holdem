@@ -1,27 +1,31 @@
 package holdem.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Player {
 
+    public PlayerType getType() {
+        return type;
+    }
+
+    public enum PlayerType { HUMAN, AI }
+
     private String name;
-    private Role role;
     private int wallet;
-    private Set<Card> hand;
+    private Set<Card> hand = new HashSet<>();
+    private PlayerType type = PlayerType.AI;
+    private boolean isActive = true;
 
-    public Player() {
-        this.wallet = 1000;
-    }
-
-    public Player(String name, Role role, Set<Card> hand){
+    public Player(String name){
         this.name = name;
-        this.role = role;
-        this.hand = hand;
         this.wallet = 1000;
     }
 
-    public enum Role {
-        PLAYER, DEALER
+    public Player(String name, PlayerType type){
+        this.name = name;
+        this.wallet = 1000;
+        this.type = type;
     }
 
     public String getName() {
@@ -32,14 +36,6 @@ public class Player {
         this.name = name;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public int getWallet() {
         return wallet;
     }
@@ -48,18 +44,34 @@ public class Player {
         this.wallet = wallet;
     }
     
-    public Set<Card> getCard() {
+    public void winMoney(int money) {
+        this.wallet += money;
+    }
+    
+    public void loseMoney(int money) {
+        this.wallet -= money;
+    }
+    
+    public Set<Card> getHand() {
         return hand;
     }
     
     public void setHand(Set<Card> cards) {
-        hand = cards;
+        hand.clear();
+        hand.addAll(cards);
     }
     
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public String toString() {
         return "[name: " + name + 
                 " | wallet: " + wallet +
-                " | role: " + role + 
                 " | hand: " + hand + "]";
     }
 }

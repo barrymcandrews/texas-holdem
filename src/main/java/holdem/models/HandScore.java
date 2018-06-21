@@ -1,6 +1,6 @@
 package holdem.models;
 
-public class HandScore {
+public class HandScore implements Comparable<HandScore>{
 
     /*Rankings for a hand are:
     9 - straight flush
@@ -30,6 +30,7 @@ public class HandScore {
         this.secondCard = 0;
     }
 
+    @Override
     public int compareTo(HandScore other) {
         if (this.rank < other.rank) {
             return -1;

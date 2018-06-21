@@ -1,114 +1,114 @@
 package holdem;
 
 import holdem.models.*;
-import holdem.models.Player.Role;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class Game {
+    private static Logger log = LogManager.getLogger(Game.class);
     private static Game gameInstance = new Game();
 
-    private String userName;
-    private int numberOfOpponents;
-
     private ArrayList<Player> players = new ArrayList<>();
-    private Player user;
-
-    private Map<String, Player> playersMap = new HashMap<>(); // map player name
-                                                              // to object for
-                                                              // quick retrieval
-    private ArrayList<String> aiNames = new ArrayList<>();
     private Deck deck = new Deck();
+    private Set<Card> centerCards = new HashSet<>();
+    private Player humanPlayer;
+    private Player dealer;
+    private int pot = 0;
+    private boolean isEndOfRound = false;
 
     private Game() {
-        //get start up dialogue and info
-        StartDialogue init  = new StartDialogue().init();
-        userName = init.getUserName();
-        numberOfOpponents = init.getNumberOfOpponents();
-        initializePlayers();
-    }
-
-    public Set<Card> deal(int numberOfCards) {
-        Set<Card> hand = new HashSet<>();
-        for (int i = 0; i < numberOfCards; i++)
-            hand.add(deck.dealCard());
-        return hand;
-    }
-
-    private void initializePlayers() {
-        aiNames.addAll(Arrays.asList(
-                new String[] { "Bob", "Linda", "Tina", "Gene", "Louise", "Jimmy Jr.", "Teddy", "AndyenOllie" }));
-        createPlayer(userName);
-        createAI();
-    }
-
-    private void createPlayer(String name) {
-        // if player name equals an AI name, delete that AI name and use the
-        // backup.
-        for (int i = 0; i < numberOfOpponents; i++) {
-            if (aiNames.get(i).equals(name))
-                aiNames.remove(i);
-        }
-        Player player = new Player(userName, Player.Role.PLAYER, deal(2));
-        playersMap.put(player.getName(), player);
-        user = player;
-    }
-
-    private void createAI() {
-        for (int i = 0; i < numberOfOpponents; i++) {
-            Player ai;
-            if (i == 0) {
-                ai = new Player(aiNames.get(i), Role.DEALER, deal(2));
-            } else {
-                ai = new Player(aiNames.get(i), Role.PLAYER, deal(2));
+        //get start up dialog and info
+        StartDialogue dialog  = new StartDialogue().show();
+        humanPlayer = new Player(dialog.getUserName(), Player.PlayerType.HUMAN);
+        Constants.AI_NAMES_LIST.forEach((name) -> {
+            if (name.equals(humanPlayer.getName())) {
+                name = Constants.BACKUP_USERNAME;
             }
-            playersMap.put(aiNames.get(i), ai);
-            players.add(ai);
-        }
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
-    public Player getUser() {
-        return user;
-    } 
-
-    public void setUser(Player user) {
-        this.user = user;
+            if (players.size() < dialog.getNumberOfOpponents())
+            players.add(new Player(name));
+        });
+        dealer = players.get(0);
+        players.add(humanPlayer);
     }
 
     public static Game getInstance() {
         return gameInstance;
     }
 
-    public String getUserName() {
-        return userName;
+    /**
+     * Deals two cards to each player in the game excluding the dealer.
+     */
+    public void dealToPlayers() {
+        for (Player p : players) {
+            p.setHand(deck.dealCards(2));
+        }
     }
 
-    public int getNumberOfOpponents() {
-        return numberOfOpponents;
+    public void shuffleDeck(){
+        deck = new Deck();
     }
 
-    public ArrayList<String> getAiNames() {
-        return aiNames;
+    /**
+     * Deals a number of cards into the center of the table
+     *
+     * @param numberOfCards number of cards to deal
+     */
+    public void dealToCenter(int numberOfCards) {
+        centerCards.addAll(deck.dealCards(numberOfCards));
     }
 
-    public Map<String, Player> getPlayersMap() {
-        return playersMap;
+    /**
+     * Shifts the dealer to the player one person to the right
+     */
+    public void incrementDealer() {
+        int dealerIndex = players.indexOf(dealer);
+        dealer = players.get((dealerIndex + 1) % players.size());
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getHumanPlayer() {
+        return humanPlayer;
+    }
+
+    public Set<Card> getCenterCards() {
+        return centerCards;
     }
     
-    public String toString() {
-        return "Number of playersMap: " + (numberOfOpponents + 1) + " | Players: " + playersMap.toString();
+    public void clearCenterCards() {
+        centerCards.clear();
+    }
+
+    public Player getDealer() {
+        return dealer;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+    
+    public void addToPot(int bet) {
+        pot += bet;
+    }
+    
+    public void clearPot() {
+        pot = 0;
+    }
+    
+    public void setEndOfRound(boolean eor) {
+        isEndOfRound = eor;
+    }
+    
+    public boolean isEndOfRound() {
+        return isEndOfRound;
     }
 }

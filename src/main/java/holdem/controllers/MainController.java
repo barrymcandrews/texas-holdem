@@ -1,11 +1,10 @@
 package holdem.controllers;
 
 import holdem.Game;
-import holdem.models.Card;
+import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 
 public class MainController extends Controller {
@@ -22,11 +21,10 @@ public class MainController extends Controller {
 
     public MainController() {
         super();
-        deltCards = new CardController(GAME.deal(5));
-        playerCards = new CardController(GAME.deal(2));
+        deltCards = new CardController(GAME.getCenterCards());
+        playerCards = new CardController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
-        reloadData();
     }
 
     @Override
@@ -50,10 +48,14 @@ public class MainController extends Controller {
 
     @Override
     public void reloadData() {
+        deltCards.reloadData();
+        playerCards.reloadData();
+        actionButtons.reloadData();
 
-        potLabel.setText("$0");
+        Player humanPlayer = GAME.getHumanPlayer();
+        potLabel.setText("$" + Integer.toString(GAME.getPot()));
 
-        playerMoney.setText("$" + GAME.getUser().getWallet());
-        playerName.setText(GAME.getUserName());
+        playerMoney.setText("$" + humanPlayer.getWallet());
+        playerName.setText(humanPlayer.getName());
     }
 }

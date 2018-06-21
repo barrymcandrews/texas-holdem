@@ -2,6 +2,8 @@ package holdem.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Deck {
     private ArrayList<Card> deck;
@@ -21,5 +23,12 @@ public class Deck {
         Card c = deck.get(0);
         deck.remove(0);
         return c;
+    }
+
+    public Set<Card> dealCards(int numberOfCards) {
+        Set<Card> hand = new HashSet<>();
+        for (int i = 0; i < numberOfCards; i++)
+            hand.add(dealCard());
+        return hand;
     }
 }
