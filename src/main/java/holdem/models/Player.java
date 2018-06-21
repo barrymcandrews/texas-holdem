@@ -15,6 +15,7 @@ public class Player {
     private int wallet;
     private Set<Card> hand = new HashSet<>();
     private PlayerType type = PlayerType.AI;
+    private boolean isActive = true;
 
     public Player(String name){
         this.name = name;
@@ -60,6 +61,14 @@ public class Player {
         hand.addAll(cards);
     }
     
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public String toString() {
         return "[name: " + name + 
                 " | wallet: " + wallet +

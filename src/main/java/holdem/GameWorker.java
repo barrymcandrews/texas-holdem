@@ -4,6 +4,8 @@ import holdem.controllers.RootController;
 import holdem.models.BestHand;
 import holdem.models.HandScore;
 import holdem.models.Player;
+import holdem.models.Player.PlayerType;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -31,27 +33,14 @@ public class GameWorker extends SwingWorker<Void, Game> {
             
             gameQueue.clear();
             Move playerMove = gameQueue.take();
-            handleBet(playerMove);
-
-            GAME.dealToCenter(3);
-            process(null);
-            slowGame();
-            playerMove = gameQueue.take();
-            handleBet(playerMove);
+            boolean cont = handleBet(playerMove);
             
-            GAME.dealToCenter(1);
-            process(null);
-            slowGame();
-            playerMove = gameQueue.take();
-            handleBet(playerMove);
+            cont = processMove(cont, 3);
+            cont = processMove(cont, 1);
+            cont = processMove(cont, 1);
             
-            GAME.dealToCenter(1);
-            process(null);
-            slowGame();
-            playerMove = gameQueue.take();
-            handleBet(playerMove);
 
-            findWinner();
+            handleWinner();
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
@@ -73,29 +62,62 @@ public class GameWorker extends SwingWorker<Void, Game> {
     private void slowGame() throws Exception {
         Thread.sleep(1000);
     }
+    
+    /**
+     * Handle turns for each betting cycle
+     * 
+     * @param cards - number of cards to be dealt
+     * @returns true if game is to continue
+     * @throws Exception
+     */
+    private boolean processMove(boolean cont, int cards) throws Exception {
+        if(cont) {
+            GAME.dealToCenter(cards);
+            process(null);
+            slowGame();
+            Move playerMove = gameQueue.take();
+            return handleBet(playerMove);
+        }
+        return false;
+    }
 
-    private Player findWinner(){
+    private void handleWinner(){
         HandScore bestScore = new HandScore(0, 0);
         Player winner = null;
 
-        for(Player p: GAME.getPlayers()){
-            HandScore temp;
-            temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
-            if (temp.compareTo(bestScore) > 0) {
-                bestScore = temp;
-                winner = p;
+        for (Player p : GAME.getPlayers()) {
+            if (p.isActive()) {
+                HandScore temp;
+                temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+                if (temp.compareTo(bestScore) > 0) {
+                    bestScore = temp;
+                    winner = p;
+                }
+                // TODO: Handle ties with 2 winners
             }
-            //TODO: Handle ties with 2 winners
         }
+        winner.winMoney(GAME.getPot());
         JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
-        return winner;
     }
     
-    private void handleBet(Move playerMove) {
+    /**
+     * Gets move, if it is a bet, have all players set to inactive(fold)
+     * @param playerMove
+     * @returns false if move was a bet, used to stop turns
+     */
+    private boolean handleBet(Move playerMove) {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
+            
+            for(Player player : GAME.getPlayers()) {
+                if(player.getType() == PlayerType.AI) {
+                    player.setActive(false);
+                }
+            }
+            return false;
         }
+        return true;
     }
     
     public enum Move {
