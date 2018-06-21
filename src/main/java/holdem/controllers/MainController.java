@@ -53,7 +53,7 @@ public class MainController extends Controller {
         actionButtons.reloadData();
 
         Player humanPlayer = GAME.getHumanPlayer();
-        potLabel.setText("$0");
+        potLabel.setText("$" + Integer.toString(GAME.getPot()));
 
         playerMoney.setText("$" + humanPlayer.getWallet());
         playerName.setText(humanPlayer.getName());

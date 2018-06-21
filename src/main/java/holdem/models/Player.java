@@ -43,6 +43,14 @@ public class Player {
         this.wallet = wallet;
     }
     
+    public void winMoney(int money) {
+        this.wallet += money;
+    }
+    
+    public void loseMoney(int money) {
+        this.wallet -= money;
+    }
+    
     public Set<Card> getHand() {
         return hand;
     }

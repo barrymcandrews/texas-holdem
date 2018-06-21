@@ -6,19 +6,17 @@ import holdem.models.HandScore;
 import holdem.models.Player;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.omg.CORBA.INTERNAL;
 
-import javax.net.ssl.HandshakeCompletedEvent;
 import javax.swing.*;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameWorker extends SwingWorker<Void, Game> {
     private final Logger log = LogManager.getLogger(GameWorker.class);
     private final RootController ROOT_CONTROLLER = Application.rootController;
     private final Game GAME = Game.getInstance();
 
-    public static Queue<Integer> GameQueue = new LinkedList<>();
-
+    public static LinkedBlockingQueue<Move> gameQueue = new LinkedBlockingQueue<>();
 
     @Override
     protected Void doInBackground() throws Exception {
@@ -29,28 +27,34 @@ public class GameWorker extends SwingWorker<Void, Game> {
             log.debug("Dealer this round: " + dealer.getName());
             GAME.dealToPlayers();
             process(null);
-
             slowGame();
-            if (!GameQueue.isEmpty()) {
-                switch (GameQueue.remove()) {
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                }
-            }
+            
+            gameQueue.clear();
+            Move playerMove = gameQueue.take();
+            handleBet(playerMove);
 
             GAME.dealToCenter(3);
+            process(null);
             slowGame();
+            playerMove = gameQueue.take();
+            handleBet(playerMove);
+            
             GAME.dealToCenter(1);
+            process(null);
             slowGame();
+            playerMove = gameQueue.take();
+            handleBet(playerMove);
+            
             GAME.dealToCenter(1);
+            process(null);
             slowGame();
+            playerMove = gameQueue.take();
+            handleBet(playerMove);
 
 //            BestHand.findBestHand()
             GAME.incrementDealer();
+            GAME.clearCenterCards();
+            GAME.clearPot();
             GAME.shuffleDeck();
             process(null);
         }
@@ -67,7 +71,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
     }
 
     private void slowGame() throws Exception {
-            Thread.sleep(1000);
+        Thread.sleep(1000);
     }
 
     private Player findWinner(){
@@ -86,5 +90,30 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
         return winner;
     }
-
+    
+    private void handleBet(Move playerMove) {
+        if(playerMove == Move.BET) {
+            GAME.addToPot(playerMove.getBet());
+            GAME.getHumanPlayer().loseMoney(playerMove.getBet());
+        }
+    }
+    
+    public enum Move {
+        BET(0),
+        CALL(0), 
+        FOLD(0);
+        
+        private int bet;
+        
+        public int getBet() {
+            return bet;
+        }
+        public void setBet(int bet) {
+            this.bet = bet;
+        }
+        
+        Move(int bet) {
+            this.setBet(bet);
+        }   
+    }
 }

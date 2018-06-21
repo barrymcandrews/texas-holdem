@@ -16,6 +16,7 @@ public class Game {
     private Set<Card> centerCards = new HashSet<>();
     private Player humanPlayer;
     private Player dealer;
+    private int pot = 0;
 
     private Game() {
         //get start up dialog and info
@@ -77,8 +78,28 @@ public class Game {
     public Set<Card> getCenterCards() {
         return centerCards;
     }
+    
+    public void clearCenterCards() {
+        centerCards.clear();
+    }
 
     public Player getDealer() {
         return dealer;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+    
+    public void addToPot(int bet) {
+        pot += bet;
+    }
+    
+    public void clearPot() {
+        pot = 0;
     }
 }
