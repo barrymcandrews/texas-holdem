@@ -40,14 +40,16 @@ public class GameWorker extends SwingWorker<Void, Game> {
             cont = processMove(cont, 1);
             cont = processMove(cont, 1);
             
+            GAME.setEndOfRound(true);
+            process(null);
+            handleWinner();
+            
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
             GAME.shuffleDeck();
-            GAME.setEndOfRound(true);
             reactivatePlayers();
             process(null);
-            handleWinner();
         }
     }
 
