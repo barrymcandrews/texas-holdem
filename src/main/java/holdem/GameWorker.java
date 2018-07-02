@@ -112,7 +112,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             }
         }
         winner.winMoney(GAME.getPot());
-        JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
+        JOptionPane.showMessageDialog(null, "Winning hand: " + winner.getHand().toString(), winner.getName() + " wins!", JOptionPane.PLAIN_MESSAGE);
       
     }
     
