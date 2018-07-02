@@ -79,9 +79,20 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-            Move playerMove = gameQueue.take();
-            return handleMove(playerMove);
-        }
+            if(GAME.getHumanPlayer().isActive()) {
+                Move playerMove = gameQueue.take();
+                return handleMove(playerMove);
+            } else {
+                if(GAME.getPlayers().size() == 2) {
+                    //if there are only two players, folding should immediately end the game and the other player should win
+                    return false;
+                } else {
+                    //No longer get moves from user once they have folded but allow round to finish out normally
+                    JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
+                    return true;
+                }
+            }
+        } 
         return false;
     }
 
