@@ -10,6 +10,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -22,7 +28,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        log.debug("Game thread started.");
+
+        log.debug("Game thread started: " + LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
 
         while (true) {
             Player dealer = GAME.getDealer();
@@ -89,7 +96,12 @@ public class GameWorker extends SwingWorker<Void, Game> {
         HandScore bestScore = new HandScore(0, 0);
         Player winner = null;
 
+        log.debug("Cards Dealt: ");
         for (Player p : GAME.getPlayers()) {
+            log.debug(p.getName() +": "+ p.getHand().toString());
+        }
+
+            for (Player p : GAME.getPlayers()) {
             if (p.isActive()) {
                 HandScore temp;
                 temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
@@ -114,7 +126,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-            
+
             for(Player player : GAME.getPlayers()) {
                 if(player.getType() == PlayerType.AI) {
                     player.setActive(false);

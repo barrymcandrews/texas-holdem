@@ -23,6 +23,7 @@ public class Game {
         //get start up dialog and info
         StartDialogue dialog  = new StartDialogue().show();
         humanPlayer = new Player(dialog.getUserName(), Player.PlayerType.HUMAN);
+        log.debug("Player Name: " + humanPlayer.getName());
         Constants.AI_NAMES_LIST.forEach((name) -> {
             if (name.equals(humanPlayer.getName())) {
                 name = Constants.BACKUP_USERNAME;
@@ -32,6 +33,7 @@ public class Game {
         });
         dealer = players.get(0);
         players.add(humanPlayer);
+        log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
     }
 
     public static Game getInstance() {
@@ -74,6 +76,12 @@ public class Game {
 
     public Player getHumanPlayer() {
         return humanPlayer;
+    }
+
+    private ArrayList<Player> getAIPlayers(Player humanPlayer) {
+        ArrayList<Player> aiList = new ArrayList<Player>(players);
+        aiList.remove(humanPlayer);
+        return aiList;
     }
 
     public Set<Card> getCenterCards() {
