@@ -87,6 +87,11 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
             Move playerMove = gameQueue.take();
+            for(Player p: GAME.getPlayers()){
+                p.setMove(playerMove);
+                log.debug(p.getName() +  " " + p.getMove() + "'s.");
+            }
+
             return handleMove(playerMove);
         }
         return false;
@@ -113,6 +118,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             }
         }
         winner.winMoney(GAME.getPot());
+        log.debug(winner + " Wins: " +GAME.getPot());
         JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
       
     }
@@ -149,8 +155,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
     public enum Move {
         BET(0),
         CALL(0), 
-        FOLD(0);
-        
+        FOLD(0),
+        INVALID(-1);
+
         private int bet;
         
         public int getBet() {
