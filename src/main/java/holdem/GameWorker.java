@@ -86,14 +86,24 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-            Move playerMove = gameQueue.take();
-            for(Player p: GAME.getPlayers()){
-                p.setMove(playerMove);
-                log.debug(p.getName() +  " " + p.getMove() + "'s.");
+            if(GAME.getHumanPlayer().isActive()) {
+                Move playerMove = gameQueue.take();
+                for(Player p: GAME.getPlayers()){
+                    p.setMove(playerMove);
+                    log.debug(p.getName() +  " " + p.getMove() + "'s.");
+                }
+                return handleMove(playerMove);
+            } else {
+                if(GAME.getPlayers().size() == 2) {
+                    //if there are only two players, folding should immediately end the game and the other player should win
+                    return false;
+                } else {
+                    //No longer get moves from user once they have folded but allow round to finish out normally
+                    JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
+                    return true;
+                }
             }
-
-            return handleMove(playerMove);
-        }
+        } 
         return false;
     }
 
@@ -119,8 +129,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
         }
         winner.winMoney(GAME.getPot());
         log.debug(winner + " Wins: " +GAME.getPot());
-        JOptionPane.showMessageDialog(null, winner.getName() + " wins!");
-      
+        JOptionPane.showMessageDialog(null, "Winning hand: " + winner.getHand().toString(), winner.getName() + " wins!", JOptionPane.PLAIN_MESSAGE);
+
     }
     
     /**

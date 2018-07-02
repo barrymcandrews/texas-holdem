@@ -146,6 +146,6 @@ public class Card {
     }
     
     public String toString() {
-        return "[Suit: " + suit + "Value: " + value + "]";
+        return value + "|" + suit;
     }
 }

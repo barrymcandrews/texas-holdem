@@ -2,6 +2,7 @@ package holdem.controllers;
 
 import javax.swing.*;
 
+import holdem.Game;
 import holdem.GameWorker;
 import holdem.GameWorker.Move;
 
@@ -33,6 +34,19 @@ public class ActionButtonController extends Controller {
         view.add(foldButton);
         view.add(callButton);
         view.add(betButton);
+    }
+    
+    @Override
+    public void reloadData() {
+        if(!Game.getInstance().getHumanPlayer().isActive()) {
+            foldButton.setEnabled(false);
+            callButton.setEnabled(false);
+            betButton.setEnabled(false);
+        } else {
+            foldButton.setEnabled(true);
+            callButton.setEnabled(true);
+            betButton.setEnabled(true);
+        }
     }
     
     public void handleBet(BlockingQueue<Move> moveQueue) {
