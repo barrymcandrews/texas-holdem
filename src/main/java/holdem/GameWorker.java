@@ -10,6 +10,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -22,7 +28,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        log.debug("Game thread started.");
+
+        log.debug("Game thread started: " + LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
 
         while (true) {
             Player dealer = GAME.getDealer();
@@ -81,6 +88,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
             slowGame();
             if(GAME.getHumanPlayer().isActive()) {
                 Move playerMove = gameQueue.take();
+                for(Player p: GAME.getPlayers()){
+                    p.setMove(playerMove);
+                    log.debug(p.getName() +  " " + p.getMove() + "'s.");
+                }
                 return handleMove(playerMove);
             } else {
                 if(GAME.getPlayers().size() == 2) {
@@ -100,7 +111,12 @@ public class GameWorker extends SwingWorker<Void, Game> {
         HandScore bestScore = new HandScore(0, 0);
         Player winner = null;
 
+        log.debug("Cards Dealt: ");
         for (Player p : GAME.getPlayers()) {
+            log.debug(p.getName() +": "+ p.getHand().toString());
+        }
+
+            for (Player p : GAME.getPlayers()) {
             if (p.isActive()) {
                 HandScore temp;
                 temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
@@ -112,8 +128,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
             }
         }
         winner.winMoney(GAME.getPot());
+        log.debug(winner + " Wins: " +GAME.getPot());
         JOptionPane.showMessageDialog(null, "Winning hand: " + winner.getHand().toString(), winner.getName() + " wins!", JOptionPane.PLAIN_MESSAGE);
-      
+
     }
     
     /**
@@ -125,7 +142,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-            
+
             for(Player player : GAME.getPlayers()) {
                 if(player.getType() == PlayerType.AI) {
                     player.setActive(false);
@@ -148,8 +165,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
     public enum Move {
         BET(0),
         CALL(0), 
-        FOLD(0);
-        
+        FOLD(0),
+        INVALID(-1);
+
         private int bet;
         
         public int getBet() {
