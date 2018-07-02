@@ -50,9 +50,34 @@ public class ActionButtonController extends Controller {
     }
     
     public void handleBet(BlockingQueue<Move> moveQueue) {
-        String bet = JOptionPane.showInputDialog("How much would you like to bet? ");
+        String bet = getBet();
         Move move = Move.BET;
         move.setBet(Integer.parseInt(bet));
         moveQueue.add(move);
+    }
+    
+    private String getBet() {
+        String bet = JOptionPane.showInputDialog("How much would you like to bet? ");
+        Boolean valid = false;
+        int maxBet = Game.getInstance().getHumanPlayer().getWallet();
+        while(!valid) {
+            if(!isNumeric(bet)) 
+                bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be a numeric integer.");
+            else if(Integer.parseInt(bet) < 10 || Integer.parseInt(bet) > maxBet) 
+                bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be between $10 and $" + maxBet);
+            else
+                valid = true;
+        }
+        return bet;
+    }
+    
+    private boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+        } catch (NumberFormatException e){
+            //ignore it
+            return false;
+        }
+        return true;
     }
 }
