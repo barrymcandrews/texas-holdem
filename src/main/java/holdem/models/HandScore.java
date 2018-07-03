@@ -17,17 +17,27 @@ public class HandScore implements Comparable<HandScore>{
     private int rank;
     private int topCard;
     private int secondCard;
+    private int thirdCard;
+    private int fourthCard;
+    private int fifthCard;
 
-    public HandScore(int rank, int topCard, int secondCard) {
+    public HandScore(int rank, int topCard, int secondCard,
+                     int thirdCard, int fourthCard, int fifthCard) {
         this.rank = rank;
         this.topCard = topCard;
         this.secondCard = secondCard;
+        this.thirdCard = thirdCard;
+        this.fourthCard = fourthCard;
+        this.fifthCard = fifthCard;
     }
 
     public HandScore(int rank, int topCard) {
         this.rank = rank;
         this.topCard = topCard;
         this.secondCard = 0;
+        this.thirdCard = 0;
+        this.fourthCard = 0;
+        this.fifthCard = 0;
     }
 
     @Override
@@ -49,7 +59,25 @@ public class HandScore implements Comparable<HandScore>{
             return -1;
         } else if (this.secondCard > other.secondCard) {
             return 1;
-        } else {
+        }
+
+        if (this.thirdCard < other.thirdCard) {
+            return -1;
+        } else if (this.thirdCard > other.thirdCard) {
+            return 1;
+        }
+
+        if (this.fourthCard < other.fourthCard) {
+            return -1;
+        } else if (this.fourthCard > other.fourthCard) {
+            return 1;
+        }
+
+        if (this.fifthCard < other.fifthCard) {
+            return -1;
+        } else if (this.fifthCard > other.fifthCard) {
+            return 1;
+        }else {
             return 0;
         }
     }

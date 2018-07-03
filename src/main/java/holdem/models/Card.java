@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import static holdem.models.Card.Value.*;
 
-public class Card {
+public class Card implements Comparable<Card>{
     private Suit suit;
     private Value value;
     private ImageIcon frontOfCard;
@@ -144,7 +144,18 @@ public class Card {
             this.value = value;
         }
     }
-    
+
+    @Override
+    public int compareTo(Card o) {
+        if (this.getValue().getValue() < o.getValue().getValue()) {
+            return -1;
+        } else if (this.getValue().getValue() > o.getValue().getValue()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public String toString() {
         return value + "|" + suit;
     }
