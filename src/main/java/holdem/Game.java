@@ -18,6 +18,7 @@ public class Game {
     private Player dealer;
     private int pot = 0;
     private boolean isEndOfRound = false;
+    private int numOpponents;
 
     private Game() {
         //get start up dialog and info
@@ -28,7 +29,8 @@ public class Game {
             if (name.equals(humanPlayer.getName())) {
                 name = Constants.BACKUP_USERNAME;
             }
-            if (players.size() < dialog.getNumberOfOpponents())
+            numOpponents = dialog.getNumberOfOpponents();
+            if (players.size() < numOpponents)
             players.add(new Player(name));
         });
         dealer = players.get(0);
@@ -118,5 +120,38 @@ public class Game {
     
     public boolean isEndOfRound() {
         return isEndOfRound;
+    }
+
+    public void checkForEliminated() {
+        ArrayList<Player> eliminatedPlayers = new ArrayList<>();
+        for (Player p : players) {
+            if (p.getWallet() == 0) {
+                eliminatedPlayers.add(p);
+            }
+        }
+        players.removeAll(eliminatedPlayers);
+    }
+
+    public void checkForWinner() {
+        if(players.size() == 1) {
+            askForRestart();
+        }
+    }
+
+    public void askForRestart() {
+        RestartDialogue restart = new RestartDialogue().show();
+        if (restart.getRestart() == 1) {
+            Constants.AI_NAMES_LIST.forEach((name) -> {
+                if (name.equals(humanPlayer.getName())) {
+                    name = Constants.BACKUP_USERNAME;
+                }
+                if (players.size() < numOpponents)
+                    players.add(new Player(name));
+            });
+            dealer = players.get(0);
+            players.add(humanPlayer);
+        } else {
+            System.exit(0);
+        }
     }
 }
