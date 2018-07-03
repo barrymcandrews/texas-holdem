@@ -136,23 +136,15 @@ public class GameWorker extends SwingWorker<Void, Game> {
     /**
      * Gets move, if it is a bet, have all players set to inactive(fold)
      * @param playerMove
-     * @returns false if move was a bet, used to stop turns
+     * @returns true if game continues
      */
     private boolean handleMove(Move playerMove) {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-
-            for(Player player : GAME.getPlayers()) {
-                if(player.getType() == PlayerType.AI) {
-                    player.setActive(false);
-                }
-            } 
-            return false;
-        }
-        if(playerMove == Move.FOLD) {
+        } else if(playerMove == Move.FOLD) {
             GAME.getHumanPlayer().setActive(false);
-        }
+        } 
         return true;
     }
     
