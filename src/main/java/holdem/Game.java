@@ -119,4 +119,21 @@ public class Game {
     public boolean isEndOfRound() {
         return isEndOfRound;
     }
+
+    public void checkForEliminated() {
+        ArrayList<Player> eliminatedPlayers = new ArrayList<>();
+        for (Player p : players) {
+            if (p.getWallet() == 0) {
+                eliminatedPlayers.add(p);
+            }
+        }
+        players.removeAll(eliminatedPlayers);
+    }
+
+    public boolean checkForWinner() {
+        if(players.size() == 1) {
+            return true;
+        }
+        return false;
+    }
 }

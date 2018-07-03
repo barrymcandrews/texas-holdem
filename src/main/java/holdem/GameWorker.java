@@ -47,7 +47,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.setEndOfRound(true);
             process(null);
             handleWinner();
-            
+
+            GAME.checkForEliminated();
+            GAME.checkForWinner();
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
