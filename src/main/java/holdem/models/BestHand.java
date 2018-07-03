@@ -1,7 +1,6 @@
 package holdem.models;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BestHand {
 
@@ -71,12 +70,12 @@ public class BestHand {
             return bestScore;
         }
 
-        bestScore = checkForPair(cardValTotals);
+        bestScore = checkForPair(cardsAvailable, cardValTotals);
         if (bestScore != null) {
             return bestScore;
         }
 
-        bestScore = checkForHighCard(cardValTotals);
+        bestScore = checkForHighCard(cardsAvailable, cardValTotals);
         if (bestScore != null) {
             return bestScore;
         }
@@ -127,7 +126,11 @@ public class BestHand {
         //checks for four of a kind
         for (int i = 13; i > 0; i--) {
             if (cardValTotals[i] == 4) {
-                return new HandScore(8, i+1);
+                for (int j = 13; j > 0; j--) {
+                    if (cardValTotals[j] > 0 && i != j) {
+                        return new HandScore(8, i+1, j+1, 0, 0, 0);
+                    }
+                }
             }
         }
         return null;
@@ -146,7 +149,7 @@ public class BestHand {
         }
 
         if (highestDouble > 0 && highestTriple > 0) {
-            return new HandScore(7, highestTriple, highestDouble);
+            return new HandScore(7, highestTriple, highestDouble, 0, 0, 0);
         }
 
         return null;
@@ -156,15 +159,18 @@ public class BestHand {
         //checks for four of a kind
         for (int i = 0; i < 4; i++) {
             if (suitTotals[i] == 5) {
-                int topCard = 0;
+                List<Card> suitList = new ArrayList<>();
                 for (Card c : cardsAvailable) {
                     if (c.getSuit() == Card.intToSuit(i)) {
-                        if (c.getValue().getValue() > topCard) {
-                            topCard = c.getValue().getValue();
-                        }
+                        suitList.add(c);
                     }
                 }
-                return new HandScore(6, topCard);
+                Collections.sort(suitList, Collections.reverseOrder());
+                return new HandScore(6, suitList.get(0).getValue().getValue(),
+                                             suitList.get(1).getValue().getValue(),
+                                             suitList.get(2).getValue().getValue(),
+                                             suitList.get(3).getValue().getValue(),
+                                             suitList.get(4).getValue().getValue());
             }
         }
         return null;
@@ -188,7 +194,16 @@ public class BestHand {
     public static HandScore checkForThreeOfAKind(int[] cardValTotals) {
         for (int i = 13; i > 0; i--) {
             if (cardValTotals[i] == 3) {
-                return new HandScore(4, i+1);
+                int secondCard = 0;
+                for (int j = 13; j > 0; j--) {
+                    if (cardValTotals[j] > 0 && i != j) {
+                        if (secondCard > 0) {
+                            return new HandScore(4, i + 1, secondCard, j + 1, 0, 0);
+                        } else {
+                            secondCard = j + 1;
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -199,7 +214,11 @@ public class BestHand {
         for (int i = 13; i > 0; i--) {
             if (cardValTotals[i] == 2) {
                 if (topCard > 0) {
-                    return new HandScore(3, topCard, i+1);
+                    for (int j = 13; j > 0; j--) {
+                        if (cardValTotals[j] > 0 && i != j && i != topCard - 1) {
+                            return new HandScore(3, topCard, i+1, j+1, 0, 0);
+                        }
+                    }
                 } else {
                     topCard = i + 1;
                 }
@@ -209,21 +228,40 @@ public class BestHand {
         return null;
     }
 
-    public static HandScore checkForPair(int[] cardValTotals) {
+    public static HandScore checkForPair(Set<Card> cardsAvailable, int[] cardValTotals) {
+        int highCard = 0;
         for (int i = 13; i > 0; i--) {
             if (cardValTotals[i] == 2) {
-                return new HandScore(2, i+1);
+                highCard = i + 1;
+                List<Card> list = new ArrayList<>();
+
+                for(Card c: cardsAvailable) {
+                    if(c.getValue().getValue() != highCard) {
+                        list.add(c);
+                    }
+                }
+
+                Collections.sort(list, Collections.reverseOrder());
+                return new HandScore(2, highCard,
+                    list.get(0).getValue().getValue(),
+                    list.get(1).getValue().getValue(),
+                    list.get(2).getValue().getValue(),
+                    list.get(3).getValue().getValue());
             }
         }
         return null;
     }
 
-    public static HandScore checkForHighCard(int[] cardValTotals) {
-        for (int i = 13; i > 0; i--) {
-            if (cardValTotals[i] == 1) {
-                return new HandScore(1, i+1);
-            }
-        }
-        return null;
+    public static HandScore checkForHighCard(Set<Card> cardsAvailable, int[] cardValTotals) {
+        List<Card> list = new ArrayList<>();
+
+        list.addAll(cardsAvailable);
+
+        Collections.sort(list, Collections.reverseOrder());
+        return new HandScore(1, list.get(0).getValue().getValue(),
+            list.get(1).getValue().getValue(),
+            list.get(2).getValue().getValue(),
+            list.get(3).getValue().getValue(),
+            list.get(4).getValue().getValue());
     }
 }

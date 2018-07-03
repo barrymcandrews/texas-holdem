@@ -32,7 +32,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(9, 14, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(9, 14), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(9, 5, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(9, 5), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(8, 14, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(8, 14, 13, 0, 0, 0), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(7, 14, 13), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(7, 14, 13, 0, 0, 0), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(6, 14), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(6, 14, 13, 12, 11, 2), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(4, 14, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(4, 14, 13, 12, 0, 0), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -214,7 +214,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(3, 14, 2), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(3, 14, 2, 13, 0, 0), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(2, 14, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(2, 14, 13, 12, 11, 0), BestHand.findBestHand(hand, river));
     }
 
     @Test
@@ -266,6 +266,6 @@ public class BestHandTest {
         river.add(c6);
         river.add(c7);
 
-        Assert.assertEquals(new HandScore(1, 13, 0), BestHand.findBestHand(hand, river));
+        Assert.assertEquals(new HandScore(1, 13, 11, 8, 7, 4), BestHand.findBestHand(hand, river));
     }
 }
