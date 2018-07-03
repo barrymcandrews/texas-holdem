@@ -14,15 +14,15 @@ public class MainController extends Controller {
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
 
-    private CardController deltCards;
-    private CardController playerCards;
+    private CardSetController deltCards;
+    private CardSetController playerCards;
     private ActionButtonController actionButtons;
 
 
     public MainController() {
         super();
-        deltCards = new CardController(GAME.getCenterCards());
-        playerCards = new CardController(GAME.getHumanPlayer().getHand());
+        deltCards = new CardSetController(GAME.getCenterCards());
+        playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
     }
@@ -36,7 +36,7 @@ public class MainController extends Controller {
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
-        view.setBackground(Color.lightGray);
+        view.setBackground(Color.white);
 
         view.add(deltCards.getView());
         view.add(potLabel);

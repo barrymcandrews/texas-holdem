@@ -19,16 +19,21 @@ public class Deck {
         Collections.shuffle(deck);
     }
     
-    public Card dealCard() {
+    public Card dealCard(boolean faceUp) {
         Card c = deck.get(0);
         deck.remove(0);
+        c.setFaceUp(faceUp);
         return c;
     }
 
-    public Set<Card> dealCards(int numberOfCards) {
+    public Set<Card> dealCards(int numberOfCards, boolean faceUp) {
         Set<Card> hand = new HashSet<>();
         for (int i = 0; i < numberOfCards; i++)
-            hand.add(dealCard());
+            hand.add(dealCard(faceUp));
         return hand;
+    }
+
+    public Set<Card> dealCards(int numberOfCards) {
+        return dealCards(numberOfCards, true);
     }
 }

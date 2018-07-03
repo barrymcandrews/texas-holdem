@@ -35,7 +35,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
             Player dealer = GAME.getDealer();
             log.debug("Dealer this round: " + dealer.getName());
             GAME.dealToPlayers();
-            GAME.setEndOfRound(false);
             process(null);
             slowGame();
             
@@ -47,7 +46,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             cont = processMove(cont, 1);
             cont = processMove(cont, 1);
             
-            GAME.setEndOfRound(true);
+            GAME.showAllCards();
             process(null);
             handleWinner();
             

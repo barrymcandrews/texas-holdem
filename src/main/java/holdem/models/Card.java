@@ -1,5 +1,8 @@
 package holdem.models;
 
+
+import holdem.Constants;
+
 import javax.swing.*;
 
 import static holdem.models.Card.Value.*;
@@ -7,15 +10,13 @@ import static holdem.models.Card.Value.*;
 public class Card {
     private Suit suit;
     private Value value;
-    private ImageIcon frontOfCard;
-    private ImageIcon backOfCard;
-    private boolean isVisible;
+    private ImageIcon imageIcon;
+    private boolean faceUp = true;
 
     public Card(Suit suit, Value value) {
         this.suit = suit;
         this.value = value;
-        backOfCard = new ImageIcon("resouces/png/back.png");
-        frontOfCard = new ImageIcon(CardImageMap.getCard(suit, value));
+        imageIcon = new ImageIcon(CardImageMap.getCard(suit, value));
     }
 
     public Suit getSuit() {
@@ -34,20 +35,16 @@ public class Card {
         this.value = value;
     }
 
-    public ImageIcon getFrontOfCard() {
-        return frontOfCard;
+    public ImageIcon getImageIcon() {
+        return faceUp ? imageIcon : Constants.BACK_OF_CARD_IMAGE;
     }
 
-    public ImageIcon getBackOfCard() {
-        return backOfCard;
+    public boolean isFaceUp() {
+        return faceUp;
     }
 
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
     }
 
     public static Value intToValue(int v) {
