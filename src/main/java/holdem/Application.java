@@ -29,4 +29,8 @@ public class Application {
         frame.setVisible(true);
         new GameWorker().execute();
     }
+
+    public void resetGui() {
+        start();
+    }
 }

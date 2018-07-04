@@ -49,7 +49,8 @@ public class Game {
      */
     public void dealToPlayers() {
         for (Player p : players) {
-            p.setHand(deck.dealCards(2, p == humanPlayer));
+            if(!p.isEliminated())
+                p.setHand(deck.dealCards(2, p == humanPlayer));
         }
     }
 
@@ -148,17 +149,16 @@ public class Game {
     }
 
     public void checkForEliminated() {
-        ArrayList<Player> eliminatedPlayers = new ArrayList<>();
         for (Player p : players) {
             if (p.getWallet() == 0) {
-                eliminatedPlayers.add(p);
+                p.setEliminated(true);
+                p.setHand(new HashSet<>(0));
             }
         }
-        players.removeAll(eliminatedPlayers);
     }
 
     public void checkForWinner() {
-        if(players.size() == 1 || players.contains(humanPlayer) == false) {
+        if(players.size() == 1 || humanPlayer.isEliminated()) {
             askForRestart();
         }
     }
@@ -166,18 +166,12 @@ public class Game {
     public void askForRestart() {
         RestartDialogue restart = new RestartDialogue().show();
         if (restart.getRestart() == 1) {
-            Constants.AI_NAMES_LIST.forEach((name) -> {
-                if (name.equals(humanPlayer.getName())) {
-                    name = Constants.BACKUP_USERNAME;
-                }
-                if (players.size() < numOpponents)
-                    players.add(new Player(name));
-            });
             dealer = players.get(0);
-            players.add(humanPlayer);
             for (Player p : players) {
                 p.setActive(true);
                 p.setWallet(1000);
+                p.setEliminated(false);
+                p.setMove(GameWorker.Move.INVALID);
             }
         } else {
             System.exit(0);

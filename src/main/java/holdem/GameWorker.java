@@ -186,7 +186,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private boolean handleAIMove() {
         for(Player p : GAME.getPlayers()) {
-            if(p.getType() == PlayerType.AI && p.isActive()) {
+            if(p.getType() == PlayerType.AI && p.isActive() && !p.isEliminated()) {
                 Move move = p.getRandomMove(GAME.getPlayers());
                 log.debug(p.getName() +" "+ p.getMove().toString() +"'s");
                 //raise current bet $10
