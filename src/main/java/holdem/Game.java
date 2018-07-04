@@ -158,7 +158,7 @@ public class Game {
     }
 
     public void checkForWinner() {
-        if(players.size() == 1) {
+        if(players.size() == 1 || players.contains(humanPlayer) == false) {
             askForRestart();
         }
     }
@@ -175,7 +175,7 @@ public class Game {
             });
             dealer = players.get(0);
             players.add(humanPlayer);
-            for(Player p : getPlayers()) {
+            for (Player p : players) {
                 p.setActive(true);
                 p.setWallet(1000);
             }
