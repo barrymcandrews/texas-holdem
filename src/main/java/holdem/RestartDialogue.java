@@ -7,7 +7,9 @@ public class RestartDialogue {
     int restart;
 
     public RestartDialogue show() {
+
         if (JOptionPane.showConfirmDialog(null, "Would you like to play again?", "restart",
+
             JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             // yes option
             restart = 1;

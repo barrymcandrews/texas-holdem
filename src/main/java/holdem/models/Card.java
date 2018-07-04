@@ -1,21 +1,19 @@
 package holdem.models;
-
+import holdem.Constants;
 import javax.swing.*;
 
 import static holdem.models.Card.Value.*;
 
-public class Card {
+public class Card implements Comparable<Card> {
     private Suit suit;
     private Value value;
-    private ImageIcon frontOfCard;
-    private ImageIcon backOfCard;
-    private boolean isVisible;
+    private ImageIcon imageIcon;
+    private boolean faceUp = true;
 
     public Card(Suit suit, Value value) {
         this.suit = suit;
         this.value = value;
-        backOfCard = new ImageIcon("resouces/png/back.png");
-        frontOfCard = new ImageIcon(CardImageMap.getCard(suit, value));
+        imageIcon = new ImageIcon(CardImageMap.getCard(suit, value));
     }
 
     public Suit getSuit() {
@@ -34,20 +32,16 @@ public class Card {
         this.value = value;
     }
 
-    public ImageIcon getFrontOfCard() {
-        return frontOfCard;
+    public ImageIcon getImageIcon() {
+        return faceUp ? imageIcon : Constants.BACK_OF_CARD_IMAGE;
     }
 
-    public ImageIcon getBackOfCard() {
-        return backOfCard;
+    public boolean isFaceUp() {
+        return faceUp;
     }
 
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
     }
 
     public static Value intToValue(int v) {
@@ -81,8 +75,7 @@ public class Card {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -93,8 +86,7 @@ public class Card {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = suit.hashCode();
         result = 31 * result + value.hashCode();
         return result;
@@ -144,7 +136,18 @@ public class Card {
             this.value = value;
         }
     }
-    
+
+    @Override
+    public int compareTo(Card o) {
+        if (this.getValue().getValue() < o.getValue().getValue()) {
+            return -1;
+        } else if (this.getValue().getValue() > o.getValue().getValue()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public String toString() {
         return value + "|" + suit;
     }
