@@ -16,6 +16,7 @@ public class SidebarRowController extends Controller {
     private CardSetController cardSetController;
     private JLabel walletLabel = new JLabel();
     private JLabel betLabel = new JLabel();
+    private JLabel eliminatedLabel = new JLabel();
 
     private Player player;
 
@@ -30,10 +31,12 @@ public class SidebarRowController extends Controller {
     void setupLayout(JPanel view) {
         view.add(nameLabel);
         view.add(cardSetController.getView());
+        view.add(eliminatedLabel);
         view.add(walletLabel);
         view.add(betLabel);
 
         nameLabel.setForeground(Color.white);
+        eliminatedLabel.setForeground(Color.red);
         walletLabel.setForeground(Color.white);
         betLabel.setForeground(Color.white);
 
@@ -47,6 +50,8 @@ public class SidebarRowController extends Controller {
         cardSetController.reloadData();
 
         nameLabel.setText(player.getName());
+        eliminatedLabel.setText("ELIMINATED");
+        eliminatedLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         walletLabel.setText("$" + Integer.toString(player.getWallet()));
         betLabel.setText("$" + Integer.toString(player.getMove().getBet()));
 
@@ -56,6 +61,11 @@ public class SidebarRowController extends Controller {
         } else {
             betLabel.setVisible(true);
         }
+
+        if(!player.isEliminated())
+            eliminatedLabel.setVisible(false);
+        else
+            eliminatedLabel.setVisible(true);
     }
 
     public JLabel getNameLabel() {

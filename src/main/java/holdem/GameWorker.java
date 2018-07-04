@@ -37,10 +37,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
             
             gameQueue.clear();
             clearHighestBet();
-            Move playerMove = gameQueue.take();
-            boolean cont = handleMove(playerMove);
-            handleAIMove();
-
+//            Move playerMove = gameQueue.take();
+//            boolean cont = handleMove(playerMove);
+//            handleAIMove();
+            boolean cont = processMove(true, 0);
             cont = processMove(cont, 3);
             cont = processMove(cont, 1);
             cont = processMove(cont, 1);
@@ -87,13 +87,14 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-            if(GAME.getHumanPlayer().isActive()) {
+
+            if (GAME.getHumanPlayer().isActive()) {
                 Move playerMove = gameQueue.take();
                 Player p = GAME.getHumanPlayer();
-                log.debug(p.getName() +" "+ playerMove.toString() +"'s");
+                log.debug(p.getName() + " " + playerMove.toString() + "'s");
                 handleMove(playerMove);
             } else {
-                if(GAME.getPlayers().size() == 2) {
+                if (GAME.getPlayers().size() == 2) {
                     //if there are only two players, folding should immediately end the game and the other player should win
                     return false;
                 } else {
@@ -102,6 +103,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 }
             }
             handleAIMove();
+
             return true;
         } 
         return false;
@@ -184,6 +186,21 @@ public class GameWorker extends SwingWorker<Void, Game> {
         return true;
     }
 
+    private void equalizeBet() {
+        for(Player p : GAME.getPlayers()) {
+            if(p.getType() == PlayerType.AI) {
+                p.setMove(Move.CALL);
+                if (hasEnoughMoney(p, GAME.getHighestBet())) {
+                    p.setMove(Move.CALL);
+                    p.getMove().setBet(GAME.getHighestBet());
+                } else {
+                    p.setMove(Move.FOLD);
+                    p.setActive(false);
+                }
+            }
+        }
+    }
+
     private boolean handleAIMove() {
         for(Player p : GAME.getPlayers()) {
             if(p.getType() == PlayerType.AI && p.isActive() && !p.isEliminated()) {
@@ -240,6 +257,18 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void clearHighestBet() {
         GAME.setHighestBet(0);
+    }
+
+    private boolean allPlayersMaxBet() {
+        boolean allHaveMax = true;
+        for(Player p : GAME.getPlayers()) {
+            if (p.isActive() && !p.isEliminated()) {
+                if (p.getMove().getBet() != GAME.getHighestBet()) {
+                    allHaveMax = false;
+                }
+            }
+        }
+        return allHaveMax;
     }
     
     public enum Move {
