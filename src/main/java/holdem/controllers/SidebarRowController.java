@@ -53,6 +53,8 @@ public class SidebarRowController extends Controller {
         if(!player.isActive()) {
             walletLabel.setText("FOLDED");
             betLabel.setVisible(false);
+        } else {
+            betLabel.setVisible(true);
         }
     }
 
