@@ -39,6 +39,16 @@ public class MainController extends Controller {
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
         view.setBackground(Color.white);
 
+        JPanel deltCardsView = deltCards.getView();
+        deltCardsView.setPreferredSize(new Dimension(deltCardsView.getWidth(), 250));
+
+        potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
+        playerName.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        JPanel playerCardsView = playerCards.getView();
+        playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
+
         view.add(deltCards.getView());
         view.add(potLabel);
         view.add(playerCards.getView());
