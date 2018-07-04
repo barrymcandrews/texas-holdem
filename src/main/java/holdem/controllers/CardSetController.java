@@ -30,7 +30,7 @@ public class CardSetController extends Controller {
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagConstraints.insets = new Insets(0, 5,0, 5);
         view.setLayout(gridBagLayout);
-
+        view.setBackground(Color.BLUE);
         view.setBackground(new Color(0,0,0, 0));
     }
 
