@@ -70,7 +70,7 @@ public class SidebarRowController extends Controller {
         c.gridx = 1;
         c.gridy = 1;
         c.gridheight = 2;
-        c.weightx = 1;
+        c.weightx = 0.5;
         view.add(walletLabel, c);
 
         c.gridx = 2;
@@ -105,8 +105,8 @@ public class SidebarRowController extends Controller {
             betLabel.setText("<html>Bet:<br>$0</html>");
 
         if(!player.isActive()) {
-            walletLabel.setText("FOLDED");
-            betLabel.setVisible(false);
+            betLabel.setText("FOLDED");
+            //betLabel.setVisible(false);
         }
     }
 

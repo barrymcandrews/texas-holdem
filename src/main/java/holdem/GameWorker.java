@@ -34,7 +34,11 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.dealToPlayers();
             process(null);
             slowGame();
-            
+
+            GAME.getBigBlind().loseMoney(20);
+            GAME.getLittleBlind().loseMoney(10);
+            GAME.addToPot(30);
+
             gameQueue.clear();
             Move playerMove = gameQueue.take();
             boolean cont = handleMove(playerMove);
