@@ -1,5 +1,6 @@
 package holdem.controllers;
 
+import holdem.Constants;
 import holdem.Game;
 import holdem.models.Player;
 
@@ -14,15 +15,15 @@ public class MainController extends Controller {
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
 
-    private CardController deltCards;
-    private CardController playerCards;
+    private CardSetController deltCards;
+    private CardSetController playerCards;
     private ActionButtonController actionButtons;
 
 
     public MainController() {
         super();
-        deltCards = new CardController(GAME.getCenterCards());
-        playerCards = new CardController(GAME.getHumanPlayer().getHand());
+        deltCards = new CardSetController(GAME.getCenterCards(), Constants.LARGE_CARD_DIMENSION);
+        playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
     }
@@ -36,7 +37,17 @@ public class MainController extends Controller {
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
-        view.setBackground(Color.lightGray);
+        view.setBackground(Color.white);
+
+        JPanel deltCardsView = deltCards.getView();
+        deltCardsView.setPreferredSize(new Dimension(deltCardsView.getWidth(), 250));
+
+        potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
+        playerName.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        JPanel playerCardsView = playerCards.getView();
+        playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
 
         view.add(deltCards.getView());
         view.add(potLabel);

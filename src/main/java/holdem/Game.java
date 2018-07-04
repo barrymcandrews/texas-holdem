@@ -17,7 +17,6 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private int pot = 0;
-    private boolean isEndOfRound = false;
     private int numOpponents;
 
     private Game() {
@@ -47,7 +46,7 @@ public class Game {
      */
     public void dealToPlayers() {
         for (Player p : players) {
-            p.setHand(deck.dealCards(2));
+            p.setHand(deck.dealCards(2, p == humanPlayer));
         }
     }
 
@@ -70,6 +69,17 @@ public class Game {
     public void incrementDealer() {
         int dealerIndex = players.indexOf(dealer);
         dealer = players.get((dealerIndex + 1) % players.size());
+    }
+
+    /**
+     * Flips every card in the game face up
+     */
+    public void showAllCards() {
+        for (Player p : players) {
+            for (Card c : p.getHand()) {
+                c.setFaceUp(true);
+            }
+        }
     }
 
     public ArrayList<Player> getPlayers() {
@@ -112,14 +122,6 @@ public class Game {
     
     public void clearPot() {
         pot = 0;
-    }
-    
-    public void setEndOfRound(boolean eor) {
-        isEndOfRound = eor;
-    }
-    
-    public boolean isEndOfRound() {
-        return isEndOfRound;
     }
 
     public void checkForEliminated() {
