@@ -27,7 +27,7 @@ public class SidebarRowController extends Controller {
 
     @Override
     void setupLayout(JPanel view) {
-        view.add(nameLabel); 
+        view.add(nameLabel);
         view.add(cardSetController.getView());
         view.add(walletLabel);
         view.add(betLabel);
@@ -36,7 +36,7 @@ public class SidebarRowController extends Controller {
         walletLabel.setForeground(Color.white);
         betLabel.setForeground(Color.white);
 
-        view.setPreferredSize(new Dimension(300, 100));
+        view.setPreferredSize(new Dimension(350, 100));
         view.setBackground(new Color(40, 40, 40));
         view.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(70, 70, 70)));
     }
