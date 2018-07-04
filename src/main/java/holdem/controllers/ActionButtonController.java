@@ -68,6 +68,7 @@ public class ActionButtonController extends Controller {
             else
                 valid = true;
         }
+        Game.getInstance().setHighestBet(Integer.parseInt(bet));
         return bet;
     }
     

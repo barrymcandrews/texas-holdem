@@ -17,7 +17,9 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private int pot = 0;
+    private int sidePot = 0;
     private int numOpponents;
+    private int highestBet;
 
     private Game() {
         //get start up dialog and info
@@ -34,6 +36,7 @@ public class Game {
         });
         dealer = players.get(0);
         players.add(humanPlayer);
+        highestBet = 0;
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
     }
 
@@ -119,9 +122,29 @@ public class Game {
     public void addToPot(int bet) {
         pot += bet;
     }
+
+    public int getSidePot() {
+        return sidePot;
+    }
+
+    public void setSidePot(int sidePot) {
+        this.sidePot = sidePot;
+    }
+
+    public void addToSidePot(int sidePot) {
+        this.sidePot += sidePot;
+    }
     
     public void clearPot() {
         pot = 0;
+    }
+
+    public int getHighestBet() {
+        return highestBet;
+    }
+
+    public void setHighestBet(int highestBet) {
+        this.highestBet = highestBet;
     }
 
     public void checkForEliminated() {

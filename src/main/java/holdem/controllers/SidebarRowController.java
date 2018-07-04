@@ -48,10 +48,7 @@ public class SidebarRowController extends Controller {
 
         nameLabel.setText(player.getName());
         walletLabel.setText("$" + Integer.toString(player.getWallet()));
-        if(player.getMove() == GameWorker.Move.BET)
-            betLabel.setText("$" + Integer.toString(player.getMove().getBet()));
-        else
-            betLabel.setText("$0");
+        betLabel.setText("$" + Integer.toString(player.getMove().getBet()));
 
         if(!player.isActive()) {
             walletLabel.setText("FOLDED");

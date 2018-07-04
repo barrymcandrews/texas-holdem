@@ -173,23 +173,36 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
         } else if(playerMove == Move.FOLD) {
             GAME.getHumanPlayer().setActive(false);
-        } 
+        }  else if(playerMove == Move.CALL){
+            //match highest bet
+            playerMove.setBet(GAME.getHighestBet());
+            GAME.addToPot(playerMove.getBet());
+            GAME.getHumanPlayer().loseMoney(playerMove.getBet());
+        }
         return true;
     }
 
     private boolean handleAIMove() {
         for(Player p : GAME.getPlayers()) {
             if(p.getType() == PlayerType.AI && p.isActive()) {
-                p.getRandomMove(GAME.getPlayers());
+                Move move = p.getRandomMove(GAME.getPlayers());
                 log.debug(p.getName() +" "+ p.getMove().toString() +"'s");
-                if(p.getMove()== Move.BET) {
-                    p.getMove().setBet(10);
-                    GAME.addToPot(p.getMove().getBet());
-                    p.loseMoney(p.getMove().getBet());
-                } else if(p.getMove() == Move.FOLD) {
+                //raise current bet $10
+                if(move== Move.BET) {
+                    move.setBet(GAME.getHighestBet() + 10);
+                    GAME.setHighestBet(move.getBet());
+                    GAME.addToPot(move.getBet());
+                    p.loseMoney(move.getBet());
+                } else if(move == Move.FOLD) {
                    p.setActive(false);
                    if(GAME.getPlayers().size() == 2)
                        return false;
+                }
+                else if(move == Move.CALL){
+                    //match highest bet
+                    move.setBet(GAME.getHighestBet());
+                    GAME.addToPot(move.getBet());
+                    p.loseMoney(move.getBet());
                 }
             }
         }
@@ -207,7 +220,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         BET(0),
         CALL(0), 
         FOLD(0),
-        INVALID(-1);
+        INVALID(0);
 
         private int bet;
         
