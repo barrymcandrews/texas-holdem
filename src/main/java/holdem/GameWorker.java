@@ -87,10 +87,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
             slowGame();
             if(GAME.getHumanPlayer().isActive()) {
                 Move playerMove = gameQueue.take();
-                for(Player p: GAME.getPlayers()){
-                    p.setMove(playerMove);
-                    log.debug(p.getName() +  " " + p.getMove() + "'s.");
-                }
+                Player p = GAME.getHumanPlayer();
+                log.debug(p.getName() +" "+ playerMove.toString() +"'s");
                 handleMove(playerMove);
             } else {
                 if(GAME.getPlayers().size() == 2) {
@@ -183,6 +181,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         for(Player p : GAME.getPlayers()) {
             if(p.getType() == PlayerType.AI && p.isActive()) {
                 p.getRandomMove(GAME.getPlayers());
+                log.debug(p.getName() +" "+ p.getMove().toString() +"'s");
                 if(p.getMove()== Move.BET) {
                     p.getMove().setBet(10);
                     GAME.addToPot(p.getMove().getBet());
