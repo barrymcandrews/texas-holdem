@@ -1,13 +1,10 @@
 package holdem.models;
-
-
 import holdem.Constants;
-
 import javax.swing.*;
 
 import static holdem.models.Card.Value.*;
 
-public class Card {
+public class Card implements Comparable<Card> {
     private Suit suit;
     private Value value;
     private ImageIcon imageIcon;
@@ -78,8 +75,7 @@ public class Card {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -90,8 +86,7 @@ public class Card {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = suit.hashCode();
         result = 31 * result + value.hashCode();
         return result;
@@ -141,7 +136,18 @@ public class Card {
             this.value = value;
         }
     }
-    
+
+    @Override
+    public int compareTo(Card o) {
+        if (this.getValue().getValue() < o.getValue().getValue()) {
+            return -1;
+        } else if (this.getValue().getValue() > o.getValue().getValue()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public String toString() {
         return value + "|" + suit;
     }

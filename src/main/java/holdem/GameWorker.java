@@ -10,9 +10,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -49,11 +46,13 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.showAllCards();
             process(null);
             handleWinner();
-            
+
+            GAME.checkForEliminated();
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
             GAME.shuffleDeck();
+            GAME.checkForWinner();
             reactivatePlayers();
             process(null);
         }
@@ -108,50 +107,73 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void handleWinner(){
         HandScore bestScore = new HandScore(0, 0);
-        Player winner = null;
+        List<Player> winners = new ArrayList<>();
 
         log.debug("Cards Dealt: ");
         for (Player p : GAME.getPlayers()) {
             log.debug(p.getName() +": "+ p.getHand().toString());
         }
-
-            for (Player p : GAME.getPlayers()) {
+        
+        for (Player p : GAME.getPlayers()) {
             if (p.isActive()) {
                 HandScore temp;
                 temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
                 if (temp.compareTo(bestScore) > 0) {
                     bestScore = temp;
-                    winner = p;
+                    winners.clear();
+                    winners.add(p);
+                } else if(temp.equals(bestScore)) {
+                    winners.add(p);
                 }
-                // TODO: Handle ties with 2 winners
             }
         }
-        winner.winMoney(GAME.getPot());
-        log.debug(winner + " Wins: " +GAME.getPot());
-        JOptionPane.showMessageDialog(null, "Winning hand: " + winner.getHand().toString(), winner.getName() + " wins!", JOptionPane.PLAIN_MESSAGE);
+        int moneyWon = GAME.getPot() / winners.size();
+        for(Player p : winners) 
+            p.winMoney(moneyWon);
+        
+        log.debug(winners.toString() + " Wins: " + moneyWon);
+        displayWinner(winners);
 
+    }
+    
+    private void displayWinner(List<Player> winners) {
+        StringBuilder names = new StringBuilder();
+        StringBuilder hands = new StringBuilder();
+        String AND = " and ";
+        String COMMA = ", ";
+        if(winners.size() == 1) {
+            names.append(winners.get(0).getName() + " wins!");
+            hands.append("Winning hand: " + winners.get(0).getHand());
+        } else {
+            int i = 0;
+            for(Player p : winners) {
+                if(i == winners.size() - 1) 
+                    names.append(p.getName() + " tie!");
+                else {
+                    if(i == winners.size() - 2)  
+                        names.append(p.getName() + AND);
+                    else
+                        names.append(p.getName() + COMMA);
+                }
+                hands.append(p.getName() + "'s best hand: " + p.getHand() + "\n");
+                i++;
+             }
+        }
+        JOptionPane.showMessageDialog(null, hands.toString(), names.toString(), JOptionPane.PLAIN_MESSAGE);
     }
     
     /**
      * Gets move, if it is a bet, have all players set to inactive(fold)
      * @param playerMove
-     * @returns false if move was a bet, used to stop turns
+     * @returns true if game continues
      */
     private boolean handleMove(Move playerMove) {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-
-            for(Player player : GAME.getPlayers()) {
-                if(player.getType() == PlayerType.AI) {
-                    player.setActive(false);
-                }
-            } 
-            return false;
-        }
-        if(playerMove == Move.FOLD) {
+        } else if(playerMove == Move.FOLD) {
             GAME.getHumanPlayer().setActive(false);
-        }
+        } 
         return true;
     }
     
