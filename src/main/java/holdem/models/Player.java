@@ -2,8 +2,7 @@ package holdem.models;
 
 import holdem.GameWorker.Move;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Player {
 
@@ -13,11 +12,13 @@ public class Player {
     private PlayerType type = PlayerType.AI;
     private boolean isActive = true;
     private Move move;
+
     public Player(String name) {
         this.name = name;
         this.wallet = 1000;
         this.move = Move.INVALID;
     }
+
     public Player(String name, PlayerType type) {
         this.name = name;
         this.wallet = 1000;
@@ -80,6 +81,20 @@ public class Player {
 
     public String toString() {
         return name;
+    }
+
+
+    public Move getRandomMove(ArrayList<Player> players) {
+        ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.BET, Move.CALL, Move.BET));
+        for (Player p : players) {
+            if (p.getMove() == Move.BET) {
+                options.add(Move.FOLD);
+                break;
+            }
+        }
+        Move move = options.get(new Random().nextInt(options.size()));
+        this.setMove(move);
+        return move;
     }
 
     public enum PlayerType {HUMAN, AI}
