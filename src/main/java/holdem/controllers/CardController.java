@@ -20,8 +20,9 @@ public class CardController extends Controller {
 
     @Override
     public void setupLayout(JPanel view) {
+        view.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         view.setBackground(Color.white);
-        view.setPreferredSize(dimension);
+        view.setPreferredSize(new Dimension(this.dimension.width + 2, this.dimension.height));
         view.setLayout(new BoxLayout(view, BoxLayout.X_AXIS));
         view.setBorder(BorderFactory.createMatteBorder(1, 1,1,1, new Color(190, 190, 190)));
 

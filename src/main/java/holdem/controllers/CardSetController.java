@@ -11,6 +11,8 @@ public class CardSetController extends Controller {
 
     private Set<Card> cards;
     private Dimension cardDimension;
+    private GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
 
     public CardSetController(Set<Card> cards) {
         this(cards, Constants.DEFAULT_CARD_DIMENSION);
@@ -25,8 +27,11 @@ public class CardSetController extends Controller {
 
     @Override
     void setupLayout(JPanel view) {
-        view.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 0));
-        view.setBackground(new Color(0,0,0,0));
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        gridBagConstraints.insets = new Insets(0, 5,0, 5);
+        view.setLayout(gridBagLayout);
+
+        view.setBackground(new Color(0,0,0, 0));
     }
 
     @Override
@@ -36,7 +41,7 @@ public class CardSetController extends Controller {
         for (Card c : cards) {
             CardController cardController = new CardController(c, cardDimension);
             cardController.reloadData();
-            view.add(cardController.getView());
+            view.add(cardController.getView(), gridBagConstraints);
         }
     }
 }

@@ -1,5 +1,6 @@
 package holdem.controllers;
 
+import holdem.Constants;
 import holdem.Game;
 import holdem.models.Player;
 
@@ -21,7 +22,7 @@ public class MainController extends Controller {
 
     public MainController() {
         super();
-        deltCards = new CardSetController(GAME.getCenterCards());
+        deltCards = new CardSetController(GAME.getCenterCards(), Constants.LARGE_CARD_DIMENSION);
         playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
