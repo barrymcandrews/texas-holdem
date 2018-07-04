@@ -38,6 +38,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             gameQueue.clear();
             Move playerMove = gameQueue.take();
             boolean cont = handleMove(playerMove);
+            handleAIMove();
             
             cont = processMove(cont, 3);
             cont = processMove(cont, 1);
@@ -90,7 +91,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     p.setMove(playerMove);
                     log.debug(p.getName() +  " " + p.getMove() + "'s.");
                 }
-                return handleMove(playerMove);
+                handleMove(playerMove);
             } else {
                 if(GAME.getPlayers().size() == 2) {
                     //if there are only two players, folding should immediately end the game and the other player should win
@@ -98,9 +99,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 } else {
                     //No longer get moves from user once they have folded but allow round to finish out normally
                     JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
-                    return true;
                 }
             }
+            handleAIMove();
+            return true;
         } 
         return false;
     }
@@ -176,10 +178,29 @@ public class GameWorker extends SwingWorker<Void, Game> {
         } 
         return true;
     }
+
+    private boolean handleAIMove() {
+        for(Player p : GAME.getPlayers()) {
+            if(p.getType() == PlayerType.AI && p.isActive()) {
+                p.getRandomMove(GAME.getPlayers());
+                if(p.getMove()== Move.BET) {
+                    p.getMove().setBet(10);
+                    GAME.addToPot(p.getMove().getBet());
+                    p.loseMoney(p.getMove().getBet());
+                } else if(p.getMove() == Move.FOLD) {
+                   p.setActive(false);
+                   if(GAME.getPlayers().size() == 2)
+                       return false;
+                }
+            }
+        }
+        return true;
+    }
     
     private void reactivatePlayers() {
         for(Player player : GAME.getPlayers()) {
             player.setActive(true);
+            player.setMove(Move.INVALID);
         }
     }
     

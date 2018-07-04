@@ -2,6 +2,7 @@ package holdem.controllers;
 
 import holdem.Constants;
 import holdem.Game;
+import holdem.GameWorker;
 import holdem.models.Card;
 import holdem.models.Player;
 
@@ -47,7 +48,15 @@ public class SidebarRowController extends Controller {
 
         nameLabel.setText(player.getName());
         walletLabel.setText("$" + Integer.toString(player.getWallet()));
-        betLabel.setText("$0");
+        if(player.getMove() == GameWorker.Move.BET)
+            betLabel.setText("$" + Integer.toString(player.getMove().getBet()));
+        else
+            betLabel.setText("$0");
+
+        if(!player.isActive()) {
+            walletLabel.setText("FOLDED");
+            betLabel.setVisible(false);
+        }
     }
 
     public JLabel getNameLabel() {

@@ -152,6 +152,10 @@ public class Game {
             });
             dealer = players.get(0);
             players.add(humanPlayer);
+            for(Player p : getPlayers()) {
+                p.setActive(true);
+                p.setWallet(1000);
+            }
         } else {
             System.exit(0);
         }
