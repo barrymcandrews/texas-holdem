@@ -18,7 +18,9 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private int pot = 0;
+    private int sidePot = 0;
     private int numOpponents;
+    private int highestBet;
 
     private Game() {
         //get start up dialog and info
@@ -35,6 +37,7 @@ public class Game {
         });
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
+        highestBet = 0;
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
     }
 
@@ -47,7 +50,8 @@ public class Game {
      */
     public void dealToPlayers() {
         for (Player p : players) {
-            p.setHand(deck.dealCards(2, p == humanPlayer));
+            if(!p.isEliminated())
+                p.setHand(deck.dealCards(2, p == humanPlayer));
         }
     }
 
@@ -128,23 +132,42 @@ public class Game {
     public void addToPot(int bet) {
         pot += bet;
     }
+
+    public int getSidePot() {
+        return sidePot;
+    }
+
+    public void setSidePot(int sidePot) {
+        this.sidePot = sidePot;
+    }
+
+    public void addToSidePot(int sidePot) {
+        this.sidePot += sidePot;
+    }
     
     public void clearPot() {
         pot = 0;
     }
 
+    public int getHighestBet() {
+        return highestBet;
+    }
+
+    public void setHighestBet(int highestBet) {
+        this.highestBet = highestBet;
+    }
+
     public void checkForEliminated() {
-        ArrayList<Player> eliminatedPlayers = new ArrayList<>();
         for (Player p : players) {
             if (p.getWallet() == 0) {
-                eliminatedPlayers.add(p);
+                p.setEliminated(true);
+                p.setHand(new HashSet<>(0));
             }
         }
-        players.removeAll(eliminatedPlayers);
     }
 
     public void checkForWinner() {
-        if(players.size() == 1 || players.contains(humanPlayer) == false) {
+        if(players.size() == 1 || humanPlayer.isEliminated()) {
             askForRestart();
         }
     }
@@ -152,18 +175,12 @@ public class Game {
     public void askForRestart() {
         RestartDialogue restart = new RestartDialogue().show();
         if (restart.getRestart() == 1) {
-            Constants.AI_NAMES_LIST.forEach((name) -> {
-                if (name.equals(humanPlayer.getName())) {
-                    name = Constants.BACKUP_USERNAME;
-                }
-                if (players.size() < numOpponents)
-                    players.add(new Player(name));
-            });
             dealer = players.get(0);
-            players.add(humanPlayer);
             for (Player p : players) {
                 p.setActive(true);
                 p.setWallet(1000);
+                p.setEliminated(false);
+                p.setMove(GameWorker.Move.INVALID);
             }
         } else {
             System.exit(0);

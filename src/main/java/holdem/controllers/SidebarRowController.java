@@ -98,6 +98,7 @@ public class SidebarRowController extends Controller {
         }
 
         nameLabel.setText(player.getName());
+
         walletLabel.setText("<html>Wallet:<br>$" + Integer.toString(player.getWallet()) + "</html>");
         if(player.getMove() == GameWorker.Move.BET)
             betLabel.setText("<html>Bet:<br>$" + Integer.toString(player.getMove().getBet()) + "</html>");
@@ -106,7 +107,11 @@ public class SidebarRowController extends Controller {
 
         if(!player.isActive()) {
             betLabel.setText("FOLDED");
-            //betLabel.setVisible(false);
+        }
+
+        if(player.isEliminated()) {
+            betLabel.setForeground(Color.red);
+            betLabel.setText("ELIMINATED");
         }
     }
 

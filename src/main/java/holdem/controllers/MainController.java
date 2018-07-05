@@ -13,6 +13,7 @@ public class MainController extends Controller {
     private final Game GAME = Game.getInstance();
 
     private JLabel potLabel = new JLabel();
+    private JLabel sidePotLabel = new JLabel();
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
     private JLabel tagLabel = new JLabel();
@@ -36,6 +37,7 @@ public class MainController extends Controller {
 
         deltCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         potLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sidePotLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -46,6 +48,7 @@ public class MainController extends Controller {
         deltCardsView.setPreferredSize(new Dimension(deltCardsView.getWidth(), 250));
 
         potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
 
@@ -57,6 +60,7 @@ public class MainController extends Controller {
 
         view.add(deltCards.getView());
         view.add(potLabel);
+        view.add(sidePotLabel);
         view.add(playerCards.getView());
         view.add(playerMoney);
         view.add(playerName);
@@ -86,9 +90,13 @@ public class MainController extends Controller {
         }
 
         Player humanPlayer = GAME.getHumanPlayer();
-        potLabel.setText("$" + Integer.toString(GAME.getPot()));
+        potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
+        sidePotLabel.setText("Side Pot: $" + Integer.toString(GAME.getSidePot()));
 
         playerMoney.setText("$" + humanPlayer.getWallet());
         playerName.setText(humanPlayer.getName());
+
+        if(GAME.getSidePot() == 0)
+            sidePotLabel.setVisible(false);
     }
 }

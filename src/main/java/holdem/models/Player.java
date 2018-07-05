@@ -12,6 +12,7 @@ public class Player {
     private PlayerType type = PlayerType.AI;
     private boolean isActive = true;
     private Move move;
+    private boolean isEliminated = false;
 
     public Player(String name) {
         this.name = name;
@@ -95,6 +96,14 @@ public class Player {
         Move move = options.get(new Random().nextInt(options.size()));
         this.setMove(move);
         return move;
+    }
+
+    public boolean isEliminated() {
+        return isEliminated;
+    }
+
+    public void setEliminated(boolean eliminated) {
+        isEliminated = eliminated;
     }
 
     public enum PlayerType {HUMAN, AI}
