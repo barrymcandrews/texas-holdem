@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Random;
 
 public class Game {
     private static Logger log = LogManager.getLogger(Game.class);
@@ -34,7 +35,7 @@ public class Game {
             if (players.size() < numOpponents)
             players.add(new Player(name));
         });
-        dealer = players.get(0);
+        dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
@@ -84,6 +85,14 @@ public class Game {
                 c.setFaceUp(true);
             }
         }
+    }
+
+    public Player getBigBlind() {
+        return players.get((players.indexOf(dealer) + 1) % players.size());
+    }
+
+    public Player getLittleBlind() {
+        return players.get((players.indexOf(dealer) + 2) % players.size());
     }
 
     public ArrayList<Player> getPlayers() {

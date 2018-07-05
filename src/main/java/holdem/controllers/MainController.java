@@ -2,6 +2,7 @@ package holdem.controllers;
 
 import holdem.Constants;
 import holdem.Game;
+import holdem.components.RoundedCornerBorder;
 import holdem.models.Player;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class MainController extends Controller {
     private JLabel sidePotLabel = new JLabel();
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
+    private JLabel tagLabel = new JLabel();
 
     private CardSetController deltCards;
     private CardSetController playerCards;
@@ -39,6 +41,7 @@ public class MainController extends Controller {
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         view.setBackground(Color.white);
 
         JPanel deltCardsView = deltCards.getView();
@@ -52,12 +55,17 @@ public class MainController extends Controller {
         JPanel playerCardsView = playerCards.getView();
         playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
 
+        tagLabel.setBorder(new RoundedCornerBorder(Color.black));
+        tagLabel.setVisible(false);
+
         view.add(deltCards.getView());
         view.add(potLabel);
         view.add(sidePotLabel);
         view.add(playerCards.getView());
         view.add(playerMoney);
         view.add(playerName);
+        view.add(tagLabel);
+
         view.add(actionButtons.getView());
     }
 
@@ -66,6 +74,20 @@ public class MainController extends Controller {
         deltCards.reloadData();
         playerCards.reloadData();
         actionButtons.reloadData();
+
+        Player player = GAME.getHumanPlayer();
+        if (player == GAME.getDealer()) {
+            tagLabel.setText("Dealer");
+            tagLabel.setVisible(true);
+        } else if (player == GAME.getBigBlind()) {
+            tagLabel.setText("Big Blind");
+            tagLabel.setVisible(true);
+        }else if (player == GAME.getLittleBlind()) {
+            tagLabel.setText("Little Blind");
+            tagLabel.setVisible(true);
+        } else {
+            tagLabel.setVisible(false);
+        }
 
         Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
