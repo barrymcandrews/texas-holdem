@@ -103,7 +103,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 }
             }
             handleAIMove();
-
+            //equalizeBet(); TODO: need to implement some type of bet state b/c cannot currently accurately raise
             return true;
         } 
         return false;
@@ -175,6 +175,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         if(playerMove == Move.BET) {
             GAME.addToPot(playerMove.getBet());
             GAME.getHumanPlayer().loseMoney(playerMove.getBet());
+            GAME.setHighestBet(playerMove.getBet());
         } else if(playerMove == Move.FOLD) {
             GAME.getHumanPlayer().setActive(false);
         }  else if(playerMove == Move.CALL){
@@ -186,16 +187,30 @@ public class GameWorker extends SwingWorker<Void, Game> {
         return true;
     }
 
-    private void equalizeBet() {
+    private void equalizeBet() throws Exception {
+        boolean equal = false;
+        while(!equal)
         for(Player p : GAME.getPlayers()) {
             if(p.getType() == PlayerType.AI) {
                 p.setMove(Move.CALL);
                 if (hasEnoughMoney(p, GAME.getHighestBet())) {
                     p.setMove(Move.CALL);
                     p.getMove().setBet(GAME.getHighestBet());
+                    p.loseMoney(p.getMove().getBet());
+                    GAME.addToPot(p.getMove().getBet());
                 } else {
                     p.setMove(Move.FOLD);
                     p.setActive(false);
+                }
+            } else {
+                process(null);
+                if(GAME.getHumanPlayer().getMove().getBet() < GAME.getHighestBet()) {
+                    JOptionPane.showMessageDialog(null, "The bet has been raised. Call or bet to stay in");
+                    Move playerMove = gameQueue.take();
+                    handleMove(playerMove);
+                    process(null);
+                    if (playerMove != Move.BET)
+                        equal = true;
                 }
             }
         }
@@ -220,8 +235,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     GAME.setHighestBet(move.getBet());
                     GAME.addToPot(move.getBet());
                     p.loseMoney(move.getBet());
+                    p.setMove(move);
                 } else if(move == Move.FOLD) {
                    p.setActive(false);
+                    p.setMove(move);
                    if(GAME.getPlayers().size() == 2)
                        return false;
                 }
@@ -235,6 +252,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     }
                     GAME.addToPot(move.getBet());
                     p.loseMoney(move.getBet());
+                    p.setMove(move);
                 }
             }
         }
@@ -257,18 +275,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void clearHighestBet() {
         GAME.setHighestBet(0);
-    }
-
-    private boolean allPlayersMaxBet() {
-        boolean allHaveMax = true;
-        for(Player p : GAME.getPlayers()) {
-            if (p.isActive() && !p.isEliminated()) {
-                if (p.getMove().getBet() != GAME.getHighestBet()) {
-                    allHaveMax = false;
-                }
-            }
-        }
-        return allHaveMax;
     }
     
     public enum Move {

@@ -51,7 +51,7 @@ public class SidebarRowController extends Controller {
 
         nameLabel.setText(player.getName());
         eliminatedLabel.setText("ELIMINATED");
-        eliminatedLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        eliminatedLabel.setAlignmentY(Component.);
         walletLabel.setText("$" + Integer.toString(player.getWallet()));
         betLabel.setText("$" + Integer.toString(player.getMove().getBet()));
 
