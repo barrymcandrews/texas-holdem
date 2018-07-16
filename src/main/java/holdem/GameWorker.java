@@ -35,8 +35,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
 
-            GAME.getBigBlind().loseMoney(20);
-            GAME.getLittleBlind().loseMoney(10);
+            GAME.getBigBlind().setHandBet(20);
+            GAME.getLittleBlind().setHandBet(10);
             GAME.addToPot(30);
 
             gameQueue.clear();
@@ -95,7 +95,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             if (GAME.getHumanPlayer().isActive()) {
                 Move playerMove = gameQueue.take();
                 Player p = GAME.getHumanPlayer();
-                log.debug(p.getName() + " " + playerMove.toString() + "'s");
+                log.git debug(p.getName() + " " + playerMove.toString() + "'s");
                 handleMove(playerMove);
             } else {
                 if (GAME.getPlayers().size() == 2) {
