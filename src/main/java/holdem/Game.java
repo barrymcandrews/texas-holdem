@@ -99,6 +99,15 @@ public class Game {
         return players;
     }
     
+    public ArrayList<Player> getActivePlayers() {
+        ArrayList<Player> active = new ArrayList<>();
+        for(Player p : players) {
+            if(p.isActive())
+                active.add(p);
+        }
+        return active;
+    }
+    
     public ArrayList<Player> getPlayerOrder() {
         ArrayList<Player> order = new ArrayList<>();
         int dealerIndex = players.indexOf(getDealer()) + 1;
