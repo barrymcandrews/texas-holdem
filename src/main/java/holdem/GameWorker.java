@@ -91,22 +91,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-
-            if (GAME.getHumanPlayer().isActive()) {
-                Move playerMove = gameQueue.take();
-                Player p = GAME.getHumanPlayer();
-                log.git debug(p.getName() + " " + playerMove.toString() + "'s");
-                handleMove(playerMove);
-            } else {
-                if (GAME.getPlayers().size() == 2) {
-                    //if there are only two players, folding should immediately end the game and the other player should win
-                    return false;
-                } else {
-                    //No longer get moves from user once they have folded but allow round to finish out normally
-                    JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
-                }
-            }
-            handleAIMove();
+            handleMove();
             //equalizeBet(); TODO: need to implement some type of bet state b/c cannot currently accurately raise
             return true;
         } 
@@ -173,57 +158,14 @@ public class GameWorker extends SwingWorker<Void, Game> {
     /**
      * Gets move
      * @param playerMove
+     * @throws InterruptedException 
      * @returns true if game continues
      */
-    private boolean handleMove(Move playerMove) {
-        if(playerMove == Move.BET) {
-            GAME.addToPot(playerMove.getBet());
-            GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-            GAME.setHighestBet(playerMove.getBet());
-        } else if(playerMove == Move.FOLD) {
-            GAME.getHumanPlayer().setActive(false);
-        }  else if(playerMove == Move.CALL){
-            //match highest bet
-            playerMove.setBet(GAME.getHighestBet());
-            GAME.addToPot(playerMove.getBet());
-            GAME.getHumanPlayer().loseMoney(playerMove.getBet());
-        }
-        return true;
-    }
-
-    private void equalizeBet() throws Exception {
-        boolean equal = false;
-        while(!equal)
-        for(Player p : GAME.getPlayers()) {
-            if(p.getType() == PlayerType.AI) {
-                p.setMove(Move.CALL);
-                if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                    p.setMove(Move.CALL);
-                    p.getMove().setBet(GAME.getHighestBet());
-                    p.loseMoney(p.getMove().getBet());
-                    GAME.addToPot(p.getMove().getBet());
-                } else {
-                    p.setMove(Move.FOLD);
-                    p.setActive(false);
-                }
-            } else {
-                process(null);
-                if(GAME.getHumanPlayer().getMove().getBet() < GAME.getHighestBet()) {
-                    JOptionPane.showMessageDialog(null, "The bet has been raised. Call or bet to stay in");
-                    Move playerMove = gameQueue.take();
-                    handleMove(playerMove);
-                    process(null);
-                    if (playerMove != Move.BET)
-                        equal = true;
-                }
-            }
-        }
-    }
-
-    private boolean handleAIMove() {
-        for(Player p : GAME.getPlayers()) {
+    private boolean handleMove() throws InterruptedException {
+        for(Player p : GAME.getPlayerOrder()) {
             if(p.getType() == PlayerType.AI && p.isActive() && !p.isEliminated()) {
                 Move move = p.getRandomMove(GAME.getPlayers());
+                JOptionPane.showMessageDialog(null, p.getName() + " " + move);
                 log.debug(p.getName() +" "+ p.getMove().toString() +"'s");
                 //raise current bet $10
                 if(move== Move.BET) {
@@ -257,6 +199,31 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     GAME.addToPot(move.getBet());
                     p.loseMoney(move.getBet());
                     p.setMove(move);
+                }
+            } else if (p.getType() == PlayerType.HUMAN) {
+                Move move = gameQueue.take();
+                log.debug(p.getName() + " " + move.toString() + "'s");
+                if(p.isActive()) {
+                    if(move == Move.BET) {
+                        GAME.addToPot(move.getBet());
+                        p.loseMoney(move.getBet());
+                        GAME.setHighestBet(move.getBet());
+                    } else if(move == Move.FOLD) {
+                        GAME.getHumanPlayer().setActive(false);
+                    }  else if(move == Move.CALL){
+                        //match highest bet
+                        move.setBet(GAME.getHighestBet());
+                        GAME.addToPot(move.getBet());
+                        GAME.getHumanPlayer().loseMoney(move.getBet());
+                    }
+                } else {
+                    if (GAME.getPlayers().size() == 2) {
+                        //if there are only two players, folding should immediately end the game and the other player should win
+                        return false;
+                    } else {
+                        //No longer get moves from user once they have folded but allow round to finish out normally
+                        JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
+                    }
                 }
             }
         }
