@@ -98,6 +98,14 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+    
+    public ArrayList<Player> getPlayerOrder() {
+        ArrayList<Player> order = new ArrayList<>();
+        int dealerIndex = players.indexOf(getDealer()) + 1;
+        for(int i = 0; i < players.size(); i++) 
+            order.add(players.get((i + dealerIndex) % players.size()));
+        return order;
+    }
 
     public Player getHumanPlayer() {
         return humanPlayer;
