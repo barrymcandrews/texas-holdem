@@ -21,6 +21,7 @@ public class Game {
     private int sidePot = 0;
     private int numOpponents;
     private int highestBet;
+    private boolean isHumanPlayersTurn;
 
     private Game() {
         //get start up dialog and info
@@ -172,6 +173,14 @@ public class Game {
 
     public void setHighestBet(int highestBet) {
         this.highestBet = highestBet;
+    }
+
+    public boolean isHumanPlayersTurn() {
+        return isHumanPlayersTurn;
+    }
+
+    public void setHumanPlayersTurn(boolean isHumanPlayersTurn) {
+        this.isHumanPlayersTurn = isHumanPlayersTurn;
     }
 
     public void checkForEliminated() {

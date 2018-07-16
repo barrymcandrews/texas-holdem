@@ -193,14 +193,15 @@ public class GameWorker extends SwingWorker<Void, Game> {
     private Move getMove(Player p) throws InterruptedException {
         Move move = null;
         if (p.getType() == PlayerType.AI && p.isActive() && !p.isEliminated()) {
+            GAME.setHumanPlayersTurn(false);
             move = p.getRandomMove(GAME.getPlayers());
             //JOptionPane.showMessageDialog(null, p.getName() + " " + move);
         } else if (p.getType() == PlayerType.HUMAN) {
+            GAME.setHumanPlayersTurn(true);
             process(null);
-            if(p.isActive()) {
-                JOptionPane.showMessageDialog(null, "You're turn.");
+            if(p.isActive()) 
                 move = gameQueue.take(); 
-            } else 
+            else 
                 JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
         }
         return move;
