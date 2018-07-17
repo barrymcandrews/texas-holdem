@@ -1,11 +1,7 @@
 package holdem;
 
-import javax.swing.Box;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 /**
  * Class that gets all show information needed for a game in a dialogue
  */
@@ -26,6 +22,13 @@ public class StartDialogue {
         panel.add(Box.createHorizontalStrut(15));
         panel.add(new JLabel("Please enter the number of opponents:"));
         panel.add(playersField);
+
+        JCheckBox timerCheck = new JCheckBox("Enable Timer");
+        panel.add(timerCheck);
+        if(timerCheck.isSelected()){
+            panel.add(new JLabel("Please enter a time limit"));
+        }
+
 
         // get the results. if user presses cancel, exit
         int result = JOptionPane.showConfirmDialog(null, panel, "Please enter the following:", JOptionPane.OK_CANCEL_OPTION);
