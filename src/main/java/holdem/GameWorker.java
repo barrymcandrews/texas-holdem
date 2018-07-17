@@ -57,6 +57,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.incrementDealer();
             GAME.clearCenterCards();
             GAME.clearPot();
+            GAME.clearPlayerRoundBets();
             GAME.shuffleDeck();
             GAME.checkForWinner();
             reactivatePlayers();
@@ -92,7 +93,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
             handleMove();
-            //equalizeBet(); TODO: need to implement some type of bet state b/c cannot currently accurately raise
+            GAME.clearPlayerHandBets();
             return true;
         } 
         return false;
@@ -157,7 +158,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
     
     /**
      * Gets move
-     * @param playerMove
      * @throws InterruptedException 
      * @returns true if game continues
      */

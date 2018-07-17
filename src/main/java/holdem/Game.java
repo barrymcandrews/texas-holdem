@@ -194,4 +194,16 @@ public class Game {
             System.exit(0);
         }
     }
+
+    public void clearPlayerHandBets() {
+        for (Player p : players) {
+            p.setHandBet(0);
+        }
+    }
+
+    public void clearPlayerRoundBets() {
+        for (Player p : players) {
+            p.setTotalRoundBet(0);
+        }
+    }
 }
