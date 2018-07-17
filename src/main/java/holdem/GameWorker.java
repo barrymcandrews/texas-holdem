@@ -167,9 +167,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
             log.debug(p.getName() + " " + p.getMove().toString() + "'s");
             if (move == Move.BET) {
                 handleBet(p, move);
-                GAME.setHighestBet(move.getBet());
-                GAME.addToPot(move.getBet());
-                p.loseMoney(move.getBet());
+                GAME.setHighestBet(p.getHandBet());
+                GAME.addToPot(p.getHandBet());
+                p.loseMoney(p.getHandBet());
                 p.setMove(move);
             } else if (move == Move.FOLD) {
                 p.setActive(false);
@@ -179,12 +179,12 @@ public class GameWorker extends SwingWorker<Void, Game> {
             } else if (move == Move.CALL) {
                 // match highest bet
                 if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                    move.setBet(GAME.getHighestBet());
+                    p.setHandBet(GAME.getHighestBet());
                 } else {
-                    move.setBet(p.getWallet());
+                    p.setHandBet(p.getWallet());
                 }
-                GAME.addToPot(move.getBet());
-                p.loseMoney(move.getBet());
+                GAME.addToPot(p.getHandBet());
+                p.loseMoney(p.getHandBet());
                 p.setMove(move);
             }
         }
@@ -211,11 +211,17 @@ public class GameWorker extends SwingWorker<Void, Game> {
     private void handleBet(Player p, Move move) {
         if(p.getType() == PlayerType.AI) {
             if (hasEnoughMoney(p, GAME.getHighestBet() + 10)) {
-                move.setBet(GAME.getHighestBet() + 10);
+                p.setHandBet(GAME.getHighestBet() + 10);
             } else if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                move.setBet(GAME.getHighestBet());
+                p.setHandBet(GAME.getHighestBet());
             } else {
-                move.setBet(p.getWallet());
+                p.setHandBet(p.getWallet());
+            }
+        } else {
+            if (hasEnoughMoney(p, move.getBet())) {
+                p.setHandBet(move.getBet());
+            } else {
+                p.setHandBet(p.getWallet());
             }
         }
     }
@@ -239,13 +245,13 @@ public class GameWorker extends SwingWorker<Void, Game> {
     }
     
     public enum Move {
-        BET(0),
-        CALL(0), 
-        FOLD(0),
-        INVALID(0);
+        BET,
+        CALL,
+        FOLD,
+        INVALID;
 
-        private int bet;
-        
+        int bet;
+
         public int getBet() {
             return bet;
         }
@@ -253,9 +259,5 @@ public class GameWorker extends SwingWorker<Void, Game> {
         public void setBet(int bet) {
             this.bet = bet;
         }
-        
-        Move(int bet) {
-            this.setBet(bet);
-        }   
     }
 }
