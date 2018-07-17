@@ -2,11 +2,11 @@ package holdem;
 
 import javax.swing.*;
 
-public class RestartDialogue {
+public class RestartDialog {
 
     int restart;
 
-    public RestartDialogue show() {
+    public RestartDialog show() {
 
         // get the results. if user presses cancel, exit
         if (JOptionPane.showConfirmDialog(null, "Would you like to play again?", "Restart?",

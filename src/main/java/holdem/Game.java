@@ -25,16 +25,19 @@ public class Game {
 
     private Game() {
         //get start up dialog and info
-        StartDialogue dialog  = new StartDialogue().show();
-        humanPlayer = new Player(dialog.getUserName(), Player.PlayerType.HUMAN);
+        StartDialog.DialogResult dialogResult  = new StartDialog().show();
+        humanPlayer = new Player(dialogResult.userName, Player.PlayerType.HUMAN);
+        numOpponents = dialogResult.numberOfOpponents;
+
         log.debug("Player Name: " + humanPlayer.getName());
         Constants.AI_NAMES_LIST.forEach((name) -> {
             if (name.equals(humanPlayer.getName())) {
                 name = Constants.BACKUP_USERNAME;
             }
-            numOpponents = dialog.getNumberOfOpponents();
-            if (players.size() < numOpponents)
-            players.add(new Player(name));
+
+            if (players.size() < numOpponents) {
+                players.add(new Player(name));
+            }
         });
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
@@ -199,7 +202,7 @@ public class Game {
     }
 
     public void askForRestart() {
-        RestartDialogue restart = new RestartDialogue().show();
+        RestartDialog restart = new RestartDialog().show();
         if (restart.getRestart() == 1) {
             dealer = players.get(0);
             for (Player p : players) {
