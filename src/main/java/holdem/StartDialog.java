@@ -119,6 +119,7 @@ public class StartDialog {
         dialogResult.numberOfOpponents = (int) playersField.getSelectedItem();
         dialogResult.userName = nameField.getText();
         dialogResult.timer = parseTime(timerField.getText());
+        MyTimerTask.setMyTimer(dialogResult.timer);
 
         // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
         if (dialogResult.userName == null || dialogResult.userName.isEmpty()) {

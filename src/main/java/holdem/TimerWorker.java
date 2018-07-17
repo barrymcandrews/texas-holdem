@@ -16,7 +16,6 @@ public class TimerWorker extends SwingWorker<Void, Game> {
     @Override
     protected Void doInBackground() {
         log.debug("Timer Started");
-
         return null;
     }
 

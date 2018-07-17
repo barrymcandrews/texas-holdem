@@ -4,12 +4,17 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MyTimerTask extends  TimerTask{
+public class MyTimerTask extends  TimerTask {
+
+    private static int interval = 0;
+
+    private static Timer myTimer = new Timer();
+
     @Override
     public void run() {
-        System.out.println("Timer task started at:"+new Date());
+        System.out.println("Timer task started at:" + new Date());
         completeTask();
-        System.out.println("Timer task finished at:"+new Date());
+        System.out.println("Timer task finished at:" + new Date());
     }
 
     private void completeTask() {
@@ -21,11 +26,11 @@ public class MyTimerTask extends  TimerTask{
         }
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         TimerTask timerTask = new MyTimerTask();
         //running timer task as daemon thread
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 0, 10*1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 10 * 1000);
         System.out.println("TimerTask started");
         //cancel after sometime
         try {
@@ -42,5 +47,31 @@ public class MyTimerTask extends  TimerTask{
         }
     }
 
-}
+    public void start(String[] args) {
+        int delay = 1000;
+        int period = 1000;
+        myTimer = new Timer();
+        myTimer.scheduleAtFixedRate(new TimerTask() {
 
+            public void run() {
+                System.out.println(setInterval());
+
+            }
+        }, delay, period);
+    }
+
+    private static int setInterval() {
+        if (interval == 1)
+            myTimer.cancel();
+        return --interval;
+    }
+
+    public static int getMyTimerPeriod() {
+        return interval;
+    }
+
+    public static void setMyTimer(int seconds) {
+        MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
+        interval = seconds;
+    }
+}
