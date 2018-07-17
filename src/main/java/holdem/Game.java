@@ -21,19 +21,23 @@ public class Game {
     private int sidePot = 0;
     private int numOpponents;
     private int highestBet;
+    private boolean isHumanPlayersTurn;
 
     private Game() {
         //get start up dialog and info
-        StartDialogue dialog  = new StartDialogue().show();
-        humanPlayer = new Player(dialog.getUserName(), Player.PlayerType.HUMAN);
+        StartDialog.DialogResult dialogResult  = new StartDialog().show();
+        humanPlayer = new Player(dialogResult.userName, Player.PlayerType.HUMAN);
+        numOpponents = dialogResult.numberOfOpponents;
+
         log.debug("Player Name: " + humanPlayer.getName());
         Constants.AI_NAMES_LIST.forEach((name) -> {
             if (name.equals(humanPlayer.getName())) {
                 name = Constants.BACKUP_USERNAME;
             }
-            numOpponents = dialog.getNumberOfOpponents();
-            if (players.size() < numOpponents)
-            players.add(new Player(name));
+
+            if (players.size() < numOpponents) {
+                players.add(new Player(name));
+            }
         });
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
@@ -97,6 +101,15 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+    
+    public ArrayList<Player> getActivePlayers() {
+        ArrayList<Player> active = new ArrayList<>();
+        for(Player p : players) {
+            if(p.isActive())
+                active.add(p);
+        }
+        return active;
     }
     
     public ArrayList<Player> getPlayerOrder() {
@@ -165,6 +178,14 @@ public class Game {
         this.highestBet = highestBet;
     }
 
+    public boolean isHumanPlayersTurn() {
+        return isHumanPlayersTurn;
+    }
+
+    public void setHumanPlayersTurn(boolean isHumanPlayersTurn) {
+        this.isHumanPlayersTurn = isHumanPlayersTurn;
+    }
+
     public void checkForEliminated() {
         for (Player p : players) {
             if (p.getWallet() == 0) {
@@ -181,7 +202,7 @@ public class Game {
     }
 
     public void askForRestart() {
-        RestartDialogue restart = new RestartDialogue().show();
+        RestartDialog restart = new RestartDialog().show();
         if (restart.getRestart() == 1) {
             dealer = players.get(0);
             for (Player p : players) {
