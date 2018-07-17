@@ -111,6 +111,15 @@ public class Game {
         }
         return active;
     }
+
+    public ArrayList<Player> getNotEliminatedPlayers() {
+        ArrayList<Player> notEliminated = new ArrayList<>();
+        for(Player p : players) {
+            if(p.isEliminated())
+                notEliminated.add(p);
+        }
+        return notEliminated;
+    }
     
     public ArrayList<Player> getPlayerOrder() {
         ArrayList<Player> order = new ArrayList<>();
@@ -196,7 +205,7 @@ public class Game {
     }
 
     public void checkForWinner() {
-        if(players.size() == 1 || humanPlayer.isEliminated()) {
+        if(getNotEliminatedPlayers().size() == 1 || humanPlayer.isEliminated()) {
             askForRestart();
         }
     }

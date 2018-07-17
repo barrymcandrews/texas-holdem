@@ -40,7 +40,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
             GAME.addToPot(30);
 
             gameQueue.clear();
-            clearHighestBet();
             boolean cont = processMove(true, 0);
             cont = processMove(cont, 3);
             cont = processMove(cont, 1);
@@ -169,7 +168,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 handleBet(p, move);
                 GAME.setHighestBet(p.getHandBet());
                 GAME.addToPot(p.getHandBet());
-                p.loseMoney(p.getHandBet());
                 p.setMove(move);
             } else if (move == Move.FOLD) {
                 p.setActive(false);
@@ -184,7 +182,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     p.setHandBet(p.getWallet());
                 }
                 GAME.addToPot(p.getHandBet());
-                p.loseMoney(p.getHandBet());
                 p.setMove(move);
             }
         }
