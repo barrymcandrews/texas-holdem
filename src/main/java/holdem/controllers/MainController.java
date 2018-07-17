@@ -17,6 +17,7 @@ public class MainController extends Controller {
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
     private JLabel tagLabel = new JLabel();
+    private JLabel timerLabel = new JLabel();
 
     private CardSetController deltCards;
     private CardSetController playerCards;
@@ -42,6 +43,8 @@ public class MainController extends Controller {
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
         tagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        timerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
         view.setBackground(Color.white);
 
         JPanel deltCardsView = deltCards.getView();
@@ -51,6 +54,7 @@ public class MainController extends Controller {
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
+        timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         JPanel playerCardsView = playerCards.getView();
         playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
@@ -58,6 +62,7 @@ public class MainController extends Controller {
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
         tagLabel.setVisible(false);
 
+        view.add(timerLabel);
         view.add(deltCards.getView());
         view.add(potLabel);
         view.add(sidePotLabel);
@@ -95,6 +100,7 @@ public class MainController extends Controller {
 
         playerMoney.setText("$" + humanPlayer.getWallet());
         playerName.setText(humanPlayer.getName());
+        timerLabel.setText("FOLDED");
 
         if(GAME.getSidePot() == 0)
             sidePotLabel.setVisible(false);
