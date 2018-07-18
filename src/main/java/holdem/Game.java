@@ -231,7 +231,7 @@ public class Game {
 
     public void clearPlayerHandBets() {
         for (Player p : players) {
-            p.setHandBet(0);
+            p.resetHandBet();
         }
     }
 

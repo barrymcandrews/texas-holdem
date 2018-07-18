@@ -128,6 +128,10 @@ public class Player {
             this.totalRoundBet += this.handBet - prebet;
         }
     }
+    
+    public void resetHandBet() {
+        handBet = 0;
+    }
 
     public int getTotalRoundBet() {
         return totalRoundBet;
