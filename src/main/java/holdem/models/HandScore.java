@@ -12,6 +12,7 @@ public class HandScore implements Comparable<HandScore>{
     3 - two pair
     2 - pair
     1 - high card
+    -1 - all players folded
     */
 
     private int rank;
@@ -34,6 +35,15 @@ public class HandScore implements Comparable<HandScore>{
     public HandScore(int rank, int topCard) {
         this.rank = rank;
         this.topCard = topCard;
+        this.secondCard = 0;
+        this.thirdCard = 0;
+        this.fourthCard = 0;
+        this.fifthCard = 0;
+    }
+    
+    public HandScore(int rank) {
+        this.rank = rank;
+        this.topCard = 0;
         this.secondCard = 0;
         this.thirdCard = 0;
         this.fourthCard = 0;
@@ -106,6 +116,8 @@ public class HandScore implements Comparable<HandScore>{
     
     public String toString() {
         switch(this.rank) {
+        case -1:
+            return "All other players folded!";
         case 1:
             return Card.intToValue(this.topCard) + " high";
         case 2:
