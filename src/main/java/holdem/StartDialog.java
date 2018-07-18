@@ -1,11 +1,9 @@
 package holdem;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import static java.awt.GridBagConstraints.LINE_END;
 import static java.awt.GridBagConstraints.CENTER;
@@ -19,10 +17,12 @@ public class StartDialog {
     private JLabel instructionsLabel;
     private JTextField nameField;
     private JComboBox<Integer> playersField;
+    private JTextField timerField;
 
     public class DialogResult {
         public int numberOfOpponents;
         public String userName;
+        public int timer;
     }
 
     public StartDialog() {
@@ -73,6 +73,36 @@ public class StartDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         dialogPanel.add(playersField, c);
 
+        JCheckBox enableTimer = new JCheckBox("Enable timer? ", false);
+        c.anchor = LINE_END;
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+
+        c.insets = new Insets(5, 5, 5, 5);
+        timerField = new JTextField(20);
+        timerField.setEnabled(false);
+        timerField.setText("Enter timer value in seconds");
+
+        enableTimer.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                timerField.setEnabled(true);
+            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                timerField.setEnabled(false);
+            }
+            dialogPanel.validate();
+            dialogPanel.repaint();
+        });
+
+        dialogPanel.add(enableTimer, c);
+
+        c.anchor = CENTER;
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        dialogPanel.add(timerField, c);
     }
 
     
@@ -88,6 +118,8 @@ public class StartDialog {
         DialogResult dialogResult = new DialogResult();
         dialogResult.numberOfOpponents = (int) playersField.getSelectedItem();
         dialogResult.userName = nameField.getText();
+        dialogResult.timer = parseTime(timerField.getText());
+        MyTimerTask.setMyTimer(dialogResult.timer);
 
         // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
         if (dialogResult.userName == null || dialogResult.userName.isEmpty()) {
@@ -95,6 +127,20 @@ public class StartDialog {
             return show();
         }
 
+        if (timerField.isEnabled() && (timerField == null || dialogResult.timer <= 10 || dialogResult.timer > 120)) {
+            instructionsLabel.setText("Timer value must be between 10 seconds and 120 seconds.");
+            return show();
+        }
+
         return dialogResult;
+    }
+
+    private int parseTime(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            //string is non numeric
+            return -1;
+        }
     }
 }

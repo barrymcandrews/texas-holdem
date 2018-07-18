@@ -2,11 +2,14 @@ package holdem.controllers;
 
 import holdem.Constants;
 import holdem.Game;
+import holdem.GameWorker;
+import holdem.MyTimerTask;
 import holdem.components.RoundedCornerBorder;
 import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainController extends Controller {
@@ -17,15 +20,17 @@ public class MainController extends Controller {
     private JLabel playerMoney = new JLabel();
     private JLabel playerName = new JLabel();
     private JLabel tagLabel = new JLabel();
+    private JLabel timerLabel = new JLabel();
 
-    private CardSetController deltCards;
+    private CardSetController dealtCards;
     private CardSetController playerCards;
     private ActionButtonController actionButtons;
+    private int seconds = MyTimerTask.getMyTimerPeriod();
 
 
     public MainController() {
         super();
-        deltCards = new CardSetController(GAME.getCenterCards(), Constants.LARGE_CARD_DIMENSION);
+        dealtCards = new CardSetController(GAME.getCenterCards(), Constants.LARGE_CARD_DIMENSION);
         playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
@@ -35,22 +40,25 @@ public class MainController extends Controller {
     public void setupLayout(JPanel view) {
         view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
 
-        deltCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
+        dealtCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         potLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidePotLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
         tagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        timerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
         view.setBackground(Color.white);
 
-        JPanel deltCardsView = deltCards.getView();
+        JPanel deltCardsView = dealtCards.getView();
         deltCardsView.setPreferredSize(new Dimension(deltCardsView.getWidth(), 250));
 
         potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
+        timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         JPanel playerCardsView = playerCards.getView();
         playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
@@ -58,7 +66,8 @@ public class MainController extends Controller {
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
         tagLabel.setVisible(false);
 
-        view.add(deltCards.getView());
+        view.add(timerLabel);
+        view.add(dealtCards.getView());
         view.add(potLabel);
         view.add(sidePotLabel);
         view.add(playerCards.getView());
@@ -67,13 +76,34 @@ public class MainController extends Controller {
         view.add(tagLabel);
 
         view.add(actionButtons.getView());
+
+        Timer timer = new Timer(1000, e -> {
+            Player player = GAME.getHumanPlayer();
+            if (player.isActive()) {
+                long minute = TimeUnit.SECONDS.toMinutes(seconds)
+                    - (TimeUnit.SECONDS.toHours(seconds) * 60);
+                long second = TimeUnit.SECONDS.toSeconds(seconds)
+                    - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+                timerLabel.setText(minute + " Minute(s) and " + second + " Second(s)");
+                if (seconds == 0) {
+                    timerLabel.setText("FOLDED");
+                    GameWorker.gameQueue.add(GameWorker.Move.FOLD);
+                }
+                seconds--;
+            }
+            else{
+                timerLabel.setText("FOLDED");
+            }
+        });
+        timer.start();
     }
 
     @Override
     public void reloadData() {
-        deltCards.reloadData();
+        dealtCards.reloadData();
         playerCards.reloadData();
         actionButtons.reloadData();
+        seconds = MyTimerTask.getMyTimerPeriod();
 
         Player player = GAME.getHumanPlayer();
         if (player == GAME.getDealer()) {
