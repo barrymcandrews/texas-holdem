@@ -81,12 +81,16 @@ public class Game {
     }
 
     /**
-     * Flips every card in the game face up
+     * Flips every card in the game face up for all active players if player did
+     * not win just because everyone else folded.
      */
     public void showAllCards() {
-        for (Player p : Game.getInstance().getActivePlayers()) {
-            for (Card c : p.getHand()) {
-                c.setFaceUp(true);
+        ArrayList<Player> active = getActivePlayers();
+        if(active.size() > 1) {
+            for (Player p : active) {
+                for (Card c : p.getHand()) {
+                    c.setFaceUp(true);
+                }
             }
         }
     }

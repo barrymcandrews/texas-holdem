@@ -2,6 +2,8 @@ package holdem.models;
 
 import java.util.*;
 
+import holdem.Game;
+
 public class BestHand {
 
     public static HandScore findBestHand(Set<Card> playerHand, Set<Card> riverCards) {
@@ -12,7 +14,7 @@ public class BestHand {
         cardsAvailable.addAll(riverCards);
 
         HandScore bestScore;
-        bestScore = checkForRiverCards(riverCards);
+        bestScore = checkForAllFolded(riverCards);
         if (bestScore != null) {
             return bestScore;
         }
@@ -275,8 +277,8 @@ public class BestHand {
      * @param riverCards
      * @return
      */
-    public static HandScore checkForRiverCards(Set<Card> riverCards) {
-       if(riverCards.size() < 5)
+    public static HandScore checkForAllFolded(Set<Card> riverCards) {
+       if(riverCards.size() < 5 || Game.getInstance().getActivePlayers().size() == 1)
            return new HandScore(-1);
        return null;
     }
