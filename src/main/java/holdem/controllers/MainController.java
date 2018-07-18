@@ -23,6 +23,7 @@ public class MainController extends Controller {
     private JLabel playerName = new JLabel();
     private JLabel tagLabel = new JLabel();
     private JLabel timerLabel = new JLabel();
+    private JLabel highestBetLabel = new JLabel();
 
     private CardSetController dealtCards;
     private CardSetController playerCards;
@@ -45,6 +46,7 @@ public class MainController extends Controller {
         dealtCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         potLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidePotLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        highestBetLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -58,6 +60,7 @@ public class MainController extends Controller {
 
         potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+        highestBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
         timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
@@ -72,6 +75,7 @@ public class MainController extends Controller {
         view.add(dealtCards.getView());
         view.add(potLabel);
         view.add(sidePotLabel);
+        view.add(highestBetLabel);
         view.add(playerCards.getView());
         view.add(playerMoney);
         view.add(playerName);
@@ -128,6 +132,7 @@ public class MainController extends Controller {
         Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
         sidePotLabel.setText("Side Pot: $" + Integer.toString(GAME.getSidePot()));
+        highestBetLabel.setText("Highest bet: $" + GAME.getHighestBet());
 
         playerMoney.setText("$" + humanPlayer.getWallet());
         playerName.setText(humanPlayer.getName());
