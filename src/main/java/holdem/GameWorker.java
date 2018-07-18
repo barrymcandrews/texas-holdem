@@ -161,30 +161,32 @@ public class GameWorker extends SwingWorker<Void, Game> {
      * @returns true if game continues
      */
     private boolean handleMove() throws InterruptedException {
-        for (Player p : GAME.getPlayerOrder()) {
-            Move move = getMove(p);
-            log.debug(p.getName() + " " + p.getMove().toString() + "'s");
-            if (move == Move.BET) {
-                handleBet(p, move);
-                GAME.setHighestBet(p.getHandBet());
-                GAME.addToPot(p.getHandBet());
-                p.setMove(move);
-            } else if (move == Move.FOLD) {
-                p.setActive(false);
-                p.setMove(move);
-                if (GAME.getPlayers().size() == 2)
-                    return false;
-            } else if (move == Move.CALL) {
-                // match highest bet
-                if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                    p.setHandBet(GAME.getHighestBet());
-                } else {
-                    p.setHandBet(p.getWallet());
+        do {
+            for (Player p : GAME.getPlayerOrder()) {
+                Move move = getMove(p);
+                log.debug(p.getName() + " " + p.getMove().toString() + "'s");
+                if (move == Move.BET) {
+                    handleBet(p, move);
+                    GAME.setHighestBet(p.getHandBet());
+                    GAME.addToPot(p.getHandBet());
+                    p.setMove(move);
+                } else if (move == Move.FOLD) {
+                    p.setActive(false);
+                    p.setMove(move);
+                    if (GAME.getPlayers().size() == 2)
+                        return false;
+                } else if (move == Move.CALL) {
+                    // match highest bet
+                    if (hasEnoughMoney(p, GAME.getHighestBet())) {
+                        p.setHandBet(GAME.getHighestBet());
+                    } else {
+                        p.setHandBet(p.getWallet());
+                    }
+                    GAME.addToPot(p.getHandBet());
+                    p.setMove(move);
                 }
-                GAME.addToPot(p.getHandBet());
-                p.setMove(move);
             }
-        }
+        } while(!allPlayersMaxBet());
         return true;
     }
     
@@ -233,6 +235,15 @@ public class GameWorker extends SwingWorker<Void, Game> {
     private boolean hasEnoughMoney(Player p, int betAmount) {
         if (p.getWallet() < betAmount) {
             return false;
+        }
+        return true;
+    }
+
+    private boolean allPlayersMaxBet() {
+        for (Player p : GAME.getPlayers()) {
+            if (p.isActive() && p.getHandBet() < GAME.getHighestBet()) {
+                return false;
+            }
         }
         return true;
     }
