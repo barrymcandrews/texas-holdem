@@ -175,7 +175,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 } else if (move == Move.FOLD) {
                     p.setActive(false);
                     p.setMove(move);
-                    if (GAME.getPlayers().size() == 2)
+                    if (GAME.getActivePlayers().size() == 1)
                         return false;
                 } else if (move == Move.CALL) {
                     // match highest bet
