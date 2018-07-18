@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'eclipse'
 }
 
 group 'com.bebopbrains'
@@ -21,4 +22,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+run {
+    args '-Djava.awt.headless=true'
 }
