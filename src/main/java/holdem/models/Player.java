@@ -91,7 +91,7 @@ public class Player {
     }
 
     public Move getRandomMove(ArrayList<Player> players) {
-        ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.BET, Move.CALL, Move.BET));
+        ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.CALL, Move.CALL, Move.CALL, Move.CALL, Move.BET, Move.BET));
         for (Player p : players) {
             if (p.getMove() == Move.BET) {
                 options.add(Move.FOLD);
@@ -117,14 +117,20 @@ public class Player {
 
     public void setHandBet(int handBet) {
         if (getWallet() >= handBet) {
+            int prebet = this.handBet;
             this.handBet = handBet;
-            loseMoney(handBet);
-            this.totalRoundBet += this.handBet;
+            loseMoney(handBet - prebet);
+            this.totalRoundBet += this.handBet - prebet;
         } else {
             this.handBet = getWallet();
-            loseMoney(this.handBet);
-            this.totalRoundBet += this.handBet;
+            int prebet = this.handBet;
+            loseMoney(this.handBet - prebet);
+            this.totalRoundBet += this.handBet - prebet;
         }
+    }
+    
+    public void resetHandBet() {
+        handBet = 0;
     }
 
     public int getTotalRoundBet() {
