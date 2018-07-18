@@ -11,8 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
-import static java.sql.Types.NULL;
-
 
 public class MainController extends Controller {
     private final Game GAME = Game.getInstance();
@@ -41,22 +39,8 @@ public class MainController extends Controller {
 
     @Override
     public void setupLayout(JPanel view) {
-        view.setLayout(new BoxLayout(view, BoxLayout.Y_AXIS));
-
-        dealtCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
-        potLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sidePotLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        highestBetLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playerCards.getView().setAlignmentX(Component.CENTER_ALIGNMENT);
-        playerMoney.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playerName.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        timerLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        timerLabel.setAlignmentY(Component.TOP_ALIGNMENT);
+        view.setLayout(new GridBagLayout());
         view.setBackground(Color.white);
-
-        JPanel deltCardsView = dealtCards.getView();
-        deltCardsView.setPreferredSize(new Dimension(deltCardsView.getWidth(), 250));
 
         potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -65,23 +49,116 @@ public class MainController extends Controller {
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
         timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        JPanel playerCardsView = playerCards.getView();
-        playerCardsView.setPreferredSize(new Dimension(playerCardsView.getWidth(), 250));
 
+        GridBagConstraints c = new GridBagConstraints();
+
+        // Timer Label
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        timerLabel.setHorizontalAlignment(JLabel.CENTER);
+        timerLabel.setPreferredSize(new Dimension(getView().getWidth(), 100));
+        view.add(timerLabel, c);
+
+        // Dealt Cards
+        JPanel deltCardsView = dealtCards.getView();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        view.add(deltCardsView, c);
+
+        // Pot Label
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(potLabel, c);
+
+        // Side Pot Label
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(sidePotLabel, c);
+
+        // Highest Bet Label
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(highestBetLabel, c);
+
+        // Player Cards
+        JPanel playerCardsView = playerCards.getView();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 5;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        view.add(playerCardsView, c);
+
+        // Player Money
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 6;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(playerMoney, c);
+
+        // Player Name
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(playerName, c);
+
+        // Tag Label
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 8;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
         tagLabel.setVisible(false);
+        view.add(tagLabel, c);
 
-        view.add(timerLabel);
-        view.add(dealtCards.getView());
-        view.add(potLabel);
-        view.add(sidePotLabel);
-        view.add(highestBetLabel);
-        view.add(playerCards.getView());
-        view.add(playerMoney);
-        view.add(playerName);
-        view.add(tagLabel);
+        // Action Buttons
+        JPanel actionButtonPanel = actionButtons.getView();
+        c.anchor = GridBagConstraints.PAGE_END;
+        c.gridx = 0;
+        c.gridy = 9;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        view.add(actionButtonPanel, c);
 
-        view.add(actionButtons.getView());
 
         Timer timer = new Timer(1000, e -> {
             Player player = GAME.getHumanPlayer();
@@ -93,7 +170,8 @@ public class MainController extends Controller {
                     - (TimeUnit.SECONDS.toHours(seconds) * 60);
                 long second = TimeUnit.SECONDS.toSeconds(seconds)
                     - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-                timerLabel.setText(minute + " Minute(s) and " + second + " Second(s)");
+                timerLabel.setText("Time Remaining: " + minute + ":" + second);
+                timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
                 if (seconds == 0) {
                     timerLabel.setText("FOLDED");
                     GameWorker.gameQueue.add(GameWorker.Move.FOLD);
