@@ -35,15 +35,11 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
 
-            GAME.getBigBlind().setHandBet(20);
-            GAME.getLittleBlind().setHandBet(10);
-            GAME.addToPot(30);
-
             gameQueue.clear();
-            boolean cont = processMove(true, 0);
-            cont = processMove(cont, 3);
-            cont = processMove(cont, 1);
-            cont = processMove(cont, 1);
+            boolean cont = processMove(true, 0, true);
+            cont = processMove(cont, 3, false);
+            cont = processMove(cont, 1, false);
+            cont = processMove(cont, 1, false);
             
             GAME.showAllCards();
             process(null);
@@ -82,13 +78,16 @@ public class GameWorker extends SwingWorker<Void, Game> {
      * @returns true if game is to continue
      * @throws Exception
      */
-    private boolean processMove(boolean cont, int cards) throws Exception {
+    private boolean processMove(boolean cont, int cards, boolean blinds) throws Exception {
         if(cont) {
             clearHighestBet();
+            GAME.clearPlayerHandBets();
+            if (blinds) {
+                 handleBlinds();
+            }
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-            GAME.clearPlayerHandBets();
             return handleMove();
         } 
         return false;
@@ -253,6 +252,13 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void clearHighestBet() {
         GAME.setHighestBet(0);
+    }
+
+    public void handleBlinds() {
+        GAME.getBigBlind().setHandBet(20);
+        GAME.getLittleBlind().setHandBet(10);
+        GAME.setHighestBet(20);
+        GAME.addToPot(30);
     }
     
     public enum Move {
