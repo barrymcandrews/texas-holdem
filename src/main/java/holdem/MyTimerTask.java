@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.sql.Types.NULL;
+
 public class MyTimerTask extends  TimerTask {
 
     private static int interval = 0;
@@ -31,7 +33,12 @@ public class MyTimerTask extends  TimerTask {
     }
 
     public static void setMyTimer(int seconds) {
-        MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
-        interval = seconds;
+        if(seconds >10){
+            MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
+            interval = seconds;
+        }
+        else{
+            interval = -1;
+        }
     }
 }
