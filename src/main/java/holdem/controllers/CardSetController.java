@@ -5,6 +5,7 @@ import holdem.models.Card;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class CardSetController extends Controller {
@@ -29,6 +30,8 @@ public class CardSetController extends Controller {
     void setupLayout(JPanel view) {
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagConstraints.insets = new Insets(0, 5,0, 5);
+
+        view.setPreferredSize(new Dimension(view.getWidth(), cardDimension.height + 10));
         view.setLayout(gridBagLayout);
         view.setBackground(Color.BLUE);
         view.setBackground(new Color(0,0,0, 0));
@@ -36,12 +39,19 @@ public class CardSetController extends Controller {
 
     @Override
     public void reloadData() {
-        JPanel view = getView();
-        view.removeAll();
+        ArrayList<CardController> cardControllers = new ArrayList<>();
         for (Card c : cards) {
             CardController cardController = new CardController(c, cardDimension);
             cardController.reloadData();
-            view.add(cardController.getView(), gridBagConstraints);
+            cardControllers.add(cardController);
+        }
+
+        // This loop must be separated from the loop above to ensure the
+        // UI is not repainted in between when the cards are added.
+        JPanel view = getView();
+        view.removeAll();
+        for (int i = 0; i < cardControllers.size(); i++){
+            view.add(cardControllers.get(i).getView(), gridBagConstraints);
         }
     }
 }

@@ -62,14 +62,18 @@ public class ActionButtonController extends Controller {
     private String getBet() {
         String bet = JOptionPane.showInputDialog("How much would you like to bet? ");
         Boolean valid = false;
-        int maxBet = Game.getInstance().getHumanPlayer().getWallet();
+        Game GAME = Game.getInstance();
+        int maxBet = GAME.getHumanPlayer().getWallet();
+        int minBet = 10;
+        if(GAME.getHighestBet() > 0) 
+            minBet = GAME.getHighestBet();
         while(!valid) {
             if(bet == null || (bet != null && ("".equals(bet))))
                 return null;
             else if(!isNumeric(bet)) 
                 bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be a numeric integer.");
-            else if(Integer.parseInt(bet) < 10 || Integer.parseInt(bet) > maxBet) 
-                bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be between $10 and $" + maxBet);
+            else if(Integer.parseInt(bet) < minBet || Integer.parseInt(bet) > maxBet) 
+                bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be between $" + minBet + " and $" + maxBet);
             else
                 valid = true;
         }

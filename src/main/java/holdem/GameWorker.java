@@ -105,19 +105,20 @@ public class GameWorker extends SwingWorker<Void, Game> {
         
         if (GAME.getActivePlayers().size() > 1) {
             for (Player p : GAME.getActivePlayers()) {
-                HandScore temp;
-                temp = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
-                if (temp.compareTo(bestScore) > 0) {
-                    bestScore = temp;
+                HandScore currBestHand;
+                currBestHand = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+                if (currBestHand.compareTo(bestScore) > 0) {
+                    bestScore = currBestHand;
                     winners.clear();
                     winners.add(p);
-                } else if (temp.equals(bestScore)) {
+                } else if (currBestHand.equals(bestScore)) {
                     winners.add(p);
                 }
             }
         } else {
             //if only one active player left, they win
             winners = GAME.getActivePlayers();
+            bestScore = BestHand.findBestHand(winners.get(0).getHand(), GAME.getCenterCards());
         }
         
         int moneyWon = GAME.getPot() / winners.size();
@@ -197,7 +198,6 @@ public class GameWorker extends SwingWorker<Void, Game> {
         if (p.getType() == PlayerType.AI && p.isActive() && !p.isEliminated()) {
             GAME.setHumanPlayersTurn(false);
             move = p.getRandomMove(GAME.getPlayers());
-            //JOptionPane.showMessageDialog(null, p.getName() + " " + move);
         } else if (p.getType() == PlayerType.HUMAN) {
             GAME.setHumanPlayersTurn(true);
             process(null);
@@ -215,6 +215,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 p.setHandBet(GAME.getHighestBet() + 10);
             } else if (hasEnoughMoney(p, GAME.getHighestBet())) {
                 p.setHandBet(GAME.getHighestBet());
+                p.setMove(Move.CALL);
             } else {
                 p.setHandBet(p.getWallet());
             }

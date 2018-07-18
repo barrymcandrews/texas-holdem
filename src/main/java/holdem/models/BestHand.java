@@ -2,6 +2,8 @@ package holdem.models;
 
 import java.util.*;
 
+import holdem.Game;
+
 public class BestHand {
 
     public static HandScore findBestHand(Set<Card> playerHand, Set<Card> riverCards) {
@@ -12,6 +14,10 @@ public class BestHand {
         cardsAvailable.addAll(riverCards);
 
         HandScore bestScore;
+        bestScore = checkForAllFolded(riverCards);
+        if (bestScore != null) {
+            return bestScore;
+        }
 
         bestScore = checkForStraightFlush(cardsAvailable);
         if (bestScore != null) {
@@ -263,5 +269,17 @@ public class BestHand {
             list.get(2).getValue().getValue(),
             list.get(3).getValue().getValue(),
             list.get(4).getValue().getValue());
+    }
+    
+    /**
+     * If there are not five river cards then round was never finished and only ended
+     * because everyone else folded. Do not check for a best hand. Set rank=-1
+     * @param riverCards
+     * @return
+     */
+    public static HandScore checkForAllFolded(Set<Card> riverCards) {
+       if(riverCards.size() < 5 || Game.getInstance().getActivePlayers().size() == 1)
+           return new HandScore(-1);
+       return null;
     }
 }
