@@ -84,7 +84,7 @@ public class Game {
      * Flips every card in the game face up
      */
     public void showAllCards() {
-        for (Player p : players) {
+        for (Player p : Game.getInstance().getActivePlayers()) {
             for (Card c : p.getHand()) {
                 c.setFaceUp(true);
             }

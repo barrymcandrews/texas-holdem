@@ -185,7 +185,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 GAME.addToPot(p.getHandBet());
                 p.setMove(move);
             }
-            JOptionPane.showMessageDialog(null, p.getName() + ": " + p.getMove() + " bet: " + p.getHandBet());
+            //JOptionPane.showMessageDialog(null, p.getName() + ": " + p.getMove() + " bet: " + p.getHandBet());
         }
         return true;
     }
