@@ -38,14 +38,14 @@ public class ActionButtonController extends Controller {
     
     @Override
     public void reloadData() {
-        if(!Game.getInstance().getHumanPlayer().isActive()) {
-            foldButton.setEnabled(false);
-            callButton.setEnabled(false);
-            betButton.setEnabled(false);
-        } else {
+        if(Game.getInstance().getHumanPlayer().isActive() && Game.getInstance().isHumanPlayersTurn()) {
             foldButton.setEnabled(true);
             callButton.setEnabled(true);
             betButton.setEnabled(true);
+        } else {
+            foldButton.setEnabled(false);
+            callButton.setEnabled(false);
+            betButton.setEnabled(false);
         }
     }
     
