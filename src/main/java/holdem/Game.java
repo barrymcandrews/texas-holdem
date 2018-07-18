@@ -26,19 +26,20 @@ public class Game {
     private Game() {
         //get start up dialog and info
         StartDialog.DialogResult dialogResult  = new StartDialog().show();
-        humanPlayer = new Player(dialogResult.userName, Player.PlayerType.HUMAN);
+        humanPlayer = new Player(dialogResult.userName, null, Player.PlayerType.HUMAN);
         numOpponents = dialogResult.numberOfOpponents;
+        MyTimerTask.setMyTimer(dialogResult.timer);
 
         log.debug("Player Name: " + humanPlayer.getName());
-        Constants.AI_NAMES_LIST.forEach((name) -> {
-            if (name.equals(humanPlayer.getName())) {
-                name = Constants.BACKUP_USERNAME;
-            }
 
-            if (players.size() < numOpponents) {
-                players.add(new Player(name));
+        for (int i = 0; i < numOpponents; i++) {
+            Player ai = Constants.AI_PLAYERS[i];
+            if (ai.getName().equals(humanPlayer.getName())) {
+                ai = Constants.BACKUP_AI_PLAYER;
             }
-        });
+            players.add(ai);
+        }
+
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;

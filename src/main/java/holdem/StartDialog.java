@@ -109,6 +109,15 @@ public class StartDialog {
     
     public DialogResult show() {
 
+        DialogResult dialogResult = new DialogResult();
+
+        if (Constants.DEBUG) {
+            dialogResult.userName = "Debug User";
+            dialogResult.numberOfOpponents = 7;
+            dialogResult.timer = 30;
+            return dialogResult;
+        }
+
         // get the results. if user presses cancel, exit
         int result = JOptionPane.showConfirmDialog(null, dialogPanel, "New Texas Hold'em Game", JOptionPane.OK_CANCEL_OPTION);
 
@@ -116,16 +125,9 @@ public class StartDialog {
             System.exit(0);
         }
 
-        DialogResult dialogResult = new DialogResult();
         dialogResult.numberOfOpponents = (int) playersField.getSelectedItem();
         dialogResult.userName = nameField.getText();
         dialogResult.timer = parseTime(timerField.getText());
-        if(dialogResult.timer >= 10){
-            MyTimerTask.setMyTimer(dialogResult.timer);
-        }
-        else{
-            MyTimerTask.setMyTimer(-1);
-        }
 
         // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
         if (dialogResult.userName == null || dialogResult.userName.isEmpty()) {
