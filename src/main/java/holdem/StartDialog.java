@@ -7,6 +7,7 @@ import java.awt.event.ItemListener;
 
 import static java.awt.GridBagConstraints.LINE_END;
 import static java.awt.GridBagConstraints.CENTER;
+import static java.sql.Types.NULL;
 
 /**
  * Class that gets all show information needed for a game in a dialogue
@@ -119,7 +120,12 @@ public class StartDialog {
         dialogResult.numberOfOpponents = (int) playersField.getSelectedItem();
         dialogResult.userName = nameField.getText();
         dialogResult.timer = parseTime(timerField.getText());
-        MyTimerTask.setMyTimer(dialogResult.timer);
+        if(dialogResult.timer > 10){
+            MyTimerTask.setMyTimer(dialogResult.timer);
+        }
+        else{
+            MyTimerTask.setMyTimer(-1);
+        }
 
         // verify that name field isn't empty. numberOfOpponents will default to 1. Exit if cancel is selected
         if (dialogResult.userName == null || dialogResult.userName.isEmpty()) {
@@ -127,7 +133,7 @@ public class StartDialog {
             return show();
         }
 
-        if (timerField.isEnabled() && (timerField == null || dialogResult.timer <= 10 || dialogResult.timer > 120)) {
+        if (timerField.isEnabled() && (timerField == null || dialogResult.timer < 10 || dialogResult.timer > 120)) {
             instructionsLabel.setText("Timer value must be between 10 seconds and 120 seconds.");
             return show();
         }

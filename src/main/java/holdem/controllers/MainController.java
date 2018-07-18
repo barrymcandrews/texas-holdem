@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
+import static java.sql.Types.NULL;
+
 
 public class MainController extends Controller {
     private final Game GAME = Game.getInstance();
@@ -79,7 +81,10 @@ public class MainController extends Controller {
 
         Timer timer = new Timer(1000, e -> {
             Player player = GAME.getHumanPlayer();
-            if (player.isActive()) {
+            if(seconds < 0){
+                timerLabel.setText("");
+            }
+            else if (player.isActive()) {
                 long minute = TimeUnit.SECONDS.toMinutes(seconds)
                     - (TimeUnit.SECONDS.toHours(seconds) * 60);
                 long second = TimeUnit.SECONDS.toSeconds(seconds)
@@ -91,6 +96,7 @@ public class MainController extends Controller {
                 }
                 seconds--;
             }
+
             else{
                 timerLabel.setText("FOLDED");
             }
