@@ -41,6 +41,7 @@ public class ActionButtonController extends Controller {
         if(Game.getInstance().getHumanPlayer().isActive() && Game.getInstance().isHumanPlayersTurn()) {
             foldButton.setEnabled(true);
             callButton.setEnabled(true);
+            callButton.setText("Call $" + Game.getInstance().getHighestBet());
             betButton.setEnabled(true);
         } else {
             foldButton.setEnabled(false);
