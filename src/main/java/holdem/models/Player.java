@@ -91,7 +91,7 @@ public class Player {
     }
 
     public Move getRandomMove(ArrayList<Player> players) {
-        ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.BET, Move.CALL, Move.BET));
+        ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.CALL, Move.CALL, Move.CALL, Move.CALL, Move.BET, Move.BET));
         for (Player p : players) {
             if (p.getMove() == Move.BET) {
                 options.add(Move.FOLD);
