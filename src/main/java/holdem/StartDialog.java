@@ -120,7 +120,7 @@ public class StartDialog {
         dialogResult.numberOfOpponents = (int) playersField.getSelectedItem();
         dialogResult.userName = nameField.getText();
         dialogResult.timer = parseTime(timerField.getText());
-        if(dialogResult.timer > 10){
+        if(dialogResult.timer >= 10){
             MyTimerTask.setMyTimer(dialogResult.timer);
         }
         else{
