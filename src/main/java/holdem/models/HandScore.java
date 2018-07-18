@@ -103,4 +103,29 @@ public class HandScore implements Comparable<HandScore>{
         result = 31 * result + secondCard;
         return result;
     }
+    
+    public String toString() {
+        switch(this.rank) {
+        case 1:
+            return Card.intToValue(this.topCard) + " high";
+        case 2:
+            return "Pair of " + Card.intToValue(this.topCard) + "'s";
+        case 3:
+            return "Pair of " + Card.intToValue(this.topCard) + "'s and Pair of " + Card.intToValue(this.secondCard) + "'s";
+        case 4:
+            return "Three of " + Card.intToValue(this.topCard);
+        case 5:
+            return "Straight " + Card.intToValue(this.topCard) + "'s";
+        case 6:
+            return "Flush";
+        case 7:
+            return "Full house of " + Card.intToValue(this.topCard) + " and " + Card.intToValue(this.secondCard);
+        case 8:
+            return "Four of " + Card.intToValue(this.topCard);
+        case 9:
+            return "Straight flush " + " high card " + Card.intToValue(this.topCard);
+        default:
+            return "";
+        }
+    }
 }

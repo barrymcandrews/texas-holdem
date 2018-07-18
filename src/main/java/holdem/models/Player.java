@@ -13,11 +13,15 @@ public class Player {
     private boolean isActive = true;
     private Move move;
     private boolean isEliminated = false;
+    private int handBet;
+    private int totalRoundBet;
 
     public Player(String name) {
         this.name = name;
         this.wallet = 1000;
         this.move = Move.INVALID;
+        this.handBet = 0;
+        this.totalRoundBet = 0;
     }
 
     public Player(String name, PlayerType type) {
@@ -25,6 +29,8 @@ public class Player {
         this.wallet = 1000;
         this.type = type;
         this.move = Move.INVALID;
+        this.handBet = 0;
+        this.totalRoundBet = 0;
     }
 
     public PlayerType getType() {
@@ -84,7 +90,6 @@ public class Player {
         return name;
     }
 
-
     public Move getRandomMove(ArrayList<Player> players) {
         ArrayList<Move> options = new ArrayList<>(Arrays.asList(Move.CALL, Move.BET, Move.CALL, Move.BET));
         for (Player p : players) {
@@ -104,6 +109,30 @@ public class Player {
 
     public void setEliminated(boolean eliminated) {
         isEliminated = eliminated;
+    }
+
+    public int getHandBet() {
+        return handBet;
+    }
+
+    public void setHandBet(int handBet) {
+        if (getWallet() >= handBet) {
+            this.handBet = handBet;
+            loseMoney(handBet);
+            this.totalRoundBet += this.handBet;
+        } else {
+            this.handBet = getWallet();
+            loseMoney(this.handBet);
+            this.totalRoundBet += this.handBet;
+        }
+    }
+
+    public int getTotalRoundBet() {
+        return totalRoundBet;
+    }
+
+    public void setTotalRoundBet(int totalRoundBet) {
+        this.totalRoundBet = totalRoundBet;
     }
 
     public enum PlayerType {HUMAN, AI}
