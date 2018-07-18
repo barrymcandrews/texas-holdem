@@ -125,18 +125,18 @@ public class GameWorker extends SwingWorker<Void, Game> {
             p.winMoney(moneyWon);
         
         log.debug(winners.toString() + " Wins: " + moneyWon);
-        displayWinner(winners);
+        displayWinner(winners, bestScore);
 
     }
     
-    private void displayWinner(List<Player> winners) {
+    private void displayWinner(List<Player> winners, HandScore winningHand) {
         StringBuilder names = new StringBuilder();
         StringBuilder hands = new StringBuilder();
         String AND = " and ";
         String COMMA = ", ";
         if(winners.size() == 1) {
             names.append(winners.get(0).getName() + " wins!");
-            hands.append("Winning hand: " + winners.get(0).getHand());
+            hands.append("Winning hand: " + winningHand.toString());
         } else {
             int i = 0;
             for(Player p : winners) {
@@ -166,9 +166,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 Move move = getMove(p);
                 log.debug(p.getName() + " " + p.getMove().toString() + "'s");
                 if (move == Move.BET) {
+                    int prebet = p.getHandBet();
                     handleBet(p, move);
                     GAME.setHighestBet(p.getHandBet());
-                    GAME.addToPot(p.getHandBet());
+                    GAME.addToPot(p.getHandBet() - prebet);
                     p.setMove(move);
                 } else if (move == Move.FOLD) {
                     p.setActive(false);
@@ -177,12 +178,13 @@ public class GameWorker extends SwingWorker<Void, Game> {
                         return false;
                 } else if (move == Move.CALL) {
                     // match highest bet
+                    int prebet = p.getHandBet();
                     if (hasEnoughMoney(p, GAME.getHighestBet())) {
                         p.setHandBet(GAME.getHighestBet());
                     } else {
                         p.setHandBet(p.getWallet());
                     }
-                    GAME.addToPot(p.getHandBet());
+                    GAME.addToPot(p.getHandBet() - prebet);
                     p.setMove(move);
                 }
             }
