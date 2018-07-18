@@ -125,18 +125,18 @@ public class GameWorker extends SwingWorker<Void, Game> {
             p.winMoney(moneyWon);
         
         log.debug(winners.toString() + " Wins: " + moneyWon);
-        displayWinner(winners);
+        displayWinner(winners, bestScore);
 
     }
     
-    private void displayWinner(List<Player> winners) {
+    private void displayWinner(List<Player> winners, HandScore winningHand) {
         StringBuilder names = new StringBuilder();
         StringBuilder hands = new StringBuilder();
         String AND = " and ";
         String COMMA = ", ";
         if(winners.size() == 1) {
             names.append(winners.get(0).getName() + " wins!");
-            hands.append("Winning hand: " + winners.get(0).getHand());
+            hands.append("Winning hand: " + winningHand.toString());
         } else {
             int i = 0;
             for(Player p : winners) {
