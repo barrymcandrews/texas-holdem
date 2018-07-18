@@ -35,15 +35,11 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             slowGame();
 
-            GAME.getBigBlind().setHandBet(20);
-            GAME.getLittleBlind().setHandBet(10);
-            GAME.addToPot(30);
-
             gameQueue.clear();
-            boolean cont = processMove(true, 0);
-            cont = processMove(cont, 3);
-            cont = processMove(cont, 1);
-            cont = processMove(cont, 1);
+            boolean cont = processMove(true, 0, true);
+            cont = processMove(cont, 3, false);
+            cont = processMove(cont, 1, false);
+            cont = processMove(cont, 1, false);
             
             GAME.showAllCards();
             process(null);
@@ -82,13 +78,16 @@ public class GameWorker extends SwingWorker<Void, Game> {
      * @returns true if game is to continue
      * @throws Exception
      */
-    private boolean processMove(boolean cont, int cards) throws Exception {
+    private boolean processMove(boolean cont, int cards, boolean blinds) throws Exception {
         if(cont) {
             clearHighestBet();
+            GAME.clearPlayerHandBets();
+            if (blinds) {
+                 handleBlinds();
+            }
             GAME.dealToCenter(cards);
             process(null);
             slowGame();
-            GAME.clearPlayerHandBets();
             return handleMove();
         } 
         return false;
@@ -162,31 +161,34 @@ public class GameWorker extends SwingWorker<Void, Game> {
      * @returns true if game continues
      */
     private boolean handleMove() throws InterruptedException {
-        for (Player p : GAME.getPlayerOrder()) {
-            Move move = getMove(p);
-            log.debug(p.getName() + " " + p.getMove().toString() + "'s");
-            if (move == Move.BET) {
-                handleBet(p, move);
-                GAME.setHighestBet(p.getHandBet());
-                GAME.addToPot(p.getHandBet());
-                p.setMove(move);
-            } else if (move == Move.FOLD) {
-                p.setActive(false);
-                p.setMove(move);
-                if (GAME.getActivePlayers().size() == 1)
-                    return false;
-            } else if (move == Move.CALL) {
-                // match highest bet
-                if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                    p.setHandBet(GAME.getHighestBet());
-                } else {
-                    p.setHandBet(p.getWallet());
+        do {
+            for (Player p : GAME.getPlayerOrder()) {
+                Move move = getMove(p);
+                log.debug(p.getName() + " " + p.getMove().toString() + "'s");
+                if (move == Move.BET) {
+                    int prebet = p.getHandBet();
+                    handleBet(p, move);
+                    GAME.setHighestBet(p.getHandBet());
+                    GAME.addToPot(p.getHandBet() - prebet);
+                    p.setMove(move);
+                } else if (move == Move.FOLD) {
+                    p.setActive(false);
+                    p.setMove(move);
+                    if (GAME.getActivePlayers().size() == 1)
+                        return false;
+                } else if (move == Move.CALL) {
+                    // match highest bet
+                    int prebet = p.getHandBet();
+                    if (hasEnoughMoney(p, GAME.getHighestBet())) {
+                        p.setHandBet(GAME.getHighestBet());
+                    } else {
+                        p.setHandBet(p.getWallet());
+                    }
+                    GAME.addToPot(p.getHandBet() - prebet);
+                    p.setMove(move);
                 }
-                GAME.addToPot(p.getHandBet());
-                p.setMove(move);
             }
-            //JOptionPane.showMessageDialog(null, p.getName() + ": " + p.getMove() + " bet: " + p.getHandBet());
-        }
+        } while(!allPlayersMaxBet());
         return true;
     }
     
@@ -239,8 +241,24 @@ public class GameWorker extends SwingWorker<Void, Game> {
         return true;
     }
 
+    private boolean allPlayersMaxBet() {
+        for (Player p : GAME.getPlayers()) {
+            if (p.isActive() && p.getHandBet() < GAME.getHighestBet()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void clearHighestBet() {
         GAME.setHighestBet(0);
+    }
+
+    public void handleBlinds() {
+        GAME.getBigBlind().setHandBet(20);
+        GAME.getLittleBlind().setHandBet(10);
+        GAME.setHighestBet(20);
+        GAME.addToPot(30);
     }
     
     public enum Move {
