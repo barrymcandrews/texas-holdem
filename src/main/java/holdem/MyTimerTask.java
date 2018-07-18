@@ -26,46 +26,6 @@ public class MyTimerTask extends  TimerTask {
         }
     }
 
-    public static void main(String args[]) {
-        TimerTask timerTask = new MyTimerTask();
-        //running timer task as daemon thread
-        Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 0, 10 * 1000);
-        System.out.println("TimerTask started");
-        //cancel after sometime
-        try {
-            Thread.sleep(120000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        timer.cancel();
-        System.out.println("TimerTask cancelled");
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void start(String[] args) {
-        int delay = 1000;
-        int period = 1000;
-        myTimer = new Timer();
-        myTimer.scheduleAtFixedRate(new TimerTask() {
-
-            public void run() {
-                System.out.println(setInterval());
-
-            }
-        }, delay, period);
-    }
-
-    private static int setInterval() {
-        if (interval == 1)
-            myTimer.cancel();
-        return --interval;
-    }
-
     public static int getMyTimerPeriod() {
         return interval;
     }

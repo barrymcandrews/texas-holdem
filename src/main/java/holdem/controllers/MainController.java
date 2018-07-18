@@ -9,8 +9,6 @@ import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 
@@ -80,17 +78,21 @@ public class MainController extends Controller {
         view.add(actionButtons.getView());
 
         Timer timer = new Timer(1000, e -> {
-            seconds--;
-            long minute = TimeUnit.SECONDS.toMinutes(seconds)
-                - (TimeUnit.SECONDS.toHours(seconds) * 60);
-            long second = TimeUnit.SECONDS.toSeconds(seconds)
-                - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-            timerLabel.setText(minute + " Minute(s) and " + second + " Second(s)");
-            if (seconds == 0) {
-                playerName.setText("FOLDED");
-                Player player = GAME.getHumanPlayer();
-                player.setActive(false);
-                reloadData();
+            Player player = GAME.getHumanPlayer();
+            if (player.isActive()) {
+                long minute = TimeUnit.SECONDS.toMinutes(seconds)
+                    - (TimeUnit.SECONDS.toHours(seconds) * 60);
+                long second = TimeUnit.SECONDS.toSeconds(seconds)
+                    - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+                timerLabel.setText(minute + " Minute(s) and " + second + " Second(s)");
+                if (seconds == 0) {
+                    timerLabel.setText("FOLDED");
+                    GameWorker.gameQueue.add(GameWorker.Move.FOLD);
+                }
+                seconds--;
+            }
+            else{
+                timerLabel.setText("FOLDED");
             }
         });
         timer.start();
