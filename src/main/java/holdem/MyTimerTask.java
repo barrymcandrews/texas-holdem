@@ -33,7 +33,7 @@ public class MyTimerTask extends  TimerTask {
     }
 
     public static void setMyTimer(int seconds) {
-        if(seconds >10){
+        if(seconds >=10){
             MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
             interval = seconds;
         }
