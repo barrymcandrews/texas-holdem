@@ -2,18 +2,17 @@ package holdem.controllers;
 
 import holdem.Constants;
 import holdem.Game;
-import holdem.GameWorker;
+import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
-import holdem.models.Card;
 import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class SidebarRowController extends Controller {
     private final Game GAME = Game.getInstance();
 
+    private CircleImage imageLabel = new CircleImage();
     private JLabel tagLabel = new JLabel();
     private JLabel nameLabel = new JLabel();
     private CardSetController cardSetController;
@@ -45,38 +44,98 @@ public class SidebarRowController extends Controller {
         walletLabel.setForeground(Color.white);
         betLabel.setForeground(Color.white);
 
-        c.fill = GridBagConstraints.VERTICAL;
+        if (Constants.DEBUG) {
+            tagLabel.setBackground(Color.RED);
+            tagLabel.setOpaque(true);
+
+            nameLabel.setBackground(Color.RED);
+            nameLabel.setOpaque(true);
+
+            walletLabel.setBackground(Color.RED);
+            walletLabel.setOpaque(true);
+
+            betLabel.setBackground(Color.RED);
+            betLabel.setOpaque(true);
+        }
 
 
-        c.insets = new Insets(4, 10, 0, 8);
-        c.anchor = GridBagConstraints.LINE_START;
+        // Image Label
+        c.insets = new Insets(0, 5, 0, 0);
+        c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 1;
+        c.weighty = 0;
+        c.weightx = 0;
+        c.gridheight = 2;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        imageLabel.setImage(player.getImage());
+        imageLabel.setPreferredSize(Constants.PLAYER_IMAGE_DIMENSION);
+        view.add(imageLabel, c);
+
+        // Name Label
+        c.insets = new Insets(0, 5, 0, 0);
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weighty = 0;
+        c.weightx = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
         view.add(nameLabel, c);
 
-        c.insets = new Insets(5, 10, 5, 10);
-        c.gridx = 2;
+        // Card Controller
+        c.insets = new Insets(0,0,0,0);
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 1;
         c.gridy = 0;
+        c.weighty = 0;
         c.weightx = 0;
-        view.add(tagLabel, c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.insets = new Insets(0,5,4,5);
+        c.gridheight = 3;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.VERTICAL;
+        cardSetController.getView().setPreferredSize(Constants.SIDEBAR_CARD_CONTROLLER_DIMENSION);
         view.add(cardSetController.getView(), c);
 
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridheight = 2;
+        // Tag Label
+        c.insets = new Insets(0, 0, 0, 0);
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 2;
+        c.gridy = 0;
+        c.weighty = 0.5;
         c.weightx = 0.5;
-        view.add(walletLabel, c);
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        tagLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        //tagLabel.setPreferredSize(new Dimension(120, walletLabel.getHeight()));
+        view.add(tagLabel, c);
 
+        // Wallet Label
+        c.insets = new Insets(4, 8, 4, 8);
+        c.anchor = GridBagConstraints.CENTER;
         c.gridx = 2;
         c.gridy = 1;
-        c.gridheight = 2;
-        c.weightx = 1;
+        c.weighty = 0.5;
+        c.weightx = 0.5;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        walletLabel.setPreferredSize(new Dimension(90, walletLabel.getHeight()));
+        view.add(walletLabel, c);
+
+        // Bet Label
+        c.insets = new Insets(4, 8, 4, 8);
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 2;
+        c.gridy = 2;
+        c.weighty = 0.5;
+        c.weightx = 0.5;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        betLabel.setPreferredSize(new Dimension(90, walletLabel.getHeight()));
         view.add(betLabel, c);
     }
 
@@ -99,8 +158,8 @@ public class SidebarRowController extends Controller {
 
         nameLabel.setText(player.getName());
 
-        walletLabel.setText("<html>Wallet:<br>$" + Integer.toString(player.getWallet()) + "</html>");
-        betLabel.setText("<html>Bet:<br>$" + Integer.toString(player.getHandBet()) + "</html>");
+        walletLabel.setText("<html>Wallet: $" + Integer.toString(player.getWallet()) + "</html>");
+        betLabel.setText("<html>Bet: $" + Integer.toString(player.getHandBet()) + "</html>");
 
         if(!player.isActive()) {
             betLabel.setText("FOLDED");
