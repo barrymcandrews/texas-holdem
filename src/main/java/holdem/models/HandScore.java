@@ -12,6 +12,7 @@ public class HandScore implements Comparable<HandScore>{
     3 - two pair
     2 - pair
     1 - high card
+    -1 - all players folded
     */
 
     private int rank;
