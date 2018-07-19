@@ -3,6 +3,8 @@ package holdem;
 import holdem.models.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +28,8 @@ public class Game {
     private Game() {
         //get start up dialog and info
         StartDialog.DialogResult dialogResult  = new StartDialog().show();
-        humanPlayer = new Player(dialogResult.userName, null, Player.PlayerType.HUMAN);
+        ImageIcon playerImage = new ImageIcon(dialogResult.imgPath);
+        humanPlayer = new Player(dialogResult.userName, playerImage, Player.PlayerType.HUMAN);
         numOpponents = dialogResult.numberOfOpponents;
         MyTimerTask.setMyTimer(dialogResult.timer);
 
