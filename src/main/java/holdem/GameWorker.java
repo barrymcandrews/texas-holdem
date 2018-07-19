@@ -27,7 +27,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
     protected Void doInBackground() throws Exception {
 
         log.debug("Game thread started: " + LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
-
+        GAME.initPot();
         while (true) {
             Player dealer = GAME.getDealer();
             log.debug("Dealer this round: " + dealer.getName());

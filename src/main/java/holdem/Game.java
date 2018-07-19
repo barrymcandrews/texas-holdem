@@ -42,7 +42,6 @@ public class Game {
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;
-        pot = new Pot();
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
     }
 
@@ -155,9 +154,16 @@ public class Game {
     public Player getDealer() {
         return dealer;
     }
-
+    
+    public void initPot() {
+        this.pot = new Pot();
+    }
+    
     public int getPot() {
-        return pot.getTotalPot();
+        if(pot != null)
+            return pot.getTotalPot();
+        else
+            return 0;
     }
 
     public void addToPot(Player p, int bet) {
