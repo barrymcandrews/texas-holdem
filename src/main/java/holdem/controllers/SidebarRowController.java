@@ -60,13 +60,13 @@ public class SidebarRowController extends Controller {
 
 
         // Image Label
-        c.insets = new Insets(0, 5, 0, 0);
+        c.insets = new Insets(0, 5, 0, 5);
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
         c.weighty = 0;
         c.weightx = 0;
-        c.gridheight = 2;
+        c.gridheight = 3;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.NONE;
         imageLabel.setImage(player.getImage());
@@ -74,8 +74,8 @@ public class SidebarRowController extends Controller {
         view.add(imageLabel, c);
 
         // Name Label
-        c.insets = new Insets(0, 5, 0, 0);
-        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(0, 5, 0, 5);
+        c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 2;
         c.weighty = 0;

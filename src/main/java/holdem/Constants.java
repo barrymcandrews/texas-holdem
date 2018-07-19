@@ -12,13 +12,13 @@ public class Constants {
     public static final boolean DEBUG = Boolean.parseBoolean(System.getenv("DEBUG"));
 
     public static final Player[] AI_PLAYERS = {
-        new Player("Bob", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Linda", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Tina", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Gene", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Louise", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Jimmy Jr.", new ImageIcon("src/main/resources/ai-images/human.jpg")),
-        new Player("Teddy", new ImageIcon("src/main/resources/ai-images/human.jpg"))
+        new Player("Bob", new ImageIcon("src/main/resources/ai-images/bob.jpg")),
+        new Player("Linda", new ImageIcon("src/main/resources/ai-images/linda.jpg")),
+        new Player("Tina", new ImageIcon("src/main/resources/ai-images/tina.jpg")),
+        new Player("Gene", new ImageIcon("src/main/resources/ai-images/gene.png")),
+        new Player("Louise", new ImageIcon("src/main/resources/ai-images/louise.png")),
+        new Player("Jimmy Jr.", new ImageIcon("src/main/resources/ai-images/jj.png")),
+        new Player("Teddy", new ImageIcon("src/main/resources/ai-images/teddy.jpg"))
     };
 
     public static final Player BACKUP_AI_PLAYER = new Player("Benadryl Cucumber",
