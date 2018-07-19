@@ -33,8 +33,7 @@ public class CardSetController extends Controller {
 
         view.setPreferredSize(new Dimension(view.getWidth(), cardDimension.height + 10));
         view.setLayout(gridBagLayout);
-        view.setBackground(Color.BLUE);
-        view.setBackground(new Color(0,0,0, 0));
+        view.setBackground((Constants.DEBUG) ? Color.BLUE : new Color(0,0,0,0));
     }
 
     @Override
