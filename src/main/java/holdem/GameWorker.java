@@ -27,7 +27,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
     protected Void doInBackground() throws Exception {
 
         log.debug("Game thread started: " + LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
-
+        GAME.initPot();
         while (true) {
             Player dealer = GAME.getDealer();
             log.debug("Dealer this round: " + dealer.getName());
@@ -120,11 +120,34 @@ public class GameWorker extends SwingWorker<Void, Game> {
             bestScore = BestHand.findBestHand(winners.get(0).getHand(), GAME.getCenterCards());
         }
         
-        int moneyWon = GAME.getPot() / winners.size();
+        int moneyWon = GAME.getPot(winners.get(0)) / winners.size();
         for(Player p : winners) 
             p.winMoney(moneyWon);
-        
+
         log.debug(winners.toString() + " Wins: " + moneyWon);
+        
+        ArrayList<Player> leftoverWinners = new ArrayList<>();
+        while (!GAME.checkPotEmpty()){
+            ArrayList<Player> tempPlayers = GAME.getActivePlayers();
+            tempPlayers.removeAll(winners);
+            for (Player p : tempPlayers) {
+                HandScore currBestHand;
+                currBestHand = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+                if (currBestHand.compareTo(bestScore) > 0) {
+                    bestScore = currBestHand;
+                    leftoverWinners.clear();
+                    leftoverWinners.add(p);
+                } else if (currBestHand.equals(bestScore)) {
+                    leftoverWinners.add(p);
+                }
+            }
+
+            moneyWon = GAME.getPot(leftoverWinners.get(0)) / leftoverWinners.size();
+            for(Player p : leftoverWinners)
+                p.winMoney(moneyWon);
+        }
+        
+        log.debug(leftoverWinners.toString() + "Wins: " + moneyWon);
         displayWinner(winners, bestScore);
 
     }
@@ -169,7 +192,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     int prebet = p.getHandBet();
                     handleBet(p, move);
                     GAME.setHighestBet(p.getHandBet());
-                    GAME.addToPot(p.getHandBet() - prebet);
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 } else if (move == Move.FOLD) {
                     p.setActive(false);
@@ -184,7 +207,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     } else {
                         p.setHandBet(p.getWallet());
                     }
-                    GAME.addToPot(p.getHandBet() - prebet);
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 }
             }
@@ -258,7 +281,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
         GAME.getBigBlind().setHandBet(20);
         GAME.getLittleBlind().setHandBet(10);
         GAME.setHighestBet(20);
-        GAME.addToPot(30);
+        GAME.addToPot(GAME.getBigBlind(), 20);
+        GAME.addToPot(GAME.getLittleBlind(), 10);
     }
     
     public enum Move {

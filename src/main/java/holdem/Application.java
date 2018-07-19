@@ -19,6 +19,7 @@ public class Application {
     }
 
     private void start() {
+        if (Constants.DEBUG) log.debug("Debug mode enabled.");
         log.debug("Initializing GUI...");
         frame.setTitle("Texas Hold'em");
         frame.setSize(1200, 900);

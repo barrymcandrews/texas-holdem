@@ -18,6 +18,7 @@ public class MainController extends Controller {
     private JLabel potLabel = new JLabel();
     private JLabel sidePotLabel = new JLabel();
     private JLabel playerMoney = new JLabel();
+    private JLabel currBetLabel = new JLabel();
     private JLabel playerName = new JLabel();
     private JLabel tagLabel = new JLabel();
     private JLabel timerLabel = new JLabel();
@@ -46,6 +47,7 @@ public class MainController extends Controller {
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         highestBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
+        currBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
         timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
@@ -125,11 +127,21 @@ public class MainController extends Controller {
         c.weighty = 1.0;
         c.fill = GridBagConstraints.NONE;
         view.add(playerMoney, c);
+        
+        // Player Bet
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.NONE;
+        view.add(currBetLabel, c);
 
         // Player Name
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 8;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -139,7 +151,7 @@ public class MainController extends Controller {
         // Tag Label
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -152,7 +164,7 @@ public class MainController extends Controller {
         JPanel actionButtonPanel = actionButtons.getView();
         c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
-        c.gridy = 9;
+        c.gridy = 10;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -208,14 +220,11 @@ public class MainController extends Controller {
         }
 
         Player humanPlayer = GAME.getHumanPlayer();
-        potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
-        sidePotLabel.setText("Side Pot: $" + Integer.toString(GAME.getSidePot()));
+        potLabel.setText("Pot: $" + Integer.toString(GAME.getTotalPot()));
         highestBetLabel.setText("Highest bet: $" + GAME.getHighestBet());
 
-        playerMoney.setText("$" + humanPlayer.getWallet());
+        playerMoney.setText("Wallet: $" + humanPlayer.getWallet());
+        currBetLabel.setText("Bet: $" + humanPlayer.getHandBet());
         playerName.setText(humanPlayer.getName());
-
-        if(GAME.getSidePot() == 0)
-            sidePotLabel.setVisible(false);
     }
 }

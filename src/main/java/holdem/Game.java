@@ -17,8 +17,7 @@ public class Game {
     private Set<Card> centerCards = new HashSet<>();
     private Player humanPlayer;
     private Player dealer;
-    private int pot = 0;
-    private int sidePot = 0;
+    private Pot pot;
     private int numOpponents;
     private int highestBet;
     private boolean isHumanPlayersTurn;
@@ -26,19 +25,20 @@ public class Game {
     private Game() {
         //get start up dialog and info
         StartDialog.DialogResult dialogResult  = new StartDialog().show();
-        humanPlayer = new Player(dialogResult.userName, Player.PlayerType.HUMAN);
+        humanPlayer = new Player(dialogResult.userName, null, Player.PlayerType.HUMAN);
         numOpponents = dialogResult.numberOfOpponents;
+        MyTimerTask.setMyTimer(dialogResult.timer);
 
         log.debug("Player Name: " + humanPlayer.getName());
-        Constants.AI_NAMES_LIST.forEach((name) -> {
-            if (name.equals(humanPlayer.getName())) {
-                name = Constants.BACKUP_USERNAME;
-            }
 
-            if (players.size() < numOpponents) {
-                players.add(new Player(name));
+        for (int i = 0; i < numOpponents; i++) {
+            Player ai = Constants.AI_PLAYERS[i];
+            if (ai.getName().equals(humanPlayer.getName())) {
+                ai = Constants.BACKUP_AI_PLAYER;
             }
-        });
+            players.add(ai);
+        }
+
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;
@@ -154,33 +154,35 @@ public class Game {
     public Player getDealer() {
         return dealer;
     }
-
-    public int getPot() {
-        return pot;
-    }
-
-    public void setPot(int pot) {
-        this.pot = pot;
+    
+    public void initPot() {
+        this.pot = new Pot();
     }
     
-    public void addToPot(int bet) {
-        pot += bet;
+    public int getPot(Player p) {
+        if(pot != null)
+            return pot.getPot(p);
+        else
+            return 0;
     }
 
-    public int getSidePot() {
-        return sidePot;
+    public int getTotalPot() {
+        if(pot != null)
+            return pot.getTotalPot();
+        else
+            return 0;
     }
 
-    public void setSidePot(int sidePot) {
-        this.sidePot = sidePot;
+    public boolean checkPotEmpty() {
+        return pot.isPotEmpty();
     }
 
-    public void addToSidePot(int sidePot) {
-        this.sidePot += sidePot;
+    public void addToPot(Player p, int bet) {
+        pot.addBet(p, bet);
     }
     
     public void clearPot() {
-        pot = 0;
+        pot.resetPot();
     }
 
     public int getHighestBet() {

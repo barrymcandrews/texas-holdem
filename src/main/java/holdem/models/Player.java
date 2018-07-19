@@ -2,6 +2,7 @@ package holdem.models;
 
 import holdem.GameWorker.Move;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Player {
@@ -15,22 +16,25 @@ public class Player {
     private boolean isEliminated = false;
     private int handBet;
     private int totalRoundBet;
+    private ImageIcon image;
 
-    public Player(String name) {
+    public Player(String name, ImageIcon image) {
         this.name = name;
         this.wallet = 1000;
         this.move = Move.INVALID;
         this.handBet = 0;
         this.totalRoundBet = 0;
+        this.image = image;
     }
 
-    public Player(String name, PlayerType type) {
+    public Player(String name, ImageIcon image, PlayerType type) {
         this.name = name;
         this.wallet = 1000;
         this.type = type;
         this.move = Move.INVALID;
         this.handBet = 0;
         this.totalRoundBet = 0;
+        this.image = image;
     }
 
     public PlayerType getType() {
@@ -139,6 +143,10 @@ public class Player {
 
     public void setTotalRoundBet(int totalRoundBet) {
         this.totalRoundBet = totalRoundBet;
+    }
+
+    public ImageIcon getImage() {
+        return image;
     }
 
     public enum PlayerType {HUMAN, AI}
