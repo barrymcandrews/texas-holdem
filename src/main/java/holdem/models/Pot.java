@@ -50,7 +50,7 @@ public class Pot {
 
     public boolean isPotEmpty() {
         for (Map.Entry<Player, Integer> pair : potContribution.entrySet()) {
-            if (pair.getValue() != 0) {
+            if (pair.getValue() > 0) {
                 return false;
             }
         }
