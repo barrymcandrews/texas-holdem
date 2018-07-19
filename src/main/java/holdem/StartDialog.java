@@ -138,6 +138,7 @@ public class StartDialog {
             dialogResult.userName = "Debug User";
             dialogResult.numberOfOpponents = 7;
             dialogResult.timer = 30;
+            dialogResult.imgPath = "src/main/resources/player-images/default.png";
             return dialogResult;
         }
 
