@@ -169,7 +169,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     int prebet = p.getHandBet();
                     handleBet(p, move);
                     GAME.setHighestBet(p.getHandBet());
-                    GAME.addToPot(p.getHandBet() - prebet);
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 } else if (move == Move.FOLD) {
                     p.setActive(false);
@@ -184,7 +184,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     } else {
                         p.setHandBet(p.getWallet());
                     }
-                    GAME.addToPot(p.getHandBet() - prebet);
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 }
             }
@@ -258,7 +258,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
         GAME.getBigBlind().setHandBet(20);
         GAME.getLittleBlind().setHandBet(10);
         GAME.setHighestBet(20);
-        GAME.addToPot(30);
+        GAME.addToPot(GAME.getBigBlind(), 20);
+        GAME.addToPot(GAME.getLittleBlind(), 10);
     }
     
     public enum Move {

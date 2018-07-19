@@ -209,13 +209,9 @@ public class MainController extends Controller {
 
         Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
-        sidePotLabel.setText("Side Pot: $" + Integer.toString(GAME.getSidePot()));
         highestBetLabel.setText("Highest bet: $" + GAME.getHighestBet());
 
         playerMoney.setText("$" + humanPlayer.getWallet());
         playerName.setText(humanPlayer.getName());
-
-        if(GAME.getSidePot() == 0)
-            sidePotLabel.setVisible(false);
     }
 }
