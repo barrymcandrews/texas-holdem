@@ -17,7 +17,7 @@ public class Constants {
         new Player("Tina", new ImageIcon("src/main/resources/ai-images/tina.jpg")),
         new Player("Gene", new ImageIcon("src/main/resources/ai-images/gene.png")),
         new Player("Louise", new ImageIcon("src/main/resources/ai-images/louise.png")),
-        new Player("Jimmy Jr.", new ImageIcon("src/main/resources/ai-images/jj.png")),
+        new Player("Jim Jr", new ImageIcon("src/main/resources/ai-images/jj.png")),
         new Player("Teddy", new ImageIcon("src/main/resources/ai-images/teddy.jpg"))
     };
 
@@ -31,4 +31,7 @@ public class Constants {
     public static final Dimension SIDEBAR_CARD_DIMENSION = new Dimension(60, 90);
     public static final Dimension SIDEBAR_CARD_CONTROLLER_DIMENSION = new Dimension(136, 110);
     public static final Dimension PLAYER_IMAGE_DIMENSION = new Dimension(50, 50);
+
+    public static final Color SIDEBAR_COLOR = new Color(40, 40, 40);
+    public static final Color SIDEBAR_COLOR_HIGHLIGHTED = new Color(90, 90, 90);
 }

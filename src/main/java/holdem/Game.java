@@ -19,6 +19,8 @@ public class Game {
     private Set<Card> centerCards = new HashSet<>();
     private Player humanPlayer;
     private Player dealer;
+    private Player turnPlayer;
+    private String turnExplanation;
     private int pot = 0;
     private int sidePot = 0;
     private int numOpponents;
@@ -201,6 +203,22 @@ public class Game {
 
     public void setHumanPlayersTurn(boolean isHumanPlayersTurn) {
         this.isHumanPlayersTurn = isHumanPlayersTurn;
+    }
+
+    public Player getTurnPlayer() {
+        return turnPlayer;
+    }
+
+    public void setTurnPlayer(Player turnPlayer) {
+        this.turnPlayer = turnPlayer;
+    }
+
+    public String getTurnExplanation() {
+        return (turnExplanation == null) ? "" : turnExplanation;
+    }
+
+    public void setTurnExplanation(String turnExplanation) {
+        this.turnExplanation = turnExplanation;
     }
 
     public void checkForEliminated() {
