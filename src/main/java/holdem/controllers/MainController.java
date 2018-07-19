@@ -220,7 +220,7 @@ public class MainController extends Controller {
         }
 
         Player humanPlayer = GAME.getHumanPlayer();
-        potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
+        potLabel.setText("Pot: $" + Integer.toString(GAME.getTotalPot()));
         highestBetLabel.setText("Highest bet: $" + GAME.getHighestBet());
 
         playerMoney.setText("Wallet: $" + humanPlayer.getWallet());

@@ -159,11 +159,22 @@ public class Game {
         this.pot = new Pot();
     }
     
-    public int getPot() {
+    public int getPot(Player p) {
+        if(pot != null)
+            return pot.getPot(p);
+        else
+            return 0;
+    }
+
+    public int getTotalPot() {
         if(pot != null)
             return pot.getTotalPot();
         else
             return 0;
+    }
+
+    public boolean checkPotEmpty() {
+        return pot.isPotEmpty();
     }
 
     public void addToPot(Player p, int bet) {

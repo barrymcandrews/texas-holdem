@@ -120,9 +120,30 @@ public class GameWorker extends SwingWorker<Void, Game> {
             bestScore = BestHand.findBestHand(winners.get(0).getHand(), GAME.getCenterCards());
         }
         
-        int moneyWon = GAME.getPot() / winners.size();
+        int moneyWon = GAME.getPot(winners.get(0)) / winners.size();
         for(Player p : winners) 
             p.winMoney(moneyWon);
+
+        while (!GAME.checkPotEmpty()){
+            ArrayList<Player> tempPlayers = GAME.getActivePlayers();
+            tempPlayers.removeAll(winners);
+            winners.clear();
+            for (Player p : tempPlayers) {
+                HandScore currBestHand;
+                currBestHand = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+                if (currBestHand.compareTo(bestScore) > 0) {
+                    bestScore = currBestHand;
+                    winners.clear();
+                    winners.add(p);
+                } else if (currBestHand.equals(bestScore)) {
+                    winners.add(p);
+                }
+            }
+
+            moneyWon = GAME.getPot(winners.get(0)) / winners.size();
+            for(Player p : winners)
+                p.winMoney(moneyWon);
+        }
         
         log.debug(winners.toString() + " Wins: " + moneyWon);
         displayWinner(winners, bestScore);
