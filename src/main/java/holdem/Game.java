@@ -17,7 +17,7 @@ public class Game {
     private Set<Card> centerCards = new HashSet<>();
     private Player humanPlayer;
     private Player dealer;
-    private Pot pot = new Pot();
+    private Pot pot;
     private int numOpponents;
     private int highestBet;
     private boolean isHumanPlayersTurn;
@@ -42,6 +42,7 @@ public class Game {
         dealer = players.get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;
+        pot = new Pot();
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
     }
 
@@ -159,7 +160,6 @@ public class Game {
         return pot.getTotalPot();
     }
 
-    
     public void addToPot(Player p, int bet) {
         pot.addBet(p, bet);
     }
