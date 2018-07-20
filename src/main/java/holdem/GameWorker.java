@@ -67,8 +67,12 @@ public class GameWorker extends SwingWorker<Void, Game> {
         log.debug("Game thread stopped.");
     }
 
-    private void slowGame() throws Exception {
-        Thread.sleep(1000);
+    private void slowGame() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -163,8 +167,17 @@ public class GameWorker extends SwingWorker<Void, Game> {
     private boolean handleMove() throws InterruptedException {
         do {
             for (Player p : GAME.getPlayerOrder()) {
+
+                GAME.setTurnPlayer(p);
+                GAME.setTurnExplanation(p.getName() + "'s Turn");
+                process(null);
+
+                if (GAME.getHumanPlayer() != p) {
+                    slowGame();
+                }
+
                 Move move = getMove(p);
-                log.debug(p.getName() + " " + p.getMove().toString() + "'s");
+                log.debug(p.getName() + " " + p.getMove().getFriendlyName() + "s");
                 if (move == Move.BET) {
                     int prebet = p.getHandBet();
                     handleBet(p, move);
@@ -187,6 +200,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
                     GAME.addToPot(p.getHandBet() - prebet);
                     p.setMove(move);
                 }
+
+                GAME.setTurnExplanation(p.getName() + " " + p.getMove().getFriendlyName() + "s");
+                process(null);
+                slowGame();
             }
         } while(!allPlayersMaxBet());
         return true;
@@ -202,8 +219,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
             process(null);
             if(p.isActive()) 
                 move = gameQueue.take(); 
-            else 
-                JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
+            //else
+                //JOptionPane.showMessageDialog(null, "You folded. Skipping turn.");
         }
         return move;
     }
@@ -275,6 +292,11 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
         public void setBet(int bet) {
             this.bet = bet;
+        }
+
+        public String getFriendlyName() {
+            String uglyName = toString().toLowerCase();
+            return Character.toUpperCase(uglyName.charAt(0)) + uglyName.substring(1);
         }
     }
 }

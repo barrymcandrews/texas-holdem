@@ -24,6 +24,7 @@ public class MainController extends Controller {
     private CircleImage playerImage = new CircleImage();
     private JLabel tagLabel = new JLabel();
     private JLabel timerLabel = new JLabel();
+    private JLabel explanationLabel = new JLabel();
     private JLabel highestBetLabel = new JLabel();
 
     private CardSetController dealtCards;
@@ -45,34 +46,50 @@ public class MainController extends Controller {
         view.setLayout(new GridBagLayout());
         view.setBackground(Color.white);
 
+        explanationLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        timerLabel.setFont(new Font("Serif", Font.PLAIN, 17));
         potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         highestBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
         currBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         playerName.setFont(new Font("Serif", Font.PLAIN, 20));
-        timerLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
 
         GridBagConstraints c = new GridBagConstraints();
 
         // Timer Label
-        c.anchor = GridBagConstraints.CENTER;
+        c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.fill = GridBagConstraints.HORIZONTAL;
+        explanationLabel.setHorizontalAlignment(JLabel.CENTER);
+        explanationLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
+        explanationLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        view.add(explanationLabel, c);
+
+        // Timer Label
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         timerLabel.setHorizontalAlignment(JLabel.CENTER);
-        timerLabel.setPreferredSize(new Dimension(getView().getWidth(), 100));
+        timerLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
+        timerLabel.setVerticalAlignment(SwingConstants.TOP);
+        timerLabel.setText("");
         view.add(timerLabel, c);
 
         // Dealt Cards
         JPanel deltCardsView = dealtCards.getView();
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -82,7 +99,7 @@ public class MainController extends Controller {
         // Pot Label
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -92,7 +109,7 @@ public class MainController extends Controller {
         // Side Pot Label
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -102,7 +119,7 @@ public class MainController extends Controller {
         // Highest Bet Label
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -113,7 +130,7 @@ public class MainController extends Controller {
         JPanel playerCardsView = playerCards.getView();
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 6;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -123,7 +140,7 @@ public class MainController extends Controller {
         // Player Money
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = 7;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -133,7 +150,7 @@ public class MainController extends Controller {
         // Player Bet
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 8;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -143,7 +160,7 @@ public class MainController extends Controller {
         // Player Name
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx = 1;
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -153,7 +170,7 @@ public class MainController extends Controller {
         // Player Image
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -166,7 +183,7 @@ public class MainController extends Controller {
         // Tag Label
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 9;
+        c.gridy = 10;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -180,7 +197,7 @@ public class MainController extends Controller {
         JPanel actionButtonPanel = actionButtons.getView();
         c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
-        c.gridy = 10;
+        c.gridy = 11;
         c.gridwidth = 2;
         c.weightx = 1.0;
         c.weighty = 1.0;
@@ -234,6 +251,8 @@ public class MainController extends Controller {
         } else {
             tagLabel.setVisible(false);
         }
+
+        explanationLabel.setText(GAME.getTurnExplanation());
 
         Player humanPlayer = GAME.getHumanPlayer();
         potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));

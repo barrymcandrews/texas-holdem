@@ -143,6 +143,9 @@ public class SidebarRowController extends Controller {
     public void reloadData() {
         cardSetController.reloadData();
 
+        Color color = (GAME.getTurnPlayer() == player) ? Constants.SIDEBAR_COLOR_HIGHLIGHTED : Constants.SIDEBAR_COLOR;
+        getView().setBackground(color);
+
         if (player == GAME.getDealer()) {
             tagLabel.setText("Dealer");
             tagLabel.setVisible(true);
