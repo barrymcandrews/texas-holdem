@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.swing.*;
 
+import holdem.models.Card;
 import holdem.models.HandScore;
 import holdem.models.Player;
 
 public class WinnerDialog {
-    public WinnerDialog() {
-        
-    }
+    private JPanel dialog = new JPanel();
+    private StringBuilder names;
     
-    public static void show(List<Player> winners, HandScore winningHand) {
-        StringBuilder names = new StringBuilder();
+    public WinnerDialog(List<Player> winners, HandScore winningHand) {
+        names = new StringBuilder();
         StringBuilder hands = new StringBuilder();
         String AND = " and ";
         String COMMA = ", ";
@@ -35,6 +35,19 @@ public class WinnerDialog {
                 i++;
              }
         }
-        JOptionPane.showMessageDialog(null, hands.toString(), names.toString(), JOptionPane.PLAIN_MESSAGE);
+        
+        for(int i = 0; i < winners.size(); i++) {
+           JLabel hand = new JLabel(hands.toString());
+           dialog.add(hand);
+           //TODO get cards that make up winning hand and format it correctly
+           if(winningHand.getRank() != -1) {
+               for(Card c : winningHand.getWinningHand()) 
+                   dialog.add(new JLabel(c.getImageIcon()));  
+           }
+        }
+    }
+    
+    public void show() {
+        JOptionPane.showMessageDialog(null, dialog, names.toString(), JOptionPane.PLAIN_MESSAGE);
     }
 }

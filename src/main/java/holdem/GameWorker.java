@@ -129,7 +129,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
             p.winMoney(moneyWon);
         
         log.debug(winners.toString() + " Wins: " + moneyWon);
-        WinnerDialog.show(winners, bestScore);
+        new WinnerDialog(winners, bestScore).show();
 
     }
     
