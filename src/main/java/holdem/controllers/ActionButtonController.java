@@ -27,7 +27,7 @@ public class ActionButtonController extends Controller {
         
         BlockingQueue<Move> moveQueue = GameWorker.gameQueue;
         foldButton.addActionListener((e) -> moveQueue.add(Move.FOLD));
-        callButton.addActionListener((e) -> moveQueue.add(Move.CALL));
+        callButton.addActionListener((e) -> moveQueue.add(Move.CALL.setBet(Game.getInstance().getHighestBet())));
         betButton.addActionListener((e) -> handleBet(moveQueue));
         
         view.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));  
