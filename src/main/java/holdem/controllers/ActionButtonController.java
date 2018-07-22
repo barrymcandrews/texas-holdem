@@ -22,7 +22,7 @@ public class ActionButtonController extends Controller {
     @Override
     public void setupLayout(JPanel view) {
         foldButton.setText("Fold");
-        callButton.setText("Call");
+        callButton.setText("Check");
         betButton.setText("Bet");
         
         BlockingQueue<Move> moveQueue = GameWorker.gameQueue;
@@ -41,7 +41,10 @@ public class ActionButtonController extends Controller {
         if(Game.getInstance().getHumanPlayer().isActive() && Game.getInstance().isHumanPlayersTurn()) {
             foldButton.setEnabled(true);
             callButton.setEnabled(true);
-            callButton.setText("Call $" + Game.getInstance().getHighestBet());
+            if(Game.getInstance().getHighestBet() == 0)
+                callButton.setText("Check");
+            else
+                callButton.setText("Call $" + Game.getInstance().getHighestBet());
             betButton.setEnabled(true);
         } else {
             foldButton.setEnabled(false);
