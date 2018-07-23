@@ -50,11 +50,12 @@ public class WinnerDialog {
         
         dialog.setLayout(new GridBagLayout());
         GridBagConstraints layout = new GridBagConstraints();
+        int y = 0;
         for(Player p : winners) {
            JLabel hand = new JLabel(hands.toString() + ":");
            layout.anchor = GridBagConstraints.CENTER;
            layout.gridx = 0;
-           layout.gridy = 0;
+           layout.gridy = y;
            layout.fill = GridBagConstraints.NONE;
            dialog.add(hand, layout);
            //TODO format cards correctly
@@ -62,7 +63,7 @@ public class WinnerDialog {
            cards.addAll(p.getHand());
            cards.addAll(Game.getInstance().getCenterCards());
            if(winningHand.getRank() != -1) {
-               layout.gridy = 1;
+               layout.gridy = y+1;
                layout.fill = GridBagConstraints.NONE;
                int x = 1;
                for(Integer v : winningHand.getCardValues()) 
@@ -75,6 +76,7 @@ public class WinnerDialog {
                        }
                    }
            }
+           y++;
         }
     }
     
