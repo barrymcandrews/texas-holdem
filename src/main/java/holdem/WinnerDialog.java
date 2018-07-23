@@ -12,6 +12,7 @@ import holdem.models.Card;
 import holdem.models.HandScore;
 import holdem.models.Player;
 
+//TODO investigate case where player winners because of a pair. When that happens we only get one card displayed
 public class WinnerDialog {
     private JPanel dialog = new JPanel();
     private StringBuilder names;
@@ -40,14 +41,6 @@ public class WinnerDialog {
              }
         }
         
-//        JLabel nameLabel = new JLabel("Your Name:");
-//        c.anchor = LINE_END;
-//        c.gridx = 0;
-//        c.gridy = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.NONE;
-//        dialogPanel.add(nameLabel, c);
-        
         dialog.setLayout(new GridBagLayout());
         GridBagConstraints layout = new GridBagConstraints();
         int y = 0;
@@ -58,7 +51,6 @@ public class WinnerDialog {
            layout.gridy = y;
            layout.fill = GridBagConstraints.NONE;
            dialog.add(hand, layout);
-           //TODO format cards correctly
            ArrayList<Card> cards = new ArrayList<>();
            cards.addAll(p.getHand());
            cards.addAll(Game.getInstance().getCenterCards());
