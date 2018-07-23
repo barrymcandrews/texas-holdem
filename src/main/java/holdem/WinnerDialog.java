@@ -1,5 +1,6 @@
 package holdem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -36,13 +37,20 @@ public class WinnerDialog {
              }
         }
         
-        for(int i = 0; i < winners.size(); i++) {
+        for(Player p : winners) {
            JLabel hand = new JLabel(hands.toString());
            dialog.add(hand);
-           //TODO get cards that make up winning hand and format it correctly
+           //TODO format cards correctly
+           ArrayList<Card> cards = new ArrayList<>();
+           cards.addAll(p.getHand());
+           cards.addAll(Game.getInstance().getCenterCards());
            if(winningHand.getRank() != -1) {
-               for(Card c : winningHand.getWinningHand()) 
-                   dialog.add(new JLabel(c.getImageIcon()));  
+               for(Integer v : winningHand.getCardValues()) 
+                   for(Card c : cards) {
+                       if(c.getIntValue() == v) {
+                           dialog.add(new JLabel(c.getImageIcon())); 
+                       }
+                   }
            }
         }
     }

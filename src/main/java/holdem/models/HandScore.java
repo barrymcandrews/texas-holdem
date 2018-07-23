@@ -147,8 +147,13 @@ public class HandScore implements Comparable<HandScore>{
         return this.rank;
     }
     
-    public ArrayList<Card> getWinningHand() {
-        ArrayList<Card> hand = new ArrayList<>();
+    public ArrayList<Integer> getCardValues() {
+        ArrayList<Integer> hand = new ArrayList<>();
+        hand.add(topCard);
+        hand.add(secondCard);
+        hand.add(thirdCard);
+        hand.add(fourthCard);
+        hand.add(fifthCard);
         return hand;
     }
 }
