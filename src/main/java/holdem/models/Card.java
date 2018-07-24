@@ -27,6 +27,10 @@ public class Card implements Comparable<Card> {
     public Value getValue() {
         return value;
     }
+    
+    public int getIntValue() {
+        return value.getValue();
+    }
 
     public void setValue(Value value) {
         this.value = value;

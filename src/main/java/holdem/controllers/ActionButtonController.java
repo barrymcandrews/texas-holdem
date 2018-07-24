@@ -22,12 +22,12 @@ public class ActionButtonController extends Controller {
     @Override
     public void setupLayout(JPanel view) {
         foldButton.setText("Fold");
-        callButton.setText("Call");
+        callButton.setText("Check");
         betButton.setText("Bet");
         
         BlockingQueue<Move> moveQueue = GameWorker.gameQueue;
         foldButton.addActionListener((e) -> moveQueue.add(Move.FOLD));
-        callButton.addActionListener((e) -> moveQueue.add(Move.CALL));
+        callButton.addActionListener((e) -> moveQueue.add(Move.CALL.setBet(Game.getInstance().getHighestBet())));
         betButton.addActionListener((e) -> handleBet(moveQueue));
         
         view.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));  
@@ -41,7 +41,10 @@ public class ActionButtonController extends Controller {
         if(Game.getInstance().getHumanPlayer().isActive() && Game.getInstance().isHumanPlayersTurn()) {
             foldButton.setEnabled(true);
             callButton.setEnabled(true);
-            callButton.setText("Call $" + Game.getInstance().getHighestBet());
+            if(Game.getInstance().getHighestBet() == 0)
+                callButton.setText("Check");
+            else
+                callButton.setText("Call $" + Game.getInstance().getHighestBet());
             betButton.setEnabled(true);
         } else {
             foldButton.setEnabled(false);

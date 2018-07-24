@@ -129,34 +129,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
             p.winMoney(moneyWon);
         
         log.debug(winners.toString() + " Wins: " + moneyWon);
-        displayWinner(winners, bestScore);
+        new WinnerDialog(winners, bestScore).show();
 
-    }
-    
-    private void displayWinner(List<Player> winners, HandScore winningHand) {
-        StringBuilder names = new StringBuilder();
-        StringBuilder hands = new StringBuilder();
-        String AND = " and ";
-        String COMMA = ", ";
-        if(winners.size() == 1) {
-            names.append(winners.get(0).getName() + " wins!");
-            hands.append("Winning hand: " + winningHand.toString());
-        } else {
-            int i = 0;
-            for(Player p : winners) {
-                if(i == winners.size() - 1) 
-                    names.append(p.getName() + " tie!");
-                else {
-                    if(i == winners.size() - 2)  
-                        names.append(p.getName() + AND);
-                    else
-                        names.append(p.getName() + COMMA);
-                }
-                hands.append(p.getName() + "'s best hand: " + p.getHand() + "\n");
-                i++;
-             }
-        }
-        JOptionPane.showMessageDialog(null, hands.toString(), names.toString(), JOptionPane.PLAIN_MESSAGE);
     }
     
     /**
@@ -199,6 +173,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                             p.setHandBet(p.getWallet());
                         }
                         GAME.addToPot(p.getHandBet() - prebet);
+                        move.setBet(p.getHandBet());
                         p.setMove(move);
                     }
 
@@ -292,12 +267,16 @@ public class GameWorker extends SwingWorker<Void, Game> {
             return bet;
         }
 
-        public void setBet(int bet) {
+        public Move setBet(int bet) {
             this.bet = bet;
+            return this;
         }
 
         public String getFriendlyName() {
             String uglyName = toString().toLowerCase();
+            if(uglyName.equalsIgnoreCase("call") && this.getBet() == 0)
+                uglyName = "check";
+            
             return Character.toUpperCase(uglyName.charAt(0)) + uglyName.substring(1);
         }
     }
