@@ -1,5 +1,7 @@
 package holdem.models;
 
+import java.util.ArrayList;
+
 public class HandScore implements Comparable<HandScore>{
 
     /*Rankings for a hand are:
@@ -139,5 +141,19 @@ public class HandScore implements Comparable<HandScore>{
         default:
             return "";
         }
+    }
+    
+    public int getRank() {
+        return this.rank;
+    }
+    
+    public ArrayList<Integer> getCardValues() {
+        ArrayList<Integer> hand = new ArrayList<>();
+        hand.add(topCard);
+        hand.add(secondCard);
+        hand.add(thirdCard);
+        hand.add(fourthCard);
+        hand.add(fifthCard);
+        return hand;
     }
 }
