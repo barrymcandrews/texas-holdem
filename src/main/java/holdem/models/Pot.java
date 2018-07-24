@@ -1,7 +1,5 @@
 package holdem.models;
 
-import holdem.Game;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +7,9 @@ import java.util.Map;
 public class Pot {
     Map<Player, Integer> potContribution;
 
-    public Pot() {
+    public Pot(ArrayList<Player> players) {
         potContribution = new HashMap<>();
-        for(Player p : Game.getInstance().getPlayers()) {
+        for(Player p : players) {
             potContribution.put(p, 0);
         }
     }
@@ -20,18 +18,22 @@ public class Pot {
         potContribution.put(p, potContribution.get(p) + betAmount);
     }
 
-    public int getPot(Player p) {
-        int potToWin = 0;
-        for (Map.Entry<Player, Integer> pair : potContribution.entrySet()) {
-            if (pair.getValue() <= potContribution.get(p)) {
-                potToWin += pair.getValue();
-                potContribution.put(pair.getKey(), pair.getValue() - potContribution.get(p));
-            } else {
-                potToWin += potContribution.get(p);
-                potContribution.put(pair.getKey(), pair.getValue() - potContribution.get(p));
+    public int[] getPot(ArrayList<Player> winners) {
+        int i = 0;
+        int[] potsToWin = new int[winners.size()];
+        for (Player p: winners) {
+            for (Map.Entry<Player, Integer> pair : potContribution.entrySet()) {
+                if (pair.getValue() <= potContribution.get(p)) {
+                    potsToWin[i] += pair.getValue() / (winners.size() - i);
+                    potContribution.put(pair.getKey(), (pair.getValue() - pair.getValue() / (winners.size() - i)));
+                } else {
+                    potsToWin[i] += potContribution.get(p) / (winners.size() - i);
+                    potContribution.put(pair.getKey(), (pair.getValue() - potContribution.get(p) / (winners.size() - i)));
+                }
             }
+            i++;
         }
-        return potToWin;
+        return potsToWin;
     }
 
     public int getTotalPot() {
@@ -42,8 +44,8 @@ public class Pot {
         return totalPot;
     }
 
-    public void resetPot() {
-        for(Player p : Game.getInstance().getPlayers()) {
+    public void resetPot(ArrayList<Player> players) {
+        for(Player p : players) {
             potContribution.put(p, 0);
         }
     }

@@ -63,7 +63,7 @@ public class ActionButtonController extends Controller {
         String bet = JOptionPane.showInputDialog("How much would you like to bet? ");
         Boolean valid = false;
         Game GAME = Game.getInstance();
-        int maxBet = GAME.getHumanPlayer().getWallet();
+        int maxBet = GAME.getHumanPlayer().getWallet() + GAME.getHumanPlayer().getHandBet();
         int minBet = 10;
         if(GAME.getHighestBet() > 0) 
             minBet = GAME.getHighestBet();

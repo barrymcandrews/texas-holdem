@@ -156,14 +156,14 @@ public class Game {
     }
     
     public void initPot() {
-        this.pot = new Pot();
+        this.pot = new Pot(players);
     }
     
-    public int getPot(Player p) {
+    public int[] getPot(ArrayList<Player> players) {
         if(pot != null)
-            return pot.getPot(p);
+            return pot.getPot(players);
         else
-            return 0;
+            return new int[0];
     }
 
     public int getTotalPot() {
@@ -182,7 +182,7 @@ public class Game {
     }
     
     public void clearPot() {
-        pot.resetPot();
+        pot.resetPot(players);
     }
 
     public int getHighestBet() {
