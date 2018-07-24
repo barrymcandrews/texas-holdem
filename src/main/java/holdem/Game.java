@@ -21,6 +21,8 @@ public class Game {
     private Player dealer;
     private Player turnPlayer;
     private String turnExplanation;
+    private Player bigBlind;
+    private Player littleBlind;
     private int pot = 0;
     private int sidePot = 0;
     private int numOpponents;
@@ -82,7 +84,7 @@ public class Game {
      * Shifts the dealer to the player one person to the right
      */
     public void incrementDealer() {
-        int dealerIndex = players.indexOf(dealer);
+        int dealerIndex = getActivePlayers().indexOf(dealer);
         dealer = getActivePlayers().get((dealerIndex + 1) % players.size());
     }
 
@@ -101,12 +103,22 @@ public class Game {
         }
     }
 
+    public void setBigBlind() {
+        ArrayList<Player> active = getActivePlayers();
+        bigBlind = active.get((active.indexOf(dealer) + 1) % active.size());
+    }
+    
     public Player getBigBlind() {
-        return players.get((players.indexOf(dealer) + 1) % players.size());
+        return bigBlind;
     }
 
+    public void setLittleBlind() {
+        ArrayList<Player> active = getActivePlayers();
+        littleBlind = active.get((active.indexOf(dealer) + 2) % active.size());
+    }
+    
     public Player getLittleBlind() {
-        return players.get((players.indexOf(dealer) + 2) % players.size());
+        return bigBlind;
     }
 
     public ArrayList<Player> getPlayers() {
