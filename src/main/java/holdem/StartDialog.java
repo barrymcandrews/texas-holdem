@@ -18,6 +18,7 @@ public class StartDialog {
     private JTextField nameField;
     private JComboBox<Integer> playersComboBox;
     private JCheckBox timerCheckBox = new JCheckBox("Round Time Limit", false);
+    private JCheckBox hecklingCheckBox = new JCheckBox("Enable heckling mode?", false);
     private JSpinner timerSpinner = new JSpinner();
     private SpinnerNumberModel timerSpinnerModel;
     private JTextField fileTextField = new JTextField();
@@ -29,6 +30,7 @@ public class StartDialog {
         public String userName;
         public int timer;
         public String imgPath;
+        public boolean enableHeckling;
     }
 
     public StartDialog() {
@@ -129,6 +131,14 @@ public class StartDialog {
         dialogPanel.add(chooseFileButton, c);
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        c.anchor = CENTER;
+        c.gridx = 1;
+        c.gridy = 5;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(5, 5, 5, 5);
+        dialogPanel.add(hecklingCheckBox, c);
     }
 
     public DialogResult show() {
@@ -153,6 +163,7 @@ public class StartDialog {
         dialogResult.userName = nameField.getText();
         dialogResult.timer = timerSpinnerModel.getNumber().intValue();
         dialogResult.imgPath = fileTextField.getText();
+        dialogResult.enableHeckling = hecklingCheckBox.isSelected();
 
         if (!timerSpinner.isEnabled()) {
             dialogResult.timer = -1;
