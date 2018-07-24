@@ -142,45 +142,43 @@ public class GameWorker extends SwingWorker<Void, Game> {
         do {
             for (Player p : GAME.getPlayerOrder()) {
 
-                if (p.isActive()) {
-                    GAME.setTurnPlayer(p);
-                    GAME.setTurnExplanation(p.getName() + "'s Turn");
-                    process(null);
+                GAME.setTurnPlayer(p);
+                GAME.setTurnExplanation(p.getName() + "'s Turn");
+                process(null);
 
-                    if (GAME.getHumanPlayer() != p) {
-                        slowGame();
-                    }
-
-                    Move move = getMove(p);
-                    log.debug(p.getName() + " " + p.getMove().getFriendlyName() + "s");
-                    if (move == Move.BET) {
-                        int prebet = p.getHandBet();
-                        handleBet(p, move);
-                        GAME.setHighestBet(p.getHandBet());
-                        GAME.addToPot(p.getHandBet() - prebet);
-                        p.setMove(move);
-                    } else if (move == Move.FOLD) {
-                        p.setActive(false);
-                        p.setMove(move);
-                        if (GAME.getActivePlayers().size() == 1)
-                            return false;
-                    } else if (move == Move.CALL) {
-                        // match highest bet
-                        int prebet = p.getHandBet();
-                        if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                            p.setHandBet(GAME.getHighestBet());
-                        } else {
-                            p.setHandBet(p.getWallet());
-                        }
-                        GAME.addToPot(p.getHandBet() - prebet);
-                        move.setBet(p.getHandBet());
-                        p.setMove(move);
-                    }
-
-                    GAME.setTurnExplanation(p.getName() + " " + p.getMove().getFriendlyName() + "s");
-                    process(null);
+                if (GAME.getHumanPlayer() != p) {
                     slowGame();
                 }
+
+                Move move = getMove(p);
+                log.debug(p.getName() + " " + p.getMove().getFriendlyName() + "s");
+                if (move == Move.BET) {
+                    int prebet = p.getHandBet();
+                    handleBet(p, move);
+                    GAME.setHighestBet(p.getHandBet());
+                    GAME.addToPot(p.getHandBet() - prebet);
+                    p.setMove(move);
+                } else if (move == Move.FOLD) {
+                    p.setActive(false);
+                    p.setMove(move);
+                    if (GAME.getActivePlayers().size() == 1)
+                        return false;
+                } else if (move == Move.CALL) {
+                    // match highest bet
+                    int prebet = p.getHandBet();
+                    if (hasEnoughMoney(p, GAME.getHighestBet())) {
+                        p.setHandBet(GAME.getHighestBet());
+                    } else {
+                        p.setHandBet(p.getWallet());
+                    }
+                    GAME.addToPot(p.getHandBet() - prebet);
+                    move.setBet(p.getHandBet());
+                    p.setMove(move);
+                }
+
+                GAME.setTurnExplanation(p.getName() + " " + p.getMove().getFriendlyName() + "s");
+                process(null);
+                slowGame();
             }
         } while(!allPlayersMaxBet());
         return true;
