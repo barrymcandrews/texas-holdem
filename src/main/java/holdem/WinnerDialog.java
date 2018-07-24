@@ -12,7 +12,6 @@ import holdem.models.Card;
 import holdem.models.HandScore;
 import holdem.models.Player;
 
-//TODO investigate case where player winners because of a pair. When that happens we only get one card displayed
 public class WinnerDialog {
     private JPanel dialog = new JPanel();
     private StringBuilder names;
@@ -45,20 +44,28 @@ public class WinnerDialog {
         GridBagConstraints layout = new GridBagConstraints();
         int y = 0;
         for(Player p : winners) {
-           JLabel hand = new JLabel(hands.toString() + ":");
+           JLabel winExplanation = new JLabel(hands.toString() + ":");
            layout.anchor = GridBagConstraints.CENTER;
            layout.gridx = 0;
            layout.gridy = y;
            layout.fill = GridBagConstraints.NONE;
-           dialog.add(hand, layout);
+           dialog.add(winExplanation, layout);
            ArrayList<Card> cards = new ArrayList<>();
            cards.addAll(p.getHand());
            cards.addAll(Game.getInstance().getCenterCards());
+           ArrayList<Integer> hand = winningHand.getCardValues();
+           //if winning hand doesn't have 5 cards, add cards from all available cards until we have a hand of 5
+           if(hand.size() != 5) {
+               for(int i = hand.size(); i <= 5; i++) {
+                   if(!hand.contains(cards.get(i).getIntValue()))
+                           hand.add(cards.get(i).getIntValue());
+               }
+           }
            if(winningHand.getRank() != -1) {
                layout.gridy = y+1;
                layout.fill = GridBagConstraints.NONE;
                int x = 1;
-               for(Integer v : winningHand.getCardValues()) 
+               for(Integer v : hand) 
                    for(Card c : cards) {
                        if(c.getIntValue() == v) {
                            JLabel label = new JLabel(resize(c.getImageIcon()));
