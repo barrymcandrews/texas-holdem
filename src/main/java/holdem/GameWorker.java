@@ -30,6 +30,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
         while (true) {
             Player dealer = GAME.getDealer();
+            GAME.setBigBlind();
+            GAME.setLittleBlind();
             log.debug("Dealer this round: " + dealer.getName());
             GAME.dealToPlayers();
             process(null);

@@ -118,7 +118,7 @@ public class Game {
     }
     
     public Player getLittleBlind() {
-        return bigBlind;
+        return littleBlind;
     }
 
     public ArrayList<Player> getPlayers() {
