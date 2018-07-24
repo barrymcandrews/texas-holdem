@@ -68,11 +68,11 @@ public class WinnerDialog {
                 ArrayList<Card> cards = getAllCards(p);
                 ArrayList<Integer> hand = getWinningHand(winningHand, cards);
                 Set<ImageIcon> cardImages = convertValueToCard(hand, cards);
-                layout.gridy = y++;
+                layout.gridy = ++y;
                 layout.fill = GridBagConstraints.NONE;
                 int x = 1;
-                while (x <= 5) {
-                    for (ImageIcon img : cardImages) {
+                for (ImageIcon img : cardImages) {
+                    if(x <= 5) {
                         JLabel label = new JLabel(img);
                         layout.gridx = x;
                         dialog.add(label, layout);
