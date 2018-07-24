@@ -135,6 +135,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
         
         ArrayList<Player> leftoverWinners = new ArrayList<>();
         while (!GAME.checkPotEmpty()){
+            bestScore = new HandScore(0, 0);
             ArrayList<Player> tempPlayers = GAME.getActivePlayers();
             tempPlayers.removeAll(winners);
             for (Player p : tempPlayers) {
@@ -223,11 +224,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 } else if (move == Move.CALL) {
                     // match highest bet
                     int prebet = p.getHandBet();
-                    if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                        p.setHandBet(GAME.getHighestBet());
-                    } else {
-                        p.setHandBet(p.getWallet());
-                    }
+                    p.setHandBet(GAME.getHighestBet());
                     GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 }
@@ -258,20 +255,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
     
     private void handleBet(Player p, Move move) {
         if(p.getType() == PlayerType.AI) {
-            if (hasEnoughMoney(p, GAME.getHighestBet() + 10)) {
-                p.setHandBet(GAME.getHighestBet() + 10);
-            } else if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                p.setHandBet(GAME.getHighestBet());
-                p.setMove(Move.CALL);
-            } else {
-                p.setHandBet(p.getWallet());
-            }
+            p.setHandBet(GAME.getHighestBet() + 10);
         } else {
-            if (hasEnoughMoney(p, move.getBet())) {
-                p.setHandBet(move.getBet());
-            } else {
-                p.setHandBet(p.getWallet());
-            }
+            p.setHandBet(move.getBet());
         }
     }
     
@@ -291,8 +277,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private boolean allPlayersMaxBet() {
         for (Player p : GAME.getPlayers()) {
-            if (p.isActive() && (p.getHandBet() < GAME.getHighestBet()) || p.getWallet() == 0) {
-                return false;
+            if (p.isActive() && (p.getHandBet() < GAME.getHighestBet())) {
+                if (p.getWallet() != 0) {
+                    return false;
+                }
             }
         }
         return true;
