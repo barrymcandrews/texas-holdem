@@ -6,6 +6,7 @@ import holdem.GameWorker;
 import holdem.MyTimerTask;
 import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
+import holdem.components.TagLabel;
 import holdem.models.Player;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class MainController extends Controller {
     private JLabel currBetLabel = new JLabel();
     private JLabel playerName = new JLabel();
     private CircleImage playerImage = new CircleImage();
-    private JLabel tagLabel = new JLabel();
+    private TagLabel tagLabel = new TagLabel();
     private JLabel timerLabel = new JLabel();
     private JLabel explanationLabel = new JLabel();
     private JLabel highestBetLabel = new JLabel();
@@ -190,7 +191,6 @@ public class MainController extends Controller {
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0,0,0,0);
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
-        tagLabel.setVisible(false);
         view.add(tagLabel, c);
 
         // Action Buttons
@@ -236,22 +236,9 @@ public class MainController extends Controller {
         dealtCards.reloadData();
         playerCards.reloadData();
         actionButtons.reloadData();
+
         seconds = MyTimerTask.getMyTimerPeriod();
-
-        Player player = GAME.getHumanPlayer();
-        if (player == GAME.getDealer()) {
-            tagLabel.setText("Dealer");
-            tagLabel.setVisible(true);
-        } else if (player == GAME.getBigBlind()) {
-            tagLabel.setText("Big Blind");
-            tagLabel.setVisible(true);
-        }else if (player == GAME.getLittleBlind()) {
-            tagLabel.setText("Little Blind");
-            tagLabel.setVisible(true);
-        } else {
-            tagLabel.setVisible(false);
-        }
-
+        tagLabel.updateTagFor(GAME.getHumanPlayer());
         explanationLabel.setText(GAME.getTurnExplanation());
 
         Player humanPlayer = GAME.getHumanPlayer();

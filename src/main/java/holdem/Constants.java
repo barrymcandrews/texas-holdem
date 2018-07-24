@@ -31,6 +31,7 @@ public class Constants {
     public static final Dimension SIDEBAR_CARD_DIMENSION = new Dimension(60, 90);
     public static final Dimension SIDEBAR_CARD_CONTROLLER_DIMENSION = new Dimension(136, 110);
     public static final Dimension PLAYER_IMAGE_DIMENSION = new Dimension(50, 50);
+    public static final Dimension TAG_LABEL_DIMENSION = new Dimension(83,24);
 
     public static final Color SIDEBAR_COLOR = new Color(40, 40, 40);
     public static final Color SIDEBAR_COLOR_HIGHLIGHTED = new Color(90, 90, 90);
