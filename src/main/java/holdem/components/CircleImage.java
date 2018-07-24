@@ -4,17 +4,14 @@ import holdem.Constants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
 public class CircleImage extends JPanel {
     private final Dimension dimension = Constants.PLAYER_IMAGE_DIMENSION;
 
     private BufferedImage clipped;
+    private Color borderColor = Color.white;
 
     public CircleImage() {
         super(true);
@@ -46,6 +43,9 @@ public class CircleImage extends JPanel {
         g2.dispose();
     }
 
+    public void setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -62,7 +62,7 @@ public class CircleImage extends JPanel {
         Shape border = new Ellipse2D.Double(1, 1, dimension.width - 2, dimension.height - 2);
         g2.setStroke(new BasicStroke(1.5f));
 
-        g2.setPaint(Color.WHITE);
+        g2.setPaint(borderColor);
         g2.draw(border);
         g2.dispose();
     }
