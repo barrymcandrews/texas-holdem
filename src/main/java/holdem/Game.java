@@ -45,7 +45,7 @@ public class Game {
             players.add(ai);
         }
 
-        dealer = players.get(new Random().nextInt(players.size()));
+        dealer = getActivePlayers().get(new Random().nextInt(players.size()));
         players.add(humanPlayer);
         highestBet = 0;
         log.debug("AI Players: " + getAIPlayers(humanPlayer).toString());
@@ -83,7 +83,7 @@ public class Game {
      */
     public void incrementDealer() {
         int dealerIndex = players.indexOf(dealer);
-        dealer = players.get((dealerIndex + 1) % players.size());
+        dealer = getActivePlayers().get((dealerIndex + 1) % players.size());
     }
 
     /**
