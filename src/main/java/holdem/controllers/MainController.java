@@ -6,10 +6,12 @@ import holdem.GameWorker;
 import holdem.MyTimerTask;
 import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
+import holdem.models.Heckle;
 import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
@@ -31,6 +33,7 @@ public class MainController extends Controller {
     private CardSetController playerCards;
     private ActionButtonController actionButtons;
     private int seconds = MyTimerTask.getMyTimerPeriod();
+    private boolean heckleEnabled = MyTimerTask.getHeckleEnabled();
 
 
     public MainController() {
@@ -229,6 +232,15 @@ public class MainController extends Controller {
             }
         });
         timer.start();
+
+        //Get a random time for the timer period
+        int delay = (3 + new Random().nextInt(3)) * 1000;
+        Timer heckleTimer = new Timer(delay, e -> {
+            if(heckleEnabled){
+                //heckleLabel.setText(Heckle.generateHeckle());
+            }
+        });
+        heckleTimer.start();
     }
 
     @Override
