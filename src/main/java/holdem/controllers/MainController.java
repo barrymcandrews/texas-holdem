@@ -10,6 +10,7 @@ import holdem.components.TagLabel;
 import holdem.models.Player;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +62,7 @@ public class MainController extends Controller {
         currBetLabel.setFont(roboto);
         playerName.setFont(roboto);
 
+        view.setBackground(Color.orange);
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -70,7 +72,7 @@ public class MainController extends Controller {
         c.gridy = 0;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         explanationLabel.setHorizontalAlignment(JLabel.CENTER);
         explanationLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
@@ -84,7 +86,7 @@ public class MainController extends Controller {
         c.gridy = 1;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         timerLabel.setHorizontalAlignment(JLabel.CENTER);
         timerLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
@@ -99,7 +101,7 @@ public class MainController extends Controller {
         c.gridy = 2;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(deltCardsView, c);
 
@@ -109,8 +111,8 @@ public class MainController extends Controller {
         c.gridy = 3;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.fill = GridBagConstraints.NONE;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.VERTICAL;
         view.add(potLabel, c);
 
         // Side Pot Label
@@ -119,7 +121,7 @@ public class MainController extends Controller {
         c.gridy = 4;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(sidePotLabel, c);
 
@@ -129,7 +131,7 @@ public class MainController extends Controller {
         c.gridy = 5;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(highestBetLabel, c);
 
@@ -140,7 +142,7 @@ public class MainController extends Controller {
         c.gridy = 6;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(playerCardsView, c);
 
@@ -150,7 +152,7 @@ public class MainController extends Controller {
         c.gridy = 7;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(playerMoney, c);
         
@@ -160,7 +162,7 @@ public class MainController extends Controller {
         c.gridy = 8;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(currBetLabel, c);
 
@@ -170,7 +172,7 @@ public class MainController extends Controller {
         c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(playerName, c);
 
@@ -180,7 +182,7 @@ public class MainController extends Controller {
         c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0,0,0,10);
         playerImage.setImage(GAME.getHumanPlayer().getImage());
@@ -193,7 +195,7 @@ public class MainController extends Controller {
         c.gridy = 10;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0,0,0,0);
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
@@ -206,7 +208,8 @@ public class MainController extends Controller {
         c.gridy = 11;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
+        c.insets = new Insets(0,0,0,0);
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(actionButtonPanel, c);
 

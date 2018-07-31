@@ -82,7 +82,7 @@ public class ChatBarRow extends Controller {
         view.setMaximumSize(d);
         view.setPreferredSize(d);
 
-        if (Constants.DEBUG && false) {
+        if (Constants.DEBUG) {
             view.setBackground(Color.blue);
             nameLabel.setBackground(Color.red);
             nameLabel.setOpaque(true);
