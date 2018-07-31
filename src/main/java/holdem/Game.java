@@ -135,7 +135,7 @@ public class Game {
         ArrayList<Player> order = new ArrayList<>();
         int dealerIndex = getActivePlayers().indexOf(getDealer()) + 1;
         for(int i = 0; i < getActivePlayers().size(); i++) 
-            order.add(getActivePlayers().get((i + dealerIndex) % players.size()));
+            order.add(getActivePlayers().get((i + dealerIndex) % getActivePlayers().size()));
         return order;
     }
 
