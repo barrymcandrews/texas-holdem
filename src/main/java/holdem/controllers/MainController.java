@@ -62,8 +62,6 @@ public class MainController extends Controller {
         currBetLabel.setFont(roboto);
         playerName.setFont(roboto);
 
-        view.setBackground(Color.orange);
-
         GridBagConstraints c = new GridBagConstraints();
 
         // Explanation Label
