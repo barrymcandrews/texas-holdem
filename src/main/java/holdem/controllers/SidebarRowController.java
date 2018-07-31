@@ -38,6 +38,14 @@ public class SidebarRowController extends Controller {
 
         GridBagConstraints c = new GridBagConstraints();
 
+        Font roboto = Constants.ROBOTO_FONT.deriveFont(14f);
+
+        tagLabel.setFont(roboto);
+        tagLabel.setFont(roboto);
+        nameLabel.setFont(roboto);
+        walletLabel.setFont(roboto);
+        betLabel.setFont(roboto);
+
         tagLabel.setBorder(new RoundedCornerBorder(Color.white));
         tagLabel.setForeground(Color.white);
         nameLabel.setForeground(Color.white);

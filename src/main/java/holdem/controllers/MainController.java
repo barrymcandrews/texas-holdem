@@ -51,15 +51,15 @@ public class MainController extends Controller {
         view.setLayout(new GridBagLayout());
         view.setBackground(Color.white);
 
-        Font raleway = Constants.RALEWAY_FONT.deriveFont(17f);
+        Font roboto = Constants.ROBOTO_FONT.deriveFont(17f);
         explanationLabel.setFont(Constants.RYE_FONT.deriveFont(30f));
-        timerLabel.setFont(Constants.RALEWAY_FONT.deriveFont(17f));
-        potLabel.setFont(raleway);
-        sidePotLabel.setFont(raleway);
-        highestBetLabel.setFont(raleway);
-        playerMoney.setFont(raleway);
-        currBetLabel.setFont(raleway);
-        playerName.setFont(raleway);
+        timerLabel.setFont(Constants.ROBOTO_FONT.deriveFont(17f));
+        potLabel.setFont(roboto);
+        sidePotLabel.setFont(roboto);
+        highestBetLabel.setFont(roboto);
+        playerMoney.setFont(roboto);
+        currBetLabel.setFont(roboto);
+        playerName.setFont(roboto);
 
 
         GridBagConstraints c = new GridBagConstraints();

@@ -5,10 +5,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Game {
     private static Logger log = LogManager.getLogger(Game.class);
@@ -26,6 +24,7 @@ public class Game {
     private int numOpponents;
     private int highestBet;
     private boolean isHumanPlayersTurn;
+    private boolean hecklingEnabled;
 
     private Game() {
         //get start up dialog and info
@@ -33,6 +32,7 @@ public class Game {
         ImageIcon playerImage = new ImageIcon(dialogResult.imgPath);
         humanPlayer = new Player(dialogResult.userName, playerImage, Player.PlayerType.HUMAN);
         numOpponents = dialogResult.numberOfOpponents;
+        hecklingEnabled = dialogResult.enableHeckling;
         MyTimerTask.setMyTimer(dialogResult.timer);
 
         log.debug("Player Name: " + humanPlayer.getName());
@@ -219,6 +219,14 @@ public class Game {
 
     public void setTurnExplanation(String turnExplanation) {
         this.turnExplanation = turnExplanation;
+    }
+
+    public boolean isHecklingEnabled() {
+        return hecklingEnabled;
+    }
+
+    public void setHecklingEnabled(boolean hecklingEnabled) {
+        this.hecklingEnabled = hecklingEnabled;
     }
 
     public void checkForEliminated() {

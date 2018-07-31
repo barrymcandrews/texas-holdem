@@ -149,6 +149,7 @@ public class StartDialog {
             dialogResult.numberOfOpponents = 7;
             dialogResult.timer = 30;
             dialogResult.imgPath = "src/main/resources/player-images/default.png";
+            dialogResult.enableHeckling = true;
             return dialogResult;
         }
 

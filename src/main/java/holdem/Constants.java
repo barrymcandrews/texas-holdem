@@ -35,13 +35,13 @@ public class Constants {
     public static final Dimension SIDEBAR_CARD_DIMENSION = new Dimension(60, 90);
     public static final Dimension SIDEBAR_CARD_CONTROLLER_DIMENSION = new Dimension(136, 110);
     public static final Dimension PLAYER_IMAGE_DIMENSION = new Dimension(50, 50);
-    public static final Dimension TAG_LABEL_DIMENSION = new Dimension(83,24);
+    public static final Dimension TAG_LABEL_DIMENSION = new Dimension(90,24);
 
     public static final Color SIDEBAR_COLOR = new Color(40, 40, 40);
     public static final Color SIDEBAR_COLOR_HIGHLIGHTED = new Color(90, 90, 90);
 
     public static final Font RYE_FONT = loadFont("src/main/resources/fonts/Rye-Regular.ttf");
-    public static final Font RALEWAY_FONT = loadFont("src/main/resources/fonts/Raleway-Regular.ttf");
+    public static final Font ROBOTO_FONT = loadFont("src/main/resources/fonts/Roboto-Regular.ttf");
 
     private static Font loadFont(String path) {
         try {
