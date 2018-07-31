@@ -4,6 +4,10 @@ import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,4 +39,17 @@ public class Constants {
 
     public static final Color SIDEBAR_COLOR = new Color(40, 40, 40);
     public static final Color SIDEBAR_COLOR_HIGHLIGHTED = new Color(90, 90, 90);
+
+    public static final Font RYE_FONT = loadFont("src/main/resources/fonts/Rye-Regular.ttf");
+    public static final Font RALEWAY_FONT = loadFont("src/main/resources/fonts/Raleway-Regular.ttf");
+
+    private static Font loadFont(String path) {
+        try {
+            FileInputStream fontStream = new FileInputStream(path);
+            return Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -11,6 +11,7 @@ import holdem.models.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
 
 
@@ -40,6 +41,9 @@ public class MainController extends Controller {
         playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
+        updateTime(null);
+        Timer timer = new Timer(1000, this::updateTime);
+        timer.start();
     }
 
     @Override
@@ -47,19 +51,20 @@ public class MainController extends Controller {
         view.setLayout(new GridBagLayout());
         view.setBackground(Color.white);
 
-        explanationLabel.setFont(new Font("Serif", Font.BOLD, 20));
-        timerLabel.setFont(new Font("Serif", Font.PLAIN, 17));
-        potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        highestBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
-        currBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        playerName.setFont(new Font("Serif", Font.PLAIN, 20));
+        Font raleway = Constants.RALEWAY_FONT.deriveFont(17f);
+        explanationLabel.setFont(Constants.RYE_FONT.deriveFont(30f));
+        timerLabel.setFont(Constants.RALEWAY_FONT.deriveFont(17f));
+        potLabel.setFont(raleway);
+        sidePotLabel.setFont(raleway);
+        highestBetLabel.setFont(raleway);
+        playerMoney.setFont(raleway);
+        currBetLabel.setFont(raleway);
+        playerName.setFont(raleway);
 
 
         GridBagConstraints c = new GridBagConstraints();
 
-        // Timer Label
+        // Explanation Label
         c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 0;
@@ -70,6 +75,7 @@ public class MainController extends Controller {
         explanationLabel.setHorizontalAlignment(JLabel.CENTER);
         explanationLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
         explanationLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        explanationLabel.setText("");
         view.add(explanationLabel, c);
 
         // Timer Label
@@ -204,31 +210,6 @@ public class MainController extends Controller {
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(actionButtonPanel, c);
 
-
-        Timer timer = new Timer(1000, e -> {
-            Player player = GAME.getHumanPlayer();
-            if(seconds < 0){
-                timerLabel.setText("");
-            }
-            else if (player.isActive()) {
-                long minute = TimeUnit.SECONDS.toMinutes(seconds)
-                    - (TimeUnit.SECONDS.toHours(seconds) * 60);
-                long second = TimeUnit.SECONDS.toSeconds(seconds)
-                    - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-                timerLabel.setText("Time Remaining: " + minute + ":" + second);
-                timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
-                if (seconds == 0) {
-                    timerLabel.setText("FOLDED");
-                    GameWorker.gameQueue.add(GameWorker.Move.FOLD);
-                }
-                seconds--;
-            }
-
-            else{
-                timerLabel.setText("FOLDED");
-            }
-        });
-        timer.start();
     }
 
     @Override
@@ -252,5 +233,25 @@ public class MainController extends Controller {
 
         if(GAME.getSidePot() == 0)
             sidePotLabel.setVisible(false);
+    }
+
+    private void updateTime(ActionEvent actionEvent) {
+        if(seconds < 0){
+            timerLabel.setText("");
+        } else if (GAME.getHumanPlayer().isActive()) {
+            long minute = TimeUnit.SECONDS.toMinutes(seconds)
+                - (TimeUnit.SECONDS.toHours(seconds) * 60);
+            long second = TimeUnit.SECONDS.toSeconds(seconds)
+                - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+            timerLabel.setText(String.format("Time Remaining: %02d:%02d", minute, second));
+            timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
+            if (seconds == 0) {
+                timerLabel.setText("FOLDED");
+                GameWorker.gameQueue.add(GameWorker.Move.FOLD);
+            }
+            seconds--;
+        } else {
+            timerLabel.setText("FOLDED");
+        }
     }
 }

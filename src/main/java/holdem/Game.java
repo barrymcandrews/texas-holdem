@@ -20,7 +20,7 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private Player turnPlayer;
-    private String turnExplanation;
+    private String turnExplanation = "Staring Game!";
     private int pot = 0;
     private int sidePot = 0;
     private int numOpponents;
@@ -214,7 +214,7 @@ public class Game {
     }
 
     public String getTurnExplanation() {
-        return (turnExplanation == null) ? "" : turnExplanation;
+        return turnExplanation;
     }
 
     public void setTurnExplanation(String turnExplanation) {
