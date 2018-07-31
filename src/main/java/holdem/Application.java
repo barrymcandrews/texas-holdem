@@ -5,6 +5,7 @@ import holdem.controllers.RootController;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 import javax.swing.*;
+import java.awt.*;
 
 public class Application {
 
@@ -21,8 +22,12 @@ public class Application {
     private void start() {
         if (Constants.DEBUG) log.debug("Debug mode enabled.");
         log.debug("Initializing GUI...");
+
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Constants.ROBOTO_FONT);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Constants.RYE_FONT);
+
         frame.setTitle("Texas Hold'em");
-        frame.setSize(1200, 900);
+        frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(rootController.getView());

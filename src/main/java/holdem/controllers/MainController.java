@@ -6,10 +6,13 @@ import holdem.GameWorker;
 import holdem.MyTimerTask;
 import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
+import holdem.components.TagLabel;
 import holdem.models.Player;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
 
 
@@ -22,7 +25,7 @@ public class MainController extends Controller {
     private JLabel currBetLabel = new JLabel();
     private JLabel playerName = new JLabel();
     private CircleImage playerImage = new CircleImage();
-    private JLabel tagLabel = new JLabel();
+    private TagLabel tagLabel = new TagLabel();
     private JLabel timerLabel = new JLabel();
     private JLabel explanationLabel = new JLabel();
     private JLabel highestBetLabel = new JLabel();
@@ -39,6 +42,9 @@ public class MainController extends Controller {
         playerCards = new CardSetController(GAME.getHumanPlayer().getHand());
         actionButtons = new ActionButtonController();
         setupLayout(getView());
+        updateTime(null);
+        Timer timer = new Timer(1000, this::updateTime);
+        timer.start();
     }
 
     @Override
@@ -46,29 +52,30 @@ public class MainController extends Controller {
         view.setLayout(new GridBagLayout());
         view.setBackground(Color.white);
 
-        explanationLabel.setFont(new Font("Serif", Font.BOLD, 20));
-        timerLabel.setFont(new Font("Serif", Font.PLAIN, 17));
-        potLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        sidePotLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        highestBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        playerMoney.setFont(new Font("Serif", Font.PLAIN, 20));
-        currBetLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        playerName.setFont(new Font("Serif", Font.PLAIN, 20));
-
+        Font roboto = Constants.ROBOTO_FONT.deriveFont(17f);
+        explanationLabel.setFont(Constants.RYE_FONT.deriveFont(30f));
+        timerLabel.setFont(Constants.ROBOTO_FONT.deriveFont(17f));
+        potLabel.setFont(roboto);
+        sidePotLabel.setFont(roboto);
+        highestBetLabel.setFont(roboto);
+        playerMoney.setFont(roboto);
+        currBetLabel.setFont(roboto);
+        playerName.setFont(roboto);
 
         GridBagConstraints c = new GridBagConstraints();
 
-        // Timer Label
+        // Explanation Label
         c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         explanationLabel.setHorizontalAlignment(JLabel.CENTER);
         explanationLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
         explanationLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        explanationLabel.setText("");
         view.add(explanationLabel, c);
 
         // Timer Label
@@ -77,7 +84,7 @@ public class MainController extends Controller {
         c.gridy = 1;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         timerLabel.setHorizontalAlignment(JLabel.CENTER);
         timerLabel.setPreferredSize(new Dimension(getView().getWidth(), 50));
@@ -92,7 +99,7 @@ public class MainController extends Controller {
         c.gridy = 2;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(deltCardsView, c);
 
@@ -102,8 +109,8 @@ public class MainController extends Controller {
         c.gridy = 3;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.fill = GridBagConstraints.NONE;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.VERTICAL;
         view.add(potLabel, c);
 
         // Side Pot Label
@@ -112,7 +119,7 @@ public class MainController extends Controller {
         c.gridy = 4;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(sidePotLabel, c);
 
@@ -122,7 +129,7 @@ public class MainController extends Controller {
         c.gridy = 5;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(highestBetLabel, c);
 
@@ -133,7 +140,7 @@ public class MainController extends Controller {
         c.gridy = 6;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(playerCardsView, c);
 
@@ -143,7 +150,7 @@ public class MainController extends Controller {
         c.gridy = 7;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(playerMoney, c);
         
@@ -153,7 +160,7 @@ public class MainController extends Controller {
         c.gridy = 8;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(currBetLabel, c);
 
@@ -163,7 +170,7 @@ public class MainController extends Controller {
         c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         view.add(playerName, c);
 
@@ -173,7 +180,7 @@ public class MainController extends Controller {
         c.gridy = 9;
         c.gridwidth = 1;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0,0,0,10);
         playerImage.setImage(GAME.getHumanPlayer().getImage());
@@ -186,11 +193,10 @@ public class MainController extends Controller {
         c.gridy = 10;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(0,0,0,0);
         tagLabel.setBorder(new RoundedCornerBorder(Color.black));
-        tagLabel.setVisible(false);
         view.add(tagLabel, c);
 
         // Action Buttons
@@ -200,35 +206,11 @@ public class MainController extends Controller {
         c.gridy = 11;
         c.gridwidth = 2;
         c.weightx = 1.0;
-        c.weighty = 1.0;
+        c.weighty = 0.5;
+        c.insets = new Insets(0,0,0,0);
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(actionButtonPanel, c);
 
-
-        Timer timer = new Timer(1000, e -> {
-            Player player = GAME.getHumanPlayer();
-            if(seconds < 0){
-                timerLabel.setText("");
-            }
-            else if (player.isActive()) {
-                long minute = TimeUnit.SECONDS.toMinutes(seconds)
-                    - (TimeUnit.SECONDS.toHours(seconds) * 60);
-                long second = TimeUnit.SECONDS.toSeconds(seconds)
-                    - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
-                timerLabel.setText("Time Remaining: " + minute + ":" + second);
-                timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
-                if (seconds == 0) {
-                    timerLabel.setText("FOLDED");
-                    GameWorker.gameQueue.add(GameWorker.Move.FOLD);
-                }
-                seconds--;
-            }
-
-            else{
-                timerLabel.setText("FOLDED");
-            }
-        });
-        timer.start();
     }
 
     @Override
@@ -236,22 +218,9 @@ public class MainController extends Controller {
         dealtCards.reloadData();
         playerCards.reloadData();
         actionButtons.reloadData();
+
         seconds = MyTimerTask.getMyTimerPeriod();
-
-        Player player = GAME.getHumanPlayer();
-        if (player == GAME.getDealer()) {
-            tagLabel.setText("Dealer");
-            tagLabel.setVisible(true);
-        } else if (player == GAME.getBigBlind()) {
-            tagLabel.setText("Big Blind");
-            tagLabel.setVisible(true);
-        }else if (player == GAME.getLittleBlind()) {
-            tagLabel.setText("Little Blind");
-            tagLabel.setVisible(true);
-        } else {
-            tagLabel.setVisible(false);
-        }
-
+        tagLabel.updateTagFor(GAME.getHumanPlayer());
         explanationLabel.setText(GAME.getTurnExplanation());
 
         Player humanPlayer = GAME.getHumanPlayer();
@@ -265,5 +234,25 @@ public class MainController extends Controller {
 
         if(GAME.getSidePot() == 0)
             sidePotLabel.setVisible(false);
+    }
+
+    private void updateTime(ActionEvent actionEvent) {
+        if(seconds < 0){
+            timerLabel.setText("");
+        } else if (GAME.getHumanPlayer().isActive()) {
+            long minute = TimeUnit.SECONDS.toMinutes(seconds)
+                - (TimeUnit.SECONDS.toHours(seconds) * 60);
+            long second = TimeUnit.SECONDS.toSeconds(seconds)
+                - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+            timerLabel.setText(String.format("Time Remaining: %02d:%02d", minute, second));
+            timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
+            if (seconds == 0) {
+                timerLabel.setText("FOLDED");
+                GameWorker.gameQueue.add(GameWorker.Move.FOLD);
+            }
+            seconds--;
+        } else {
+            timerLabel.setText("FOLDED");
+        }
     }
 }
