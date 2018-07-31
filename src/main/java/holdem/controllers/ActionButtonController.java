@@ -41,11 +41,15 @@ public class ActionButtonController extends Controller {
         if(Game.getInstance().getHumanPlayer().isActive() && Game.getInstance().isHumanPlayersTurn()) {
             foldButton.setEnabled(true);
             callButton.setEnabled(true);
-            if(Game.getInstance().getHighestBet() == 0)
-                callButton.setText("Check");
-            else
-                callButton.setText("Call $" + Game.getInstance().getHighestBet());
             betButton.setEnabled(true);
+            if(Game.getInstance().getHighestBet() == 0) {
+                callButton.setText("Check");
+                betButton.setText("Bet");
+            } else {
+                callButton.setText("Call $" + Game.getInstance().getHighestBet());
+                betButton.setText("Raise");
+            }
+            
         } else {
             foldButton.setEnabled(false);
             callButton.setEnabled(false);
@@ -54,34 +58,35 @@ public class ActionButtonController extends Controller {
     }
     
     public void handleBet(BlockingQueue<Move> moveQueue) {
-        String bet = getBet();
+        Integer bet = getBet();
         Move move = Move.BET;
         if(bet != null) {
-            move.setBet(Integer.parseInt(bet));
+            move.setBet(bet);
             moveQueue.add(move);
         }
     }
     
-    private String getBet() {
-        String bet = JOptionPane.showInputDialog("How much would you like to bet? ");
+    private Integer getBet() {
+        String bet = JOptionPane.showInputDialog("How much would you like to bet/raise? ");
         Boolean valid = false;
         Game GAME = Game.getInstance();
         int maxBet = GAME.getHumanPlayer().getWallet();
         int minBet = 10;
-        if(GAME.getHighestBet() > 0) 
-            minBet = GAME.getHighestBet();
         while(!valid) {
             if(bet == null || (bet != null && ("".equals(bet))))
                 return null;
             else if(!isNumeric(bet)) 
                 bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be a numeric integer.");
-            else if(Integer.parseInt(bet) < minBet || Integer.parseInt(bet) > maxBet) 
-                bet = JOptionPane.showInputDialog("Invalid bet input. Bet must be between $" + minBet + " and $" + maxBet);
+            else if(Integer.parseInt(bet) < minBet)
+                bet = JOptionPane.showInputDialog("Invalid bet input. Must raise at least $" + minBet);
+            else if((Integer.parseInt(bet) + GAME.getHighestBet())  > maxBet) 
+                bet = JOptionPane.showInputDialog("Invalid bet input. Total bet may not exceed $" + maxBet);
             else
                 valid = true;
         }
-        Game.getInstance().setHighestBet(Integer.parseInt(bet));
-        return bet;
+        Integer totalBet = Integer.parseInt(bet) + GAME.getHighestBet();
+        Game.getInstance().setHighestBet(totalBet);
+        return totalBet;
     }
     
     private boolean isNumeric(String str) {
