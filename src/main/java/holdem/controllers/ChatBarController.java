@@ -2,10 +2,15 @@ package holdem.controllers;
 
 import holdem.Constants;
 import holdem.Game;
+import holdem.MyTimerTask;
+import holdem.models.Heckle;
+import holdem.models.Player;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatBarController extends Controller {
@@ -15,6 +20,8 @@ public class ChatBarController extends Controller {
     private JPanel innerPanel = new JPanel();
     private LinkedBlockingQueue<ChatBarRow> heckleQueue = new LinkedBlockingQueue<>();
     private JScrollPane jScrollPane;
+    private boolean heckleEnabled = MyTimerTask.getHeckleEnabled();
+
 
     public ChatBarController() {
         super();
@@ -39,18 +46,24 @@ public class ChatBarController extends Controller {
         innerPanel.setBackground(Color.white);
         //innerPanel.setPreferredSize(new Dimension(350, innerPanel.getHeight()));
 
-
-        Timer timer = new Timer(1000, (e) -> {
-            String message = "The quick brown fox jumped over the lazy dog.";
-            ChatBarRow row = new ChatBarRow(Constants.BACKUP_AI_PLAYER, message);
-            try {
-                heckleQueue.put(row);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
+        //Get a random time for the timer period
+        int delay = (5 + new Random().nextInt(5)*10000) - 10000;
+        Game game = Game.getInstance();
+        Timer heckleTimer = new Timer(delay, e -> {
+            if(heckleEnabled){
+                ArrayList<Player> players = game.getActivePlayers();
+                players.remove(game.getHumanPlayer());
+                int randomIndex = new Random().nextInt(players.size());
+                String message = Heckle.generateHeckle();
+                ChatBarRow row = new ChatBarRow(players.get(randomIndex), message);
+                try {
+                    heckleQueue.put(row);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
-
-        timer.start();
+        heckleTimer.start();
     }
 
     @Override

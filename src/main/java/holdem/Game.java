@@ -18,7 +18,7 @@ public class Game {
     private Player humanPlayer;
     private Player dealer;
     private Player turnPlayer;
-    private String turnExplanation = "Staring Game!";
+    private String turnExplanation = "Starting Game!";
     private int pot = 0;
     private int sidePot = 0;
     private int numOpponents;
