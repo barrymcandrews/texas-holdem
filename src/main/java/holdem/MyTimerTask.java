@@ -7,7 +7,6 @@ import java.util.TimerTask;
 public class MyTimerTask extends TimerTask {
 
     private static int interval = 0;
-    private static boolean heckle = false;
 
     private static Timer myTimer = new Timer();
 
@@ -22,14 +21,6 @@ public class MyTimerTask extends TimerTask {
         } else {
             interval = -1;
         }
-    }
-
-    public static boolean getHeckleEnabled() {
-        return heckle;
-    }
-
-    public static void setHeckle(boolean set) {
-        heckle = set;
     }
 
     @Override

@@ -169,8 +169,6 @@ public class StartDialog {
         dialogResult.imgPath = fileTextField.getText();
         dialogResult.enableHeckling = hecklingCheckBox.isSelected();
 
-        MyTimerTask.setHeckle(dialogResult.enableHeckling);
-
         if (!timerSpinner.isEnabled()) {
             dialogResult.timer = -1;
         }
