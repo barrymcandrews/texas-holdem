@@ -8,6 +8,7 @@ import holdem.models.Player;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,6 +34,7 @@ public class ChatBarController extends Controller {
         view.setLayout(new GridLayout(0, 1));
         view.setBackground(Color.white);
         view.setPreferredSize(new Dimension(350, 800));
+        view.setBorder(new MatteBorder(0, 1,0,0, new Color(0xF0F0F0)));
 
         jScrollPane = new JScrollPane(innerPanel);
         jScrollPane.setPreferredSize(new Dimension(350, 800));
