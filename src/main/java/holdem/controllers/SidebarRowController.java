@@ -4,6 +4,7 @@ import holdem.Constants;
 import holdem.Game;
 import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
+import holdem.components.TagLabel;
 import holdem.models.Player;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ public class SidebarRowController extends Controller {
     private final Game GAME = Game.getInstance();
 
     private CircleImage imageLabel = new CircleImage();
-    private JLabel tagLabel = new JLabel();
+    private TagLabel tagLabel = new TagLabel();
     private JLabel nameLabel = new JLabel();
     private CardSetController cardSetController;
     private JLabel walletLabel = new JLabel();
@@ -37,7 +38,14 @@ public class SidebarRowController extends Controller {
 
         GridBagConstraints c = new GridBagConstraints();
 
-        tagLabel.setVisible(false);
+        Font roboto = Constants.ROBOTO_FONT.deriveFont(14f);
+
+        tagLabel.setFont(roboto);
+        tagLabel.setFont(roboto);
+        nameLabel.setFont(roboto);
+        walletLabel.setFont(roboto);
+        betLabel.setFont(roboto);
+
         tagLabel.setBorder(new RoundedCornerBorder(Color.white));
         tagLabel.setForeground(Color.white);
         nameLabel.setForeground(Color.white);
@@ -74,7 +82,7 @@ public class SidebarRowController extends Controller {
         view.add(imageLabel, c);
 
         // Name Label
-        c.insets = new Insets(0, 5, 0, 5);
+        c.insets = new Insets(0, 5, 5, 5);
         c.anchor = GridBagConstraints.PAGE_END;
         c.gridx = 0;
         c.gridy = 2;
@@ -109,7 +117,8 @@ public class SidebarRowController extends Controller {
         c.gridwidth = 1;
         c.fill = GridBagConstraints.NONE;
         tagLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        //tagLabel.setPreferredSize(new Dimension(120, walletLabel.getHeight()));
+        tagLabel.setMinimumSize(Constants.TAG_LABEL_DIMENSION);
+        tagLabel.setPreferredSize(Constants.TAG_LABEL_DIMENSION);
         view.add(tagLabel, c);
 
         // Wallet Label
@@ -146,19 +155,8 @@ public class SidebarRowController extends Controller {
         Color color = (GAME.getTurnPlayer() == player) ? Constants.SIDEBAR_COLOR_HIGHLIGHTED : Constants.SIDEBAR_COLOR;
         getView().setBackground(color);
 
-        if (player == GAME.getDealer()) {
-            tagLabel.setText("Dealer");
-            tagLabel.setVisible(true);
-        } else if (player == GAME.getBigBlind()) {
-            tagLabel.setText("Big Blind");
-            tagLabel.setVisible(true);
-        }else if (player == GAME.getLittleBlind()) {
-            tagLabel.setText("Little Blind");
-            tagLabel.setVisible(true);
-        } else {
-            tagLabel.setVisible(false);
-        }
 
+        tagLabel.updateTagFor(player);
         nameLabel.setText(player.getName());
 
         walletLabel.setText("<html>Wallet: $" + Integer.toString(player.getWallet()) + "</html>");
