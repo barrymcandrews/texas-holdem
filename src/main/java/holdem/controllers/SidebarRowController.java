@@ -79,7 +79,7 @@ public class SidebarRowController extends Controller {
         c.fill = GridBagConstraints.NONE;
         imageLabel.setImage(player.getImage());
         imageLabel.setPreferredSize(Constants.PLAYER_IMAGE_DIMENSION);
-        if (player == Constants.BACKUP_AI_PLAYER) {
+        if (player == Constants.BACKUP_AI_PLAYER || player.getName().equals("Jim Jr")) {
             c.insets = new Insets(0, 5, 20, 0);
         }
         view.add(imageLabel, c);

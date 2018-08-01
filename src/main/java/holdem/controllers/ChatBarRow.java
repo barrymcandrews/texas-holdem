@@ -77,7 +77,7 @@ public class ChatBarRow extends Controller {
         messageLabel.setFont(roboto);
         view.add(messageLabel, c);
 
-        Dimension d = new Dimension(350, Math.max(60, messageLabel.getHeight() + 10));
+        Dimension d = new Dimension(350, Math.max(70, messageLabel.getHeight() + 10));
         view.setMinimumSize(d);
         view.setMaximumSize(d);
         view.setPreferredSize(d);
