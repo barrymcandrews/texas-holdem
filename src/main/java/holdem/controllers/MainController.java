@@ -6,12 +6,14 @@ import holdem.GameWorker;
 import holdem.MyTimerTask;
 import holdem.components.CircleImage;
 import holdem.components.RoundedCornerBorder;
+import holdem.models.Heckle;
 import holdem.components.TagLabel;
 import holdem.models.Player;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
 
@@ -211,6 +213,30 @@ public class MainController extends Controller {
         c.fill = GridBagConstraints.HORIZONTAL;
         view.add(actionButtonPanel, c);
 
+        Timer timer = new Timer(1000, e -> {
+            Player player = GAME.getHumanPlayer();
+            if(seconds < 0){
+                timerLabel.setText("");
+            }
+            else if (player.isActive()) {
+                long minute = TimeUnit.SECONDS.toMinutes(seconds)
+                    - (TimeUnit.SECONDS.toHours(seconds) * 60);
+                long second = TimeUnit.SECONDS.toSeconds(seconds)
+                    - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+                timerLabel.setText("Time Remaining: " + minute + ":" + second);
+                timerLabel.setForeground((minute == 0 && second <= 10) ? Color.RED : Color.BLACK);
+                if (seconds == 0) {
+                    timerLabel.setText("FOLDED");
+                    GameWorker.gameQueue.add(GameWorker.Move.FOLD);
+                }
+                seconds--;
+            }
+
+            else{
+                timerLabel.setText("FOLDED");
+            }
+        });
+        timer.start();
     }
 
     @Override
