@@ -1,4 +1,7 @@
-package holdem;
+package holdem.dialogs;
+
+import holdem.Constants;
+import holdem.MyTimerTask;
 
 import javax.swing.*;
 import java.awt.*;

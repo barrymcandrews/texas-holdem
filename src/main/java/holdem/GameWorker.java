@@ -1,6 +1,7 @@
 package holdem;
 
 import holdem.controllers.RootController;
+import holdem.dialogs.WinnerDialog;
 import holdem.models.BestHand;
 import holdem.models.HandScore;
 import holdem.models.Player;

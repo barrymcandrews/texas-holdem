@@ -1,4 +1,4 @@
-package holdem;
+package holdem.dialogs;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.swing.*;
 
+import holdem.Constants;
+import holdem.Game;
 import holdem.controllers.CardSetController;
 import holdem.models.Card;
 import holdem.models.HandScore;

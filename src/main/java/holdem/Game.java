@@ -1,12 +1,13 @@
 package holdem;
 
+import holdem.dialogs.RestartDialog;
+import holdem.dialogs.StartDialog;
 import holdem.models.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Game {
     private static Logger log = LogManager.getLogger(Game.class);
