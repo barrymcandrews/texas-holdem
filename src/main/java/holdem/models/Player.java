@@ -120,14 +120,13 @@ public class Player {
     }
 
     public void setHandBet(int handBet) {
-        if (getWallet() >= handBet) {
-            int prebet = this.handBet;
+        int prebet = this.handBet;
+        if (getWallet() >= handBet - prebet) {
             this.handBet = handBet;
             loseMoney(handBet - prebet);
             this.totalRoundBet += this.handBet - prebet;
         } else {
-            this.handBet = getWallet();
-            int prebet = this.handBet;
+            this.handBet = getWallet() + prebet;
             loseMoney(this.handBet - prebet);
             this.totalRoundBet += this.handBet - prebet;
         }

@@ -17,10 +17,9 @@ public class Game {
     private Set<Card> centerCards = new HashSet<>();
     private Player humanPlayer;
     private Player dealer;
+    private Pot pot;
     private Player turnPlayer;
     private String turnExplanation = "Starting Game!";
-    private int pot = 0;
-    private int sidePot = 0;
     private int numOpponents;
     private int highestBet;
     private boolean isHumanPlayersTurn;
@@ -160,33 +159,35 @@ public class Game {
     public Player getDealer() {
         return dealer;
     }
-
-    public int getPot() {
-        return pot;
-    }
-
-    public void setPot(int pot) {
-        this.pot = pot;
+    
+    public void initPot() {
+        this.pot = new Pot(players);
     }
     
-    public void addToPot(int bet) {
-        pot += bet;
+    public int[] getPot(ArrayList<Player> players) {
+        if(pot != null)
+            return pot.getPot(players);
+        else
+            return new int[0];
     }
 
-    public int getSidePot() {
-        return sidePot;
+    public int getTotalPot() {
+        if(pot != null)
+            return pot.getTotalPot();
+        else
+            return 0;
     }
 
-    public void setSidePot(int sidePot) {
-        this.sidePot = sidePot;
+    public boolean checkPotEmpty() {
+        return pot.isPotEmpty();
     }
 
-    public void addToSidePot(int sidePot) {
-        this.sidePot += sidePot;
+    public void addToPot(Player p, int bet) {
+        pot.addBet(p, bet);
     }
     
     public void clearPot() {
-        pot = 0;
+        pot.resetPot(players);
     }
 
     public int getHighestBet() {
