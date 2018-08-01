@@ -27,7 +27,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
     protected Void doInBackground() throws Exception {
 
         log.debug("Game thread started: " + LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
-
+        GAME.initPot();
         while (true) {
             Player dealer = GAME.getDealer();
             log.debug("Dealer this round: " + dealer.getName());
@@ -99,7 +99,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private void handleWinner(){
         HandScore bestScore = new HandScore(0, 0);
-        List<Player> winners = new ArrayList<>();
+        ArrayList<Player> winners = new ArrayList<>();
 
         log.debug("Cards Dealt: ");
         for (Player p : GAME.getPlayers()) {
@@ -124,11 +124,41 @@ public class GameWorker extends SwingWorker<Void, Game> {
             bestScore = BestHand.findBestHand(winners.get(0).getHand(), GAME.getCenterCards());
         }
         
-        int moneyWon = GAME.getPot() / winners.size();
-        for(Player p : winners) 
-            p.winMoney(moneyWon);
-        
+        int[] moneyWon = GAME.getPot(winners);
+        int i = 0;
+        for(Player p : winners) {
+            p.winMoney(moneyWon[i]);
+            i++;
+        }
+
         log.debug(winners.toString() + " Wins: " + moneyWon);
+        
+        ArrayList<Player> leftoverWinners = new ArrayList<>();
+        while (!GAME.checkPotEmpty()){
+            bestScore = new HandScore(0, 0);
+            ArrayList<Player> tempPlayers = GAME.getActivePlayers();
+            tempPlayers.removeAll(winners);
+            for (Player p : tempPlayers) {
+                HandScore currBestHand;
+                currBestHand = BestHand.findBestHand(p.getHand(), GAME.getCenterCards());
+                if (currBestHand.compareTo(bestScore) > 0) {
+                    bestScore = currBestHand;
+                    leftoverWinners.clear();
+                    leftoverWinners.add(p);
+                } else if (currBestHand.equals(bestScore)) {
+                    leftoverWinners.add(p);
+                }
+            }
+
+            moneyWon = GAME.getPot(leftoverWinners);
+            i = 0;
+            for(Player p : leftoverWinners) {
+                p.winMoney(moneyWon[i]);
+                i++;
+            }
+        }
+        
+        log.debug(leftoverWinners.toString() + "Wins: " + moneyWon);
         new WinnerDialog(winners, bestScore).show();
 
     }
@@ -155,8 +185,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 if (move == Move.BET) {
                     int prebet = p.getHandBet();
                     handleBet(p, move);
-                    GAME.setHighestBet(p.getHandBet());
-                    GAME.addToPot(p.getHandBet() - prebet);
+                    if (p.getHandBet() > GAME.getHighestBet()) {
+                        GAME.setHighestBet(p.getHandBet());
+                    }
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 } else if (move == Move.FOLD) {
                     p.setActive(false);
@@ -166,13 +198,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
                 } else if (move == Move.CALL) {
                     // match highest bet
                     int prebet = p.getHandBet();
-                    if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                        p.setHandBet(GAME.getHighestBet());
-                    } else {
-                        p.setHandBet(p.getWallet());
-                    }
-                    GAME.addToPot(p.getHandBet() - prebet);
-                    move.setBet(p.getHandBet());
+                    p.setHandBet(GAME.getHighestBet());
+                    GAME.addToPot(p, p.getHandBet() - prebet);
                     p.setMove(move);
                 }
 
@@ -202,20 +229,9 @@ public class GameWorker extends SwingWorker<Void, Game> {
     
     private void handleBet(Player p, Move move) {
         if(p.getType() == PlayerType.AI) {
-            if (hasEnoughMoney(p, GAME.getHighestBet() + 10)) {
-                p.setHandBet(GAME.getHighestBet() + 10);
-            } else if (hasEnoughMoney(p, GAME.getHighestBet())) {
-                p.setHandBet(GAME.getHighestBet());
-                p.setMove(Move.CALL);
-            } else {
-                p.setHandBet(p.getWallet());
-            }
+            p.setHandBet(GAME.getHighestBet() + 10);
         } else {
-            if (hasEnoughMoney(p, move.getBet())) {
-                p.setHandBet(move.getBet());
-            } else {
-                p.setHandBet(p.getWallet());
-            }
+            p.setHandBet(move.getBet());
         }
     }
     
@@ -227,7 +243,7 @@ public class GameWorker extends SwingWorker<Void, Game> {
     }
 
     private boolean hasEnoughMoney(Player p, int betAmount) {
-        if (p.getWallet() < betAmount) {
+        if (p.getWallet() < betAmount - p.getHandBet()) {
             return false;
         }
         return true;
@@ -235,8 +251,10 @@ public class GameWorker extends SwingWorker<Void, Game> {
 
     private boolean allPlayersMaxBet() {
         for (Player p : GAME.getPlayers()) {
-            if (p.isActive() && p.getHandBet() < GAME.getHighestBet()) {
-                return false;
+            if (p.isActive() && (p.getHandBet() < GAME.getHighestBet())) {
+                if (p.getWallet() != 0) {
+                    return false;
+                }
             }
         }
         return true;
@@ -250,7 +268,8 @@ public class GameWorker extends SwingWorker<Void, Game> {
         GAME.getBigBlind().setHandBet(20);
         GAME.getLittleBlind().setHandBet(10);
         GAME.setHighestBet(20);
-        GAME.addToPot(30);
+        GAME.addToPot(GAME.getBigBlind(), 20);
+        GAME.addToPot(GAME.getLittleBlind(), 10);
     }
     
     public enum Move {

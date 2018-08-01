@@ -250,16 +250,12 @@ public class MainController extends Controller {
         explanationLabel.setText(GAME.getTurnExplanation());
 
         Player humanPlayer = GAME.getHumanPlayer();
-        potLabel.setText("Pot: $" + Integer.toString(GAME.getPot()));
-        sidePotLabel.setText("Side Pot: $" + Integer.toString(GAME.getSidePot()));
+        potLabel.setText("Pot: $" + Integer.toString(GAME.getTotalPot()));
         highestBetLabel.setText("Highest bet: $" + GAME.getHighestBet());
 
         playerMoney.setText("Wallet: $" + humanPlayer.getWallet());
         currBetLabel.setText("Bet: $" + humanPlayer.getHandBet());
         playerName.setText(humanPlayer.getName());
-
-        if(GAME.getSidePot() == 0)
-            sidePotLabel.setVisible(false);
     }
 
     private void updateTime(ActionEvent actionEvent) {
