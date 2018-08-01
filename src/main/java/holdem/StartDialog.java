@@ -90,7 +90,7 @@ public class StartDialog {
         timerSpinnerModel = new SpinnerNumberModel(30, 10, 120, 5);
         timerSpinner.setModel(timerSpinnerModel);
         timerSpinner.setEnabled(false);
-        timerCheckBox.addItemListener(this::timeChekboxPressed);
+        timerCheckBox.addItemListener(this::timeCheckboxPressed);
         dialogPanel.add(timerCheckBox, c);
 
         c.anchor = CENTER;
@@ -149,6 +149,7 @@ public class StartDialog {
             dialogResult.numberOfOpponents = 7;
             dialogResult.timer = 30;
             dialogResult.imgPath = "src/main/resources/player-images/default.png";
+            dialogResult.enableHeckling = true;
             return dialogResult;
         }
 
@@ -165,6 +166,8 @@ public class StartDialog {
         dialogResult.imgPath = fileTextField.getText();
         dialogResult.enableHeckling = hecklingCheckBox.isSelected();
 
+        MyTimerTask.setHeckle(dialogResult.enableHeckling);
+
         if (!timerSpinner.isEnabled()) {
             dialogResult.timer = -1;
         }
@@ -178,7 +181,7 @@ public class StartDialog {
         return dialogResult;
     }
 
-    private void timeChekboxPressed(ItemEvent e) {
+    private void timeCheckboxPressed(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
             timerSpinner.setEnabled(true);
         } else if (e.getStateChange() == ItemEvent.DESELECTED) {

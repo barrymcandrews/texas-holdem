@@ -21,7 +21,7 @@ public class SidebarController extends Controller {
     public void setupLayout(JPanel view) {
         view.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
         view.setBackground(new Color(40, 40, 40));
-        view.setPreferredSize(new Dimension(350, 900));
+        view.setPreferredSize(new Dimension(350, 770));
         GAME.getPlayers().forEach(p -> {
             if (p.getType() == Player.PlayerType.AI) rows.add(new SidebarRowController(p));
         });

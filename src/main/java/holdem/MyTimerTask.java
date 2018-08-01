@@ -4,13 +4,33 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static java.sql.Types.NULL;
-
-public class MyTimerTask extends  TimerTask {
+public class MyTimerTask extends TimerTask {
 
     private static int interval = 0;
+    private static boolean heckle = false;
 
     private static Timer myTimer = new Timer();
+
+    public static int getMyTimerPeriod() {
+        return interval;
+    }
+
+    static void setMyTimer(int seconds) {
+        if (seconds >= 10) {
+            MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
+            interval = seconds;
+        } else {
+            interval = -1;
+        }
+    }
+
+    public static boolean getHeckleEnabled() {
+        return heckle;
+    }
+
+    public static void setHeckle(boolean set) {
+        heckle = set;
+    }
 
     @Override
     public void run() {
@@ -28,17 +48,4 @@ public class MyTimerTask extends  TimerTask {
         }
     }
 
-    public static int getMyTimerPeriod() {
-        return interval;
-    }
-
-    public static void setMyTimer(int seconds) {
-        if(seconds >=10){
-            MyTimerTask.myTimer.scheduleAtFixedRate(new MyTimerTask(), 1000, seconds);
-            interval = seconds;
-        }
-        else{
-            interval = -1;
-        }
-    }
 }
