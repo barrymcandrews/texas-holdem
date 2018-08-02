@@ -1,4 +1,4 @@
-package holdem;
+package holdem.dialogs;
 
 import javax.swing.*;
 

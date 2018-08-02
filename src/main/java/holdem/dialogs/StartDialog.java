@@ -1,4 +1,7 @@
-package holdem;
+package holdem.dialogs;
+
+import holdem.Constants;
+import holdem.MyTimerTask;
 
 import javax.swing.*;
 import java.awt.*;
@@ -165,8 +168,6 @@ public class StartDialog {
         dialogResult.timer = timerSpinnerModel.getNumber().intValue();
         dialogResult.imgPath = fileTextField.getText();
         dialogResult.enableHeckling = hecklingCheckBox.isSelected();
-
-        MyTimerTask.setHeckle(dialogResult.enableHeckling);
 
         if (!timerSpinner.isEnabled()) {
             dialogResult.timer = -1;

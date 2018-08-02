@@ -79,6 +79,9 @@ public class SidebarRowController extends Controller {
         c.fill = GridBagConstraints.NONE;
         imageLabel.setImage(player.getImage());
         imageLabel.setPreferredSize(Constants.PLAYER_IMAGE_DIMENSION);
+        if (player == Constants.BACKUP_AI_PLAYER || player.getName().equals("Jim Jr")) {
+            c.insets = new Insets(0, 5, 20, 0);
+        }
         view.add(imageLabel, c);
 
         // Name Label
@@ -91,6 +94,7 @@ public class SidebarRowController extends Controller {
         c.gridheight = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.NONE;
+        nameLabel.setText("<html>" + player.getName() + "</html>");
         view.add(nameLabel, c);
 
         // Card Controller
@@ -155,10 +159,7 @@ public class SidebarRowController extends Controller {
         Color color = (GAME.getTurnPlayer() == player) ? Constants.SIDEBAR_COLOR_HIGHLIGHTED : Constants.SIDEBAR_COLOR;
         getView().setBackground(color);
 
-
         tagLabel.updateTagFor(player);
-        nameLabel.setText(player.getName());
-
         walletLabel.setText("<html>Wallet: $" + Integer.toString(player.getWallet()) + "</html>");
         betLabel.setText("<html>Bet: $" + Integer.toString(player.getHandBet()) + "</html>");
 
